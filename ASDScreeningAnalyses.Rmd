@@ -1,0 +1,116 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+#Loading Packages
+
+```{r}
+install.packages("tidyverse")
+install.packages("haven")
+install.packages("readr")
+install.packages("readxl")
+install.packages("openxlsx")
+library(tidyverse)
+library(haven)
+library(readr)
+library(readxl)
+library(openxlsx)
+```
+
+
+#Loading the File in
+
+```{r}
+#hint: use read.csv() to load in the file
+
+
+#additional hint: customfilename = read.csv('filepath')
+
+
+```
+
+
+#view the file
+```{r}
+#hint: use view() 
+
+```
+
+
+#Q1: Correlation between age and ASD diagnosis. 4-11 year olds
+```{r}
+#Data manipulation
+
+#make it so that Class.ASD in the dataframe is not binary ("YES/NO"), but numeric (1/0). There are many ways which this can be done. ifelse() is one way. 
+
+
+
+#try to find more ways on how to convert binary to numeric
+
+
+
+
+
+
+# Fit the logistic regression model 
+my_model = glm(outcome ~ predictor1 + predictor2, family = binomial, data = customfilename)
+
+# View the model summary 
+summary(my_model)
+
+
+```
+
+*Interpret Model Summary:*
+
+
+#Make Graph for Q1
+```{r}
+#Make a graph.
+#https://psyc193l.github.io/index.html <-- Ch 7 will help you figure out  
+
+#make a box plot 
+
+
+#see if any other graphs would be a good fit to represent the data
+
+
+
+
+```
+
+
+
+
+#Q2: Correlation between Jaundice diagnosis and ASD diagnosis. 4-11 year olds
+```{r}
+# Try your best! This one is less handholdy
+
+#chi square test 
+#https://www.datacamp.com/tutorial/chi-square-test-r
+
+
+
+
+```
+
+*Interpret Model Summary:*
+
+
+#Make Graph for Q2
+```{r}
+#Make a graph.
+#https://psyc193l.github.io/index.html <-- Ch 7 will help you figure out  
+
+
+
+
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
