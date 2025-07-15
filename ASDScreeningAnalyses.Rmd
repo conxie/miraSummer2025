@@ -9,11 +9,11 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 #Loading Packages
 
 ```{r}
-install.packages("tidyverse")
-install.packages("haven")
-install.packages("readr")
-install.packages("readxl")
-install.packages("openxlsx")
+#install.packages("tidyverse")
+#install.packages("haven")
+#install.packages("readr")
+#install.packages("readxl")
+#install.packages("openxlsx")
 library(tidyverse)
 library(haven)
 library(readr)
@@ -30,13 +30,14 @@ library(openxlsx)
 
 #additional hint: customfilename = read.csv('filepath')
 
-
+ASDScreeningData = read.csv('/Users/miramateo/Desktop/GitHub/ASDScreeningDataChildren.csv')
 ```
 
 
 #view the file
 ```{r}
 #hint: use view() 
+view(ASDScreeningData)
 
 ```
 
@@ -48,16 +49,19 @@ library(openxlsx)
 #make it so that Class.ASD in the dataframe is not binary ("YES/NO"), but numeric (1/0). There are many ways which this can be done. ifelse() is one way. 
 
 
-
 #try to find more ways on how to convert binary to numeric
 
+ASDScreeningData = ASDScreeningData %>%
+  mutate(Class.ASD = ifelse(Class.ASD == "YES", 1, 0))
 
-
+ASDScreeningData = ASDScreeningData %>%
+  mutate(austim = ifelse(austim == "yes", 1, 0))
 
 
 
 # Fit the logistic regression model 
-my_model = glm(outcome ~ predictor1 + predictor2, family = binomial, data = customfilename)
+#my_model = glm(outcome ~ predictor1 + predictor2, family = binomial, data = customfilename)
+my_model = glm(Class.ASD ~ age, family = binomial, data = ASDScreeningData)
 
 # View the model summary 
 summary(my_model)
@@ -73,8 +77,15 @@ summary(my_model)
 #Make a graph.
 #https://psyc193l.github.io/index.html <-- Ch 7 will help you figure out  
 
+ASDScreeningData %>%
+  ggplot(aes(y = Class.ASD, x = age)) +
+  geom_point()
+
 #make a box plot 
 
+ASDScreeningData %>%
+  ggplot(aes(y = Class.ASD, x = age)) +
+  geom_boxplot()
 
 #see if any other graphs would be a good fit to represent the data
 
@@ -93,8 +104,25 @@ summary(my_model)
 #chi square test 
 #https://www.datacamp.com/tutorial/chi-square-test-r
 
+# Install and load the package
+install.packages('dplyr')
 
+library(dplyr)
 
+# Select the columns of interest
+selected_data <- ASDScreeningData %>% select(age, Class.ASD)
+
+# Create a contingency table for Highest educational level and Anemia level
+contingency_table <- table(selected_data$age, selected_data$Class.ASD)
+
+# View the contingency table
+print(contingency_table)
+
+# Perform chi-square test
+chi_square_test <- chisq.test(contingency_table)
+
+# View the results
+print(chi_square_test)
 
 ```
 
