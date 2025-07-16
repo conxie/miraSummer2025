@@ -30,7 +30,7 @@ library(openxlsx)
 
 #additional hint: customfilename = read.csv('filepath')
 
-ASDScreeningData = read.csv('/Users/miramateo/Desktop/GitHub/ASDScreeningDataChildren.csv')
+ASDScreeningData = read.csv("~/GitHub/miraSummer2025/ASDScreeningDataChildren.csv")
 ```
 
 
@@ -61,7 +61,7 @@ ASDScreeningData = ASDScreeningData %>%
 
 # Fit the logistic regression model 
 #my_model = glm(outcome ~ predictor1 + predictor2, family = binomial, data = customfilename)
-my_model = glm(Class.ASD ~ age, family = binomial, data = ASDScreeningData)
+my_model = glm(austim ~ age, family = binomial, data = ASDScreeningData)
 
 # View the model summary 
 summary(my_model)
@@ -81,17 +81,29 @@ ASDScreeningData %>%
   ggplot(aes(y = Class.ASD, x = age)) +
   geom_point()
 
-#make a box plot 
+#make a bar chart that looks at count 
 
-ASDScreeningData %>%
-  ggplot(aes(y = Class.ASD, x = age)) +
-  geom_boxplot()
+countASD = ASDScreeningData %>%
+  group_by(_____) %>%
+  count(_____) %>%
+  filter(_____ == 1)
+
+countASD %>%
+  ggplot(aes(x = _____ , y = _____)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(
+    title = "Count of Autism Diagnoses by Age",
+    x = "Age",
+    y = "Autism Count"
+  ) +
+  theme_minimal()
+
 
 #see if any other graphs would be a good fit to represent the data
+#Jitter Plot
 
 
-
-
+#use ...count... to show proportion (found in 193L textbook)
 ```
 
 
@@ -108,6 +120,11 @@ ASDScreeningData %>%
 install.packages('dplyr')
 
 library(dplyr)
+
+
+
+#Class.ASD is not the variable to use. You should be using the autism variable
+
 
 # Select the columns of interest
 selected_data <- ASDScreeningData %>% select(age, Class.ASD)
