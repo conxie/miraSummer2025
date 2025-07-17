@@ -99,6 +99,9 @@ countASD %>%
 #see if any other graphs would be a good fit to represent the data
 #Jitter Plot
 
+ASDScreeningData %>%
+  ggplot(aes(y = Class.ASD, x = age)) +
+  geom_jitter()
 
 #use ...count... to show proportion (found in 193L textbook)
 ```
@@ -114,9 +117,9 @@ countASD %>%
 #https://www.datacamp.com/tutorial/chi-square-test-r
 
 # Install and load the package
-install.packages('dplyr')
+#install.packages('dplyr')
 
-library(dplyr)
+#library(dplyr)
 
 
 # Select the columns of interest
@@ -144,8 +147,24 @@ print(chi_square_test)
 #Make a graph.
 #https://psyc193l.github.io/index.html <-- Ch 7 will help you figure out  
 
+countASD = ASDScreeningData %>%
+  group_by(jundice) %>%
+  count(Class.ASD) %>%
+  filter(Class.ASD == 1)
 
+countASD %>%
+  ggplot(aes(x = jundice , y = Class.ASD)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(
+    title = "Count of Autism Diagnoses by Jaundice Diagnoses",
+    x = "Jaundice",
+    y = "Autism Count"
+  ) +
+  theme_minimal()
 
+ASDScreeningData %>%
+  ggplot(aes(y = Class.ASD, x = jundice)) +
+  geom_jitter()
 
 
 ```
