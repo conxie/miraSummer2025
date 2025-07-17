@@ -1,0 +1,206 @@
+# Summarizing Data
+
+```{r}
+library(tidyverse) # Load tidyverse packages
+library(palmerpenguins) # Load penguins data
+load(url("https://github.com/Psyc193L/Psyc193L.github.io/blob/main/data/penguins_example.RData?raw=true")) # Load example data
+```
+
+## Table and Count
+
+To get the *number of instances* of each unique value, use `table()` (for a table output) or `count()` (for a df/tibble output).
+
+> Complete the code below to get the number of instances of each `species` using both `table()` and `count()`
+
+```{r}
+penguins %>%
+  pull(X) %>%
+  X()
+
+X %>%
+  count(X)
+```
+
+### Proportions
+
+For tables, you add `prop.table()`
+
+> Take your code for `table()` above and then pipe it to `prop.table()`
+
+```{r}
+
+
+```
+
+For dfs, you have to manually compute the proportions and add them as a new variable.
+
+```{r}
+penguins %>%
+  count(species) %>%
+  mutate(proportion = n / length(penguins$species))
+```
+
+Always check that your proportions sum to 1
+
+> Take your code from above and use `sum()` to make sure they both sum to 1.
+
+```{r}
+
+
+```
+
+## Summary
+
+`summary()` gives a quick quantitative summary of each variable.
+
+> Use `summary()` on `penguins`
+
+```{r}
+
+```
+
+## Summarize
+
+`summarize()` gives specific summaries of your data.
+- has a similar format to `mutate()`
+- define new variables and how their values are computed
+
+```{r}
+penguins_example
+```
+
+> Complete the code below to create 3 summary variables: 1. "flipper_m" that has the mean of `flp_mm`, 2. "mass_m" which has the mean of `mass`, 3. "ratio" which has the mean ratio of `mass` to `flp_mm`.
+
+```{r}
+penguins_example %>%
+  summarize(X = mean(X),
+            mass_m = X,
+            ratio = mean(X))
+```
+
+summary is designed to work with summary functions -- those that output a single value.
+
+To verify the above is true:
+
+```{r}
+firstCol = c(181, 186, 192, 196, 211, 230)
+mean(firstCol)
+secondCol = c(3750, 3800, 3500, 3900, 4500, 5700)
+mean(secondCol)
+thirdCol = c(3750/181, 3800/186, 3500/192, 3900/196,
+             4500/211, 5700/230)
+mean(thirdCol)
+```
+
+## Grouping Data
+
+`group_by()` organizes your data into subgroups based on shared values. 
+
+> Compare the output of the following:
+
+```{r}
+penguins %>%
+  glimpse()
+
+penguins %>%
+  class()
+```
+
+```{r}
+penguins %>%
+  group_by(species) %>%
+  glimpse()
+
+penguins %>%
+  group_by(species) %>%
+  class()
+```
+
+> Note the differences you observe:
+
+
+
+
+
+
+
+## Grouped Summaries
+
+`group_by()` allows you to perform operations group-wise, analyzes data separately according to the different levels of some grouping variable.
+
+> Using the `penguins_example` df, use summarize to find the mean `flp_mm`, but first use `group_by()` to group the data by `species`.
+
+```{r eval=FALSE}
+penguins_example %>%
+  group_by(species) %>%
+  summarize(m = mean(flp_mm))
+```
+
+
+Some functions designed for `summarize()`
+
+- `n()` -- gives the number of values.
+
+> Complete the code below to find the number of values of observations on each `island` and each `species` within an island
+
+```{r}
+penguins %>%
+  group_by(X, X) %>%
+  summarize(n = X)
+```
+
+### Using `across()` with `summarize()`
+
+
+> First, complete the code below to get the mean of `bill_length_mm` and `bill_depth_mm` for each `species`.
+
+```{r}
+penguins %>%
+  drop_na() %>%
+
+```
+
+Use `across()` within a `summarize()` call to make use of helper functions.
+
+> Instead of specifying each variable, as done above, use `across()` and a helper function to get the relevant variables.
+
+```{r}
+X
+  X
+  X
+  summarize(X(X,
+                   mean))
+```
+
+
+You can perform multiple summary functions at the same time by passing them as a list rather than just the function name.
+
+> Take your code from above and replace `mean` with `list(mean = mean, sd = sd)`
+
+```{r}
+
+```
+
+As another example, say you wanted to find the number of unique levels for the different factors in your data. This could be done on the entire dataset:
+
+> Complete the code below and use `n_distinct` to find the number of unique levels for the different factor variables in the data
+
+```{r}
+penguins %>%
+  drop_na() %>%
+  
+```
+
+> Do the same as above but this time find the levels of those variables *for each* `species`
+
+```{r}
+penguins %>% 
+  drop_na() %>%
+
+```
+
+## Extra Resources
+
+* dplyr documentation for [row-wise](https://dplyr.tidyverse.org/articles/rowwise.html) and [column-wise](https://dplyr.tidyverse.org/articles/colwise.html) operations
+* [across](https://dplyr.tidyverse.org/reference/across.html) documentation
+* [data wrangling cheatsheet](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)

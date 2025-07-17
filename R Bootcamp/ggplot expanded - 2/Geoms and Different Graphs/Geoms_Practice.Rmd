@@ -1,0 +1,300 @@
+---
+title: "Geoms Practice Problem Set"
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# Modify the file path in the code below to properly load the "diamonds_sample.RData" file
+load("diamonds_sample.RData") 
+```
+
+# Intro
+
+You are going to work with a subset of data in the df `diamonds_sample`. All questions below will be in reference to `diamonds_sample`.
+
+* `price` - price in USD
+* `carat` - weight of the diamond
+* `cut` - quality of the cut
+* `color` - diamon color
+* `clarity` - a measurement of how clear the diamond is
+* `x` - length in mm
+* `y` - width in mm
+* `z` - depth in mm
+* `depth` - total depth percentage
+* `table` - width of top of diamond relative to widest point
+
+Below, you are going to practice making several different kinds of graphs, thinking about what type of questions that graph would allow you to answer, what your prediction is, and then summarize what you actually observe. These are to help you with both creating the graphs with R code, but also graph comprehension in general. The latter is a critical skill, without which you will not know what the best graph to make is, even if you have the R skills to make several!
+
+There will be some questions marked below where before running the code to create your graph, you will...
+A. Write down *question* that this graph is exploring.
+B. Write a brief sentence making a *prediction* of what you expect the relationship or pattern to be. 
+
+Then, after observing the visualization, you will... 
+A. Write a brief *summary* describing what that relationship or pattern actually is, and explain what evidence you have for this (e.g., "all the brown colored dots that correspond to 'Ideal' cut diamonds are higher on the y-axis, which here is 'price'. So I can see that 'Ideal' cut diamonds tend to be the most expensive.")
+
+These are clearly marked in the questions that expect them. When a question has a spot that says something like "*Question here*", please delete that text and replace it with your answer.
+
+*NOTE: For some of these visualizations, it may be hard to discern any actual patterns or relationships. Just try your best to describe what you see. If it is too hard to determine anything, state that and explain why!*
+
+
+1. Use `geom_bar()` to create a bar graph for `clarity`.
+
+```{r}
+
+```
+
+2. Use `geom_bar()` to create a bar graph for `color`. Make the bars themselves be filled with violet and have a blue outline. 
+
+```{r}
+
+```
+
+3. Use `geom_histogram()` to create a histogram for `price`.
+
+```{r}
+
+```
+
+4. Use `geom_histogram()` to create a histogram for `carat`. Make the bars themselves be filled with cyan with a turquoise outline. Add a vertical bar at where you think the average might be.
+
+```{r}
+
+```
+
+5. Use `geom_point()` to create a scatter plot for `carat` and `depth`. Add the line of best fit, and make any aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+Question:
+  *Question here*
+
+Prediction:
+  *Prediction here*
+
+```{r}
+
+```
+
+Summary:
+  *Summary here*
+
+
+6. Create 2D histogram (regular or hexbin) for `y` and `table`.
+
+```{r}
+
+```
+Summary:
+  *Summary here*
+
+
+7. Take your visualizations from questions 5 and 6 and add information about the individual distributions to the margins (whichever way you prefer).
+
+```{r}
+
+```
+
+Do you think one of these two is better/more effective than the other? If so, which and why? If not, why not?
+
+*answer here*
+
+
+8. Use `stat_summary()` to show the mean `depth` for `color`. Represent the mean with a bar (note: *not* a vline), and include standard error *bars*. Make any aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+Question:
+  *Question here*
+
+Prediction:
+  *Prediction here*
+
+```{r}
+
+```
+
+Summary:
+  *Summary here*
+
+
+9. Use `stat_summary()` to show the mean `price` for `cut`. Represent the mean with a point, and include standard error *lines*. Make any aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+Summary:
+  *Summary here*
+
+
+10. Take your code from question 9 and modify it so that there is a longdash line connecting each of the points.
+
+```{r}
+
+```
+
+11. `geom_boxplot()` to create a boxplot for `depth` and `clarity`. Make the boxplots sienna with a salmon outline. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+What more can you say from this visualization than the one you made in question 8?
+
+*answer here*
+
+
+12. `geom_boxplot()` to create a boxplot for `price` and `cut`. Make the boxplots' color and outline (the *fill* and *color* arguments) depend on their `cut`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph (make sure the median line is visible).
+
+```{r}
+
+```
+
+What more can you say from this visualization than the one you made in question 9?
+
+*answer here*
+
+
+13. Use `geom_violin()` to create a violin plot for `carat` and `clarity`. Include a boxplot inside the violin. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+Summary:
+  *Summary here*
+
+
+14. Use `geom_violin()` to create a violin plot for `carat` and `color`. Include a point for the mean, and error bars around the mean. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+15. Use `geom_jitter()` to create a jitter plot for `price` and `cut`. Include a point for the mean and error lines around the mean. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+Question:
+  *Question here*
+
+Prediction:
+  *Prediction here*
+
+
+```{r}
+
+```
+
+Summary:
+  *Summary here*
+
+16. Take your visualization from question 14 and add on jittered points to show the whole distribution of data on top of the violins. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+17. Use `geom_jitter()` to create a strip chart for `z` and `clarity`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+18. Use `geom_jitter()` to create a jitter plot for `price` and `color`. Include a point for the mean and error lines around the mean. Map the color of the points to `cut`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+19. Use `geom_jitter()` to create a jitter plot for `price` and `color`. Include a point for the mean and error lines around the mean. Facet this graph by `cut`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+20. Do you think that the graph created in 18 or 19 is more effective? Explain why.
+
+
+*Answer here*
+
+21. Use `stat_summary_2d()` to make a raster plot for `clarity` (y), `cut` (x), and `price` (z). Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+Question:
+  *Question here*
+
+Prediction:
+  *Prediction here*
+
+```{r}
+
+```
+Summary:
+  *Summary here*
+
+
+22. Create a scatter plot for `price` and `carat`. Add a line of best fit. Facet by `cut`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+```{r}
+
+```
+
+
+
+23. Use `stat_summary_hex()` or `stat_summary_2d()` to create a raster plot for `carat` (y), `table` (x), and `price` (z). Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
+
+Question:
+  *Question here*
+
+Prediction:
+  *Prediction here*
+
+```{r}
+
+```
+
+Summary:
+  *Summary here*
+
+
+# Free Reign
+
+Pick any graph you created above and try to make the worst, most illegible, visualization you can. Use whatever aesthetic modifications you want, but do so within reason (e.g., don't just set `size = 100` or something). Write the question number from the original visualization you picked (e.g., "question 3").
+
+```{r}
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

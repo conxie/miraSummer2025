@@ -1,0 +1,406 @@
+# Using R Effectively
+
+Establish good habits early on. It is much harder to break routines later.
+
+## RStudio
+
+### Settings
+
+Settings tweaks to help force you into good habits:
+
+* "Restore .RData into workspace at startup" is <u>*unselected*</u>
+  
+* "Save workspace to .RData on exit" is set to <u>*Never*</u>
+  
+These prevents objects in your global environment from automatically reloading if R closes. 
+
+It is best practice to not feel attached at all to the stuff in your workspace. If you need something, rerun your code to get it! You cannot predict when things will go wrong...
+
+Things to do yourself:
+
+- Regularly restart R
+- Clear all content
+- Re-run your code scripts
+
+You can clear your workspace and output by using the brooms!
+
+* Upper right pane: click on environment tab, then click on the broom
+
+* Lower left pane: in console tab (at the top right), click on the broom too
+
+One other settings change to make is:
+
+* "Soft-wrap R source files" is *selected*
+
+## Functions
+
+>"To understand computations in R, two slogans are helpful:
+    Everything that exists is an object, and
+    Everything that happens is a function call."
+- John Chambers, Advanced R, p. 79.
+
+Functions -- variables containing pre-written code which have a verb name and are always followed by a set of parentheses. 
+
+**arguments** -- what goes inside the parentheses and gets the code applied to.
+
+```{r}
+typeof(x = myDF)
+```
+
+Finds the type of `myDF`
+
+This function has one argument, `x`, that is given the value "myDF"
+
+### Where Do Functions Come From? 
+
+A number of different sources! They are:
+
+* Available from base R
+
+* Defined by you (this is beyond the scope of this course)
+
+* Available from packages you import
+
+
+### Installing Packages
+
+To install packages:
+
+```{r}
+install.packages("package_name")
+```
+^ do 1x per machine
+
+Once a package is installed, you have to actually load it into your R session:
+
+```{r}
+library(package_name)
+```
+^ do 1x per work session
+
+## Markdown Syntax
+
+Basic markdown syntax:
+
+You can insert code chunks with the keyboard shortcut: ctrl+option+i on OSX or alt+i on Windows
+
+```{r chunk_name, [options]}
+
+## R code here
+
+```
+
+Chunk specific options include:
+
+* Figure height and width
+
+* Whether to **echo** (show) or **eval**uate (run) that code chunk in the final document
+
+* Whether to show **warnings** and **messages**
+
+You can see the full list of options here: yihui.name/knitr/options/
+
+Use `r ` for inline code.
+
+## Coding Best Practices
+
+### Develop a Naming Convention
+
+Develop a naming convention (both for your coding and file names).
+
+R object names must start with a letter, and can only contain letters, numbers, `_` and `.`. File names require the same, but can also use `-`. 
+
+Avoid using `.` for both and **never** use spaces!
+
+camelCase runs into some issues when using acronyms or singular letters. Generally, only camelCase or snake_case are recommended.
+
+Use names that are concise, unique, and meaningful, avoiding terms that will be commonly repeated. Also, develop a relatively consistent way of naming things for yourself. 
+For example:
+
+* x_df -- for dataframes
+  + Where "x" is refers to the type of data or your experiment
+
+* X_m -- for the mean of some data
+
+* X_sd -- for the SD of some data
+
+* X_se -- for the standard error of some data
+
+### Style and Syntax
+
+> "Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread."
+- Hadley Wickham
+
+tidyverse style guide: https://style.tidyverse.org/syntax.html outlines many style and syntax guidelines.
+
+#### Spacing
+
+Write your code to be legible
+
+```{r eval=FALSE}
+#1
+3*2/2*5/2
+
+((3 * 2) / 2) * 5 / 2
+
+#2
+x=2+4
+
+x = 2 + 4
+```
+
+Always put a space after a comma, never before, just like in regular English
+
+```{r eval=FALSE}
+# Good
+df[, 1]
+
+# Bad
+df[,1]
+df[ ,1]
+df[ , 1]
+```
+
+Do not put spaces inside or outside parentheses
+
+```{r eval=FALSE}
+# Good
+mean(x, na.rm = TRUE)
+
+# Bad
+mean (x, na.rm = TRUE)
+mean( x, na.rm = TRUE )
+```
+
+Most operators (`==`, `+`, `-`, `<-`, etc.) should always be surrounded by spaces
+
+```{r eval=FALSE}
+# Good
+x + (3 * 4)
+
+# Bad
+x+(3*4)
+```
+
+#### Avoid Long Lines
+
+Avoid writing code that takes up a lot of space horizontally. 
+You can use the keyboard shortcut cmd+i on OSX or ctrl+i on Windows to get R to automatically indent appropriately for you line-by-line!
+
+```{r eval=FALSE}
+# Good
+do_something_very_complicated(
+  something = "that",
+  requires = many,
+  arguments = "some of which may be long"
+)
+
+# Bad
+do_something_very_complicated("that", requires, many, arguments,
+                              "some of which may be long"
+                              )
+```
+
+#### Misc.
+
+* Use double quotes `"hello"`, not single quotes `'hello'`, for quoting text. The only exception is when the text already contains double quotes and no single quotes `"She said, 'hello.'"`.
+
+* Use `TRUE` and `FALSE` over `T` and `F`
+
+* Each line of a comment should begin with the comment symbol and a single space: 
+`# `
+
+* Index columns and subset rows by names or filtering, not numbers. Their order/position may change. Their name likely will not. 
+
+* Pass named arguments into functions, not place. 
+
+* DO NOT hardcode. Always softcode. It saves you from having to constantly update different sections of your code any time there is a change. 
+
+## Pipes
+
+One of the more powerful tools in R that you will use is the `%>%` (pipe) operator.
+
+RStudio Keyboard Shortcuts:
+
+* OSX: CMD + SHIFT + M
+* Else: CTRL + SHIFT + M
+
+**How Does a Pipe Work?**
+
+Consider the steps to making and eating a cake:
+
+* Have ingredients
+* Mix ingredients
+* Pour mixture into pan
+* Bake mixture
+* Let cool
+* Slice
+* Eat a piece
+
+One thing you might think to do is just go step by step:
+
+```{r}
+# Note: This is not *real* code. It will not run.
+
+mixture = mix(ingredients)
+thing_in_oven = pour(mixture)
+hot_baked_bake = bake(thing_in_oven)
+cooled_baked_cake = cool(hot_baked_bake)
+sliced_cake = slice(cooled_baked_cake)
+
+eat(sliced_cake, 1)
+```
+
+This creates a lot of unnecessary interim step variables.
+
+Expressed as a set of nested functions:
+
+```{r}
+# Note: This is not *real* code. It will not run.
+
+eat(slice(cool(bake(put(pour(mix(ingredients), into = baking_pan), into = oven), time = 30), duration = 20), pieces = 6, 1))
+```
+
+Nesting a dataframe inside a function is hard to read.
+
+Even if you were to apply your style and syntax guidelines here:
+
+```{r}
+# Note: This is not *real* code. It will not run.
+
+eat(
+  slice(
+    cool(
+      bake(
+        put(
+          pour(
+            mix(ingredients),
+            into = baking_pan),
+          into = oven),
+        time = 30),
+      duration = 20),
+    pieces = 6,
+    1)
+)
+```
+
+It is still difficult and unnatural to read. If you were to describe this process in words, you might say something like:
+
+>"I need to start by taking my ingredients, mix them together, pour the mixture into a baking pan, and then put that pan into the oven and bake for 30 minutes. Once that is done let it cool for 20 minutes, slice into 6 pieces, and eat one of them (or several, if you are me)!"
+
+Piping with `%>%` allows you to write the code in a form that would match how you actually think about this process:
+
+```{r}
+# Note: This is not *real* code. It will not run.
+
+ingredients %>% 
+  mix() %>% 
+  pour(into = baking_pan) %>% 
+  put(into = oven) %>% 
+  bake(time = 30) %>% 
+  cool(during = 20) %>%
+  slice(pieces = 6) %>% 
+  eat(1)
+```
+
+There are two mantras with pipes:
+
+* Think of a `%>%` to mean "and then"
+* "dataframe first, dataframe once"
+
+`%>%` takes the result/output of the thing on the left (or above) and *pipes* it through as input to the next function.
+
+`mix(ingredients)` is equivalent to `ingredients %>% mix()`
+
+### Do's and Dont's
+
+**<u>DO:</u>**
+
+* Apply all the same style/syntax guidelines
+  + Space before and after a `%>%`
+  + Each new step on its own line
+  + Indent each subsequent line in a chain
+  + Etc.
+
+**<u>DON'T:</u>**
+
+Use a pipe when...
+
+* More than one object needs to be manipulated. 
+
+* There are intermediate objects you need to use which could be given an informative name.
+
+## Data Importing and Exporting
+
+You need some ways to get your raw data into R and the products of your code out of R.
+
+### File Paths
+
+A file's path specifies where that file is located. When you download a file (e.g., **"dataset.csv"**), it likely would appear in your downloads folder.
+
+For mac: `/users/user_name/Downloads/dataset.csv`
+
+For windows: `C:\Users\user_name\Downloads\dataset.csv`
+
+(Replacing "user_name" with whatever the user name on your machine is)
+
+A file path is constructed by 2 parts: 
+
+1. the file location: `/users/user_name/Downloads/` or `C:\Users\user_name\Downloads\`
+2. the file name: `dataset.csv`
+
+
+### Importing
+
+Mostly will work with csv's and .RData files.
+
+#### csv Files
+
+Use the `read_csv()` to load a dataset into R. This function takes a file path as its argument.
+
+```{r}
+# On mac
+read_csv("/Users/user_name/Downloads/dataset.csv")
+
+# On windows
+read_csv("C:\Users\user_name\Downloads\dataset.csv")
+```
+
+If the output from `read_csv()` was not saved to a variable, it would just print it out in the console.
+
+You can also directly load files from websites by using the website as the file path.
+
+```{r}
+example_df = read_csv("https://raw.githubusercontent.com/psyc111/datasets/main/attractiveness.csv")
+```
+
+#### RData Files
+
+The other type of file you may want to import is an .RData file. These directly load R objects into your workspace. Instead of using `read_csv()`, you just use `load()` and pass it the file path to a .RData file!
+
+
+### Exporting
+
+You use `write_csv()` in the instances where you need to export your data:
+
+`write_csv(object_to_be_saved, file = "file_name.csv")`
+
+> Replace the X's below to save `mtcars` to a file called "mtcars.csv"
+
+```{r}
+write_csv(X, file = "X")
+```
+
+
+You can save R data object that you can easily load in to R using `save()`
+
+`save(objects_to_be_saved, file = "fil_name.RData")`
+
+> Replace the X's below to save `mtcars` to a file called "mtcars.RData"
+
+```{r}
+save(X, file = "X")
+```
+
+
+

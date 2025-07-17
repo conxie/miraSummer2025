@@ -1,0 +1,395 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+# Operators
+
+## 1. Arithmatic
+
+```{r}
+a = 3
+b = 6
+c = 18
+```
+
+1. 
+
+A. Find the sum of `a` and `b`
+```{r}
+
+(a + b)
+
+```
+
+
+B. Find the difference of `c` and `b`
+```{r}
+
+(c - b)
+
+```
+
+
+C. Find the product of `a` and `b`
+```{r}
+
+(a * b)
+
+```
+
+
+D. Find the quotient of `c` and `a`
+```{r}
+
+(c / a)
+
+```
+
+
+E. Exponentiate `a` to the power of `a`
+```{r}
+
+(a ^ a)
+
+```
+
+
+F. Find the reminder of `c` divided by `a`
+```{r}
+
+(c %% a)
+
+```
+
+G. Find the difference of the sum of `a` and `c` and the sum of `a` and `b`.
+```{r}
+
+(a + c) - (a + b)
+
+```
+
+H. Find the product of the difference of `c` and `b` and the sum of `a` and `b`
+```{r}
+
+(c - b) * (a + b)
+
+```
+
+I. Find the quotient of the sum of `c` and `c` and the product of `a` and `a`
+```{r}
+
+(c + c) / (a * a)
+
+```
+
+J. Using any combination arithmetic operators and all 3 of `a`, `b`, and `c`, get the value 9. 
+
+```{r}
+
+(c - b - a)
+
+```
+
+
+Now, do this using some other combination of arithmetic operators.
+
+```{r}
+
+(c - (a + b))
+
+```
+
+
+## 2. Logical
+
+2. Write a statement that evaluates to `TRUE` and another that evaluates to `FALSE` by using any combination of `a`, `b`, and/or `c` (using a variable more than once is okay!) and....
+
+A. 2 logical operators (For example, z | x & y):
+
+```{r}
+
+a | b & (c - b) 
+
+a & !b 
+
+```
+
+B. 3 logical operators (For example, z | x & !y):
+
+```{r}
+
+!(a + b) | a | b
+
+(a / (c + a)) & c & !b
+
+```
+
+C. 4 logical operators (For example, !z | !(x & y)):
+
+```{r}
+
+b | !(c + a) | !b
+
+(c / (a ^ (b - c))) & !a | !b
+
+```
+
+(For 2A:2C, there should be 2 expressions in each. One that evaluates to `TRUE`, another to `FALSE`)
+
+# 3. Variable Assignment
+
+A. Assign your favorite number to `my_fave_num`
+```{r}
+
+my_fav_num <- 7
+
+```
+
+B. Print out the value of the variable `my_fave_num`
+```{r}
+
+print(my_fav_num)
+
+```
+
+C. Assign a number you find unlucky to `my_unlucky_num`
+```{r}
+
+my_unlucky_num <- 3
+
+
+```
+
+D. Print out the value of the variable `my_unlucky_num`
+```{r}
+
+print(my_unlucky_num)
+
+```
+
+E. Find the sum of `my_fave_num` and `my_unlucky_num`
+
+```{r}
+
+my_fav_num + my_unlucky_num
+
+```
+
+F. Create the variable `my_nums` that contains the sum of `my_fave_num` and `my_unlucky_num`
+
+```{r}
+
+my_nums <- (my_fav_num + my_unlucky_num)
+
+```
+
+G. Create a variable to store the following types of data: numeric, character, logical. Name these variables `my_*` where the * is the data type.
+```{r}
+
+my_numeric <- 1
+my_character <- "Connie"
+my_logical <- TRUE
+
+```
+
+# 4. Vectors
+
+The Olympics has a lot of sports that people don't often watch. To try and make things a bit more lively, you decide to take the two most absurd sporting events and place 1 bet in each every day for a week. Whichever of the two sports you end up winning more money from, you'll place bets in for the following week.
+
+After the first week, you look over how things went:
+
+Here's how your bets on Rhythmic Gymnastics turned out:
+
+Monday you won $20
+Tuesday you lost $21
+Wednesday you lost $120
+Thursday you won $196
+Friday you won $240
+Saturday you won $140
+Sunday you lost $50
+
+Here's how your bets on Canoe Slalom turned out:
+
+Monday you lost $24
+Tuesday you won $47
+Wednesday you lost $350 (ouch)
+Thursday you won $100
+Friday you lost $50
+Saturday you won $10
+Sunday you lost $51
+
+
+A. To be able to use this data in R, you decide to create the variables `RGymnastics_earnings` and `CanoeSlalom_earnings`, to contain vectors with the amounts won/lost (how your bets turned out) for each sport.
+
+```{r}
+
+RGymnastics_earnings <- c(20, -21, -120, 196, 240, 140, -50)
+
+CanoeSlalom_earnings <- c(-24, 47, -350, 100, -50, 10, -51)
+
+```
+
+You want to know: 
+
+1. What was your total profit/loss per day?
+2. What is your net amount after all the bets?
+3. On which sport are your bets paying off more?
+
+**Answering these questions will require doing vector computations.**
+
+Now, consider the 3 questions.
+
+B. What was your total profit/loss per day?
+
+Save your total net earnings *per day* to `daily_total` and then print the results.
+
+```{r}
+
+daily_total <- (RGymnastics_earnings + CanoeSlalom_earnings)
+print(daily_total)
+
+```
+
+Now consider "What is your net amount *after all the bets*?"
+
+To answer this, you can make use of the `sum()` function, which calculates the sum of all elements of a vector. 
+
+C. First, save your net total from Rhythmic Gymnastics to `RGymnastics_total`
+
+```{r}
+
+RGymnastics_total <- sum(RGymnastics_earnings)
+print(RGymnastics_total)
+
+```
+
+D. Next, save your net total from Canoe Slalom to `CanoeSlalom_total`
+
+```{r}
+
+CanoeSlalom_total <- sum(CanoeSlalom_earnings)
+print(CanoeSlalom_total)
+
+```
+
+E. Finally, now having the totals from both sports, you can find and print your `week1_total`
+
+```{r}
+
+week1_total <- (RGymnastics_total + CanoeSlalom_total)
+print(week1_total)
+
+```
+
+Hey, alright now! To know which event to bet on next week, you have to answer the next question:
+
+F. On which sport are your bets paying off more?
+
+Use a comparison operator to see if the amount won from Rhythmic Gymnastics was more than from Canoe Slalom
+  
+```{r}
+
+RGymnastics_total > CanoeSlalom_total
+
+```
+
+G. From this, what do you conclude? Which sport should you bet on next week?
+
+> **I will bet on Rhythmic Gymnastics next week**
+
+After calming down from the excitement of coming out positive (honestly, wouldn't have thought that), you stop and think for a second. Just because you have a higher net amount from Rhythmic Gymnastics doesn't necessarily meant you should bet it more. Maybe you got lucky with one big bet but all the others were losers. If you were only going to place one more bet and wanted to have the best chance of winning *period*, are you confident it should be in Rhythmic Gymnastics? 
+
+You realize maybe you should check out which sport your bets won most frequently in. That is, for each day, which sport did you win more in?
+
+H. Use a comparison operator to see if the amount won from Rhythmic Gymnastics was more than from Canoe Slalom *on each day*:
+
+```{r}
+
+RGymnastics_earnings
+CanoeSlalom_earnings
+
+RGymnastics_earnings > CanoeSlalom_earnings
+
+```
+
+You want to find out about the *rate* of your bets winning more in Rhythmic Gymnastics. You remember that boolean `TRUE` and `FALSE` values actually equal 1 and 0 respectively! 
+
+I. Use `sum()` to find the total number of times your bets from Rhythmic Gymnastics won more, and then divide that by the total number of bets made.
+
+```{r}
+
+sum((RGymnastics_earnings > CanoeSlalom_earnings)) / 7
+
+RGymnastics_earnings > CanoeSlalom_earnings
+
+```
+
+You can feel pretty confident going in to next week!
+
+# 5. Indexing Vectors
+
+A. Index the net earnings from Canoe Slalom on Tuesday
+
+```{r}
+
+CanoeSlalom_earnings[2]
+CanoeSlalom_earnings
+
+```
+
+B. Index the net earnings from Rhythmic Gymnastics on Friday through Sunday
+
+```{r}
+
+RGymnastics_earnings[5:7]
+RGymnastics_earnings
+```
+
+C. Index your net earnings overall on Monday and Tuesday
+
+```{r}
+
+RGymnastics_earnings[1:2] + CanoeSlalom_earnings[1:2]
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 60
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 2.5
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement =  9.8
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+**I liked this assignment a lot! It made it more fun + easier to code when I had a storyline to follow**
+
+

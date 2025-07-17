@@ -1,0 +1,136 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# Modify the file path in the code below to properly load the "NFLScores2011.rda" file
+load("NFLScores2011.rda")
+```
+
+Okay, so putting back on your football analytics hat. You realized that while you did a lot of cool things with the data last time... you were mostly just subsetting and reorganizing it, barely scratching the surface of the type of questions you are able to answer!
+
+
+
+1. It is usually considered a treat to get to play a Monday night game at home. Use *two different ways* to find the *number of times* each team had a home game on Monday.
+
+```{r}
+
+```
+
+2. What about on Thursday?
+
+```{r}
+
+```
+
+3. Create a graph to visualize the pattern from question 1
+
+```{r}
+
+```
+
+Use `summarize()` to find...
+
+4. The average points scored by the home and away team
+
+```{r}
+
+```
+
+5. The average and standard deviation of the yards home teams had
+
+```{r}
+
+```
+
+6. The average of the ratio of points scored by the home team to the away team
+
+```{r}
+
+```
+
+7. The average *total* points scored on Thursday night games as well as a count of how many Thursday night games there were
+
+```{r}
+
+```
+
+8. The average points scored *by* each team when they were playing at home
+
+```{r}
+
+```
+
+9. Create a graph to visualize the data from #8
+
+```{r}
+
+```
+
+10. The average and standard deviation of the yards earned *by* each team when they were playing away from home
+
+```{r}
+
+```
+
+11. Create a graph to visualize the data from #10
+
+```{r}
+
+```
+
+12. The average and standard deviation of points scored, yards earned, and time outs taken, *by* each team when playing at home.
+
+```{r}
+
+```
+
+13. First convert `Week` and `Year` to factors, then find the average for all values containing numeric data (this should be completed in a single pipe chain).
+
+```{r}
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+
+
+
+

@@ -1,0 +1,465 @@
+# Color Theory
+
+Load Packages:
+```{r}
+library(patchwork) # Load package to combine graphs
+library(RColorBrewer) # Load package with color palettes
+library(colorspace) # Load package with color palettes
+library(viridis) # Load package with color palettes
+library(tidyverse) # Load tidyverse
+library(palmerpenguins) # Load penguins data
+```
+
+Set Theme:
+```{r}
+theme_set(theme_classic() + 
+            theme(plot.title = element_text(size = 18,
+                                face = "bold",
+                                hjust = 0.5),
+      plot.subtitle = element_text(size = 10, 
+                                   color = "grey50",
+                                   face = "bold",
+                                   hjust = 0.5,
+                                   margin = margin(b = 0.2, 
+                                                   unit = "inch")),
+      plot.tag = element_text(face = "bold"),
+      plot.caption = element_text(hjust = 0,
+                                  face = 'italic'),
+      axis.title.x = element_text(size = 16,
+                                  face = "bold",
+                                  margin = margin(t = 0.2, 
+                                                  unit = "inch")),
+      axis.title.y = element_text(size = 16,
+                                  face = "bold",
+                                  margin = margin(r = 0.2, 
+                                                  unit = "inch")),
+      axis.text = element_text(face = "bold",
+                               color = "black",
+                               size = 12)))
+```
+
+Color and design principles are often overlooked when considering how to make an effective visualization because they are subtle, but are very important!
+
+The following graphs will serve as examples used throughout:
+
+```{r}
+plot_bar = penguins %>%
+  ggplot(aes(y = body_mass_g, x = island,
+             fill = island)) +
+  stat_summary(fun = "mean", geom = "bar") +
+  scale_y_continuous(expand = c(0,0))
+
+plot_bar
+plot_jitter = penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  geom_jitter(height = 0, width = 0.2, 
+              size = 2, alpha = 0.5,
+              aes(color = island)) +
+    stat_summary(fun.data = "mean_se",
+               geom = "pointrange",
+               size = 0.5)
+
+plot_jitter
+plot_line = penguins %>%
+  ggplot(aes(y = body_mass_g, x = bill_depth_mm, color = bill_depth_mm)) +
+  stat_summary(fun = "mean", geom = "point", size = 2) +
+  stat_summary(fun = "mean", geom = "line", size = 1)
+
+plot_line
+plot_hex = penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = bill_depth_mm,
+             z = flipper_length_mm)) +
+  stat_summary_hex() +
+  labs(fill = "Flipper Length")
+
+plot_hex
+```
+
+*Note: these are not great visualizations, but will be useful to illustrate some different concepts.*
+
+Color choices should be made intentionally and purposefully.
+
+## HCL and Color Theory
+
+You can think of "color" as being composed of 3 parts.
+
+### Hue
+
+e.g., "Blue", "Red", "Yellow"
+- organized along a color wheel and defined by their angle
+- No inherent order
+
+### Chrominance (Chroma)
+
+Chroma = degree of purity or intensity of a color
+- range from a muted/grey to the fully vivid color
+- perceived to be ordered
+
+### Luminance
+
+Luminance = brightness of a color. 
+- ranges black to white. 
+- perceived to be ordered
+
+### Why Does This Matter?
+
+Color mappings should accurately and meaningfully characterize the data it is representing. Beyond *numerical* accuracy, you want differences to be maintained in a viewer's *perception* of those different colors.
+
+Perception of luminance is based on *relative* rather than *absolute* judgments.
+
+HCL color space itself is not even perceptually uniform!
+
+Color values that are *numerically* uniform may not be *perceptually* uniform.
+
+## Categorical 
+
+Color goal with categorical data:
+- Distinguish groups *without* an inherent order.
+
+Use a *qualitative* color scale
+- Perceptually distinct but equivalently different colors.
+
+To change the color scale and/or palette used in your visualization, you will use another `scale_*_*()` command.
+
+1st `*` - the aesthetic you have mapped, `fill` or `color`. 
+2nd `*` - the type of scale you want to use or modify. 
+
+For example, to manually set the HCL parameters of a color space, you would use `scale_*_hue()`. This function has 3 main arguments:
+
+* `h` = range of hues to use 
+  + (ranged from 0 - 360 -- default = (c(0,360) + 15))
+  + ex. `scale_*_hue(h = c(0,60))`
+* `l` = luminance 
+  + (lightness; 0-100 -- default = 65)
+  + ex. `scale_*_hue(l = 80)`
+* `c` = chroma 
+  + (intensity of color -- maximum value varies depending on combination of hue and luminance).
+  + ex. `scale_*_hue(c = 200)`
+
+`scale_*_manual()` to set colors yourself. The main argument here is `values`, which expects a vector of color names/codes to use.
+
+> Replace the X's below with a color you think would fit:
+
+```{r}
+plot_bar +
+  scale_fill_manual(values = c("cyan", "lightgreen", "X"))
+
+plot_jitter +
+  scale_color_manual(values = c("magenta", "X", 
+                                "lightskyblue"))
+```
+
+You can also specify which level of the mapped variable is associated with each specific color:
+
+> Replace the X's below to map the colors from above to specific levels, so the colors are in an order you think makes most sense.
+
+```{r}
+plot_bar +
+  scale_fill_manual(values = c("Torgersen" = "X",
+                               "Biscoe" = "X",
+                               "Dream" = "X"))
+plot_jitter +
+  scale_color_manual(values = c("Torgersen" = "X",
+                               "Biscoe" = "X",
+                               "Dream" = "X"))
+```
+
+Choose colors that will be intrinsically informative and intuitive.
+
+## Continuous 
+
+### Sequential
+
+Color goal with continuous data:
+
+- represent the *actual* data values. 
+- there **is** an ordering to the values. 
+
+Use a *sequential* color scale (or color *gradient*)
+- contains a sequence of colors which convey size and relative distance. 
+
+Use `scale_*_gradient()` - main arguments are a `low` and `high` value over which to define the gradient. 
+
+A sequential scale can be defined over a single hue: 
+
+> Run the first line of code to see the default gradient created with a single hue. Replace the X's below for the second to create a unique gradient over a single hue -- green. (hint: it can be useful to pick a single color and use words like "light", "dark", "medium", "pale" in front, or related colors like olive in this case)
+
+```{r}
+plot_line +
+  scale_color_gradient()
+
+plot_hex +
+  scale_fill_gradient(low = "X", high = "X")
+```
+
+or multiple hues:
+
+> Replace the X's below to create gradients using brown and red
+
+```{r}
+plot_line +
+  scale_color_gradient(low = "X", high = "X")
+
+plot_hex +
+  scale_fill_gradient(low = "X", high = "X")
+```
+
+A sequential color gradient should create the perception that values have a meaningful sequential order.
+
+`scale_*_gradientn()` to create a gradient over several colors. The argument `colors` takes a vector of colors over which to linearly create a gradient.
+
+```{r}
+plot_line +
+  scale_color_gradientn(colors = c("red", "orange", "yellow", 
+                                   "green", "blue"))
+plot_hex +
+  scale_fill_gradientn(colors = c("red", "brown", "yellow"))
+```
+
+
+### Divergent
+
+If you have data with a neutral point or true zero, you would use a *divergent* scale. 
+- Essentially two sequential scales appended to a single common point (0, the mean, etc.). 
+
+`scale_*_gradient2()` creates a divergent gradient. Specify a `mid` color in addition to `low` and `high`. 
+
+> Replace the X's below to create a red and yellow gradient with a grey middle.
+
+```{r}
+plot_hex +
+  scale_fill_gradient2(low = "X", mid = "X", high = "X")
+```
+
+## Pre-defined Color Scales
+
+R has a number of pre-defined color scales that can be used.
+
+### Built-in
+
+Base R comes with built in color scales.
+
+Each color scale can be used as a function that takes an argument `n` for the number of colors to sample from that color scale, and return those colors' hexcodes.
+
+> Uncomment one row at a time and replace n with different numbers.
+
+```{r}
+# rainbow(n)
+# heat.colors(n)
+# terrain.colors(n)
+# topo.colors(n)
+# cm.colors(n)
+```
+
+> Pass some base R color samples in as the value for the arguments below:
+
+```{r}
+plot_hex +
+    scale_fill_gradientn(colors = X)
+plot_jitter +
+  scale_color_manual(values = X)
+```
+
+### Brewer
+
+RColorBrewer contains great pre-defined color scales and palettes. All info contained in `brewer.pal.info`
+
+```{r}
+brewer.pal.info
+```
+
+Palettes are grouped into 3 distinct categories:
+
+1. Qualitative
+2. Sequential
+3. Divergent
+
+Quickly visualize all the palettes with `display.brewer.all()`
+
+```{r}
+display.brewer.all(colorblindFriendly = TRUE, type = "qual") 
+```
+
+```{r}
+display.brewer.all(colorblindFriendly = TRUE, type = "seq")
+```
+
+```{r}
+display.brewer.all(colorblindFriendly = TRUE, type = "div")
+```
+
+You can see the exact colors used for a given palette and number of colors using `display.brewer.pal()`.
+
+> Replace the X's below to examine a palette that has 3 "Blues", and then 6 "Blues"
+
+```{r}
+display.brewer.pal(n = X, name = 'X')
+display.brewer.pal(n = X, name = 'X')
+```
+
+The specific values of those colors can be identified with `brewer.pal()`.
+
+> Take your code from above and use `brewer.pal()` instead of `display.brewer.pal()`
+
+```{r}
+
+```
+
+`scale_*_brewer()` for categorical data and `scale_*_distiller()` for continuous. Just pass in the name of the specific `palette`.
+
+> Run the code below and examine the different graphs
+
+```{r}
+plot_hex +
+    scale_fill_distiller(palette = "GnBu")
+
+plot_line +
+  scale_color_distiller(palette = "RdPu")
+
+plot_jitter +
+  scale_color_brewer(palette = "Dark2")
+
+plot_bar +
+  scale_fill_brewer(palette = "Set2")
+```
+
+Since `brewer.pal()` gives a vector of color values from a specific palette, that can be used to set colors "manually".
+
+> Replace the X's below with a number of colors and name of a palette respectively.
+
+```{r}
+plot_hex +
+    scale_fill_gradientn(colors = brewer.pal(n = X, name = 'X'))
+plot_jitter +
+  scale_color_manual(values = brewer.pal(n = X, name = 'X'))
+```
+
+### Grey scale
+
+`scale_*_grey()` is used for categorical data. The scale can be selected automatically, or you can specify the `start` and `end` values which range from 0 (dark) to 1 (light).
+
+> Run the code below to see the default values:
+
+```{r eval=FALSE}
+plot_jitter + 
+  scale_color_grey()
+
+plot_bar + 
+  scale_fill_grey()
+```
+
+> Replace the X's below to try different ranges:
+
+```{r}
+plot_bar + 
+  scale_fill_grey(start = X, end = X)
+
+plot_bar + 
+  scale_fill_grey(start = X, end = X)
+```
+
+### Viridis
+
+`viridis` -- palettes interpretable under a variety of color vision types.
+
+`scale_*_viridis()` -- specific palette is set with the `option` argument, and can be applied to categorical data by using the `discrete` argument
+
+> In the code below, add `discrete = TRUE` where needed.
+
+```{r}
+plot_bar + 
+  scale_fill_viridis()
+
+plot_jitter + 
+  scale_color_viridis(option = "plasma")
+
+plot_line + 
+  scale_color_viridis(option = "inferno")
+
+plot_hex + 
+  scale_fill_viridis()
+```
+
+You can also generate specific color codes from these palettes
+
+```{r}
+# viridis(n)
+# magma(n)
+# inferno(n)
+# plasma(n)
+```
+
+### colorspace
+
+Info on all the palettes can be accessed with `hcl_palettes()`.
+
+```{r}
+hcl_palettes()
+```
+
+You can also `plot` them to actually see the palettes themselves.
+
+```{r}
+hcl_palettes(type = "Qualitative", plot = TRUE)
+hcl_palettes(type = "Sequential (single-hue)", plot = TRUE)
+hcl_palettes(type = "Sequential (multi-hue)", plot = TRUE)
+hcl_palettes(type = "Diverging", plot = TRUE)
+```
+
+You use these palettes similarly to `brewer.pal()`. Each scale has its own function, where you specify the `palette` and `n`umber of colors from it. That vector of colors can then be used in your ggplot code.
+
+> Replace the X's below with a number and one of the 3 palettes listed
+
+```{r}
+qualitative_hcl(n = 3, palette = "Harmonic")
+sequential_hcl(n = 3, palette = "SunsetDark")
+diverging_hcl(n = 3, palette = "Lisbon")
+
+plot_hex +
+    scale_fill_gradientn(colors = sequential_hcl(n = X, 
+                                                 palette = "X"))
+```
+
+Many colorspace palettes attempt to be identical to RColorBrewer or viridis ones.
+
+The code below compares a color palette from brewer and viridis to their colorspace counterpart:
+
+```{r}
+(plot_bar +
+    scale_fill_manual(values = brewer.pal(n = 3, name = 'BuGn')) +
+ ggtitle("brewer")) + (plot_bar +
+    scale_fill_manual(values = sequential_hcl(n = 3, palette = "BuGn")) +
+      ggtitle("colorspace"))
+(plot_hex +
+    scale_fill_viridis(option = "viridis") +
+    ggtitle("viridis")) + (plot_hex +
+    scale_fill_gradientn(colors = sequential_hcl(n = 12, 
+                                                 palette = "viridis")) +
+      ggtitle("colorspace"))
+```
+
+Whenever there is a similar palette available from another package, probably go with that one.
+
+`demoplot()` -- Makes quick demo plot to test palette
+
+> Replace the X's below to test different palettes with different numbers of colors
+
+```{r}
+demoplot(sequential_hcl(n = X, palette = "X"), "bar")
+demoplot(sequential_hcl(n = X, palette = "X"), "scatter")
+demoplot(sequential_hcl(n = X, palette = "X"), "lines")
+```
+
+Since it just needs a vector of colors, you can use `demoplot()` with colors generated from other packages (e.g., `viridis(n)`, `brewer.pal()`, etc.)
+
+> Use functions covered earlier to create color values that can by used by demoplot. Use at least one from Base R, viridis, and brewer.
+
+```{r}
+
+```
+
+
+## References
+
+Stauffer, R., Mayr, G. J., Dabernig, M., & Zeileis, A. (2015). Somewhere over the rainbow: How to make effective use of colors in meteorological visualizations. *Bulletin of the American Meteorological Society, 96*(2), 203-216.

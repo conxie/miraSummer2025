@@ -1,0 +1,301 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+1. Create your own graph using the `penguins` data and pick 2 of the following to put on your x and y axes: `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, or `body_mass_g` (Note: This should *NOT* be code directly from the lecture or notes).
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = bill_depth_mm))
+
+```
+
+
+2. Update your graph above by telling ggplot you want it to render a point for each observation in the penguins dataset. Describe the pattern/relationship you see under the code chunk.
+
+```{r}
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm)) +
+  geom_point()
+
+```
+
+*Summary: There appear to be two separate chunks of data points. Both chunks have a positive linar correlation; as body mass increases, so does bill depth. Chunk A has a range of around 10mm bill depth to 17.5mm bill depth. Chunk B has a range of around 15mm bill depth to 25mm bill depth. While Chunk B has larger bill depth, in general, it's individual points has less body mass than individual data points in Chunk A.*
+
+
+
+3. Think about what patterns you notice in the visualization you created, and test whether `sex` or `species` might explain those patterns. Write a prediction before the code chunk, test that prediction, and then describe what you see.
+
+*If sex or species explains the patterns in the graph, there should be clear differences in the clusters' colors. All points in each cluster would have unique color.*
+
+*If the patterns can not be explained by sex or species, then the colors should be mixed with one another.*
+
+```{r}
+
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm,
+                       color = sex)) +
+  geom_point()
+
+
+
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm,
+                       color = species)) +
+  geom_point()
+
+```
+
+*Testing whether sex accounted for the patterns revealed that both clusters held colors corresponding to both sexes. Sex did not account for the different clusters. In both clusters, males tended to have higher body mass and larger bill depth.*
+
+*Testing for whether species accounted for the patterns revealed that Gentoos made up one cluster while Adelie and Chinstrap made up the other. Gentoo tended to have both higher body masses and a smaller bill depth. Chinstrap and Adelie penguins had similar body mass and bill depth.* 
+
+4. Add in the line of best fit with `geom_smooth()`, making sure that your code produces a single line that is fit to ***all*** your data.
+
+```{r}
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm)) +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_point(aes(color = species))
+
+```
+
+5. Use R code to create or recreate the graphs below
+
+A. Make a visualization to investigate the relationship between bill length (on the y-axis) and bill depth (on the x-axis)
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = bill_length_mm,
+              x = bill_depth_mm)) + 
+  geom_point()
+
+
+```
+
+B. https://drive.google.com/uc?export=view&id=11Ig5Xq3z8CZwn0ElYmw4GNX0MK09Ja5E
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = bill_length_mm,
+             x = bill_depth_mm,
+             color = species)) +
+  geom_point()
+
+```
+
+C. Make a visualization to investigate the relationship between body mass and flipper length. In doing so, make the geometric figure rendering the observations appear in blue. 
+```{r}
+
+penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = flipper_length_mm)) + 
+  geom_point(color = "blue")
+
+```
+
+D. https://drive.google.com/uc?export=view&id=1hcgTg902GsvRNS2SnZxiv-rtFXRpCiAR
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = flipper_length_mm)) + 
+  geom_point(color = "blue") + 
+  geom_smooth(method = "lm", se = FALSE, color = "black")
+
+```
+
+E. https://drive.google.com/uc?export=view&id=1RIuM6lRIoMdriUrtBySONizo22L9R_Xm
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = flipper_length_mm)) + 
+  geom_point(aes(color = flipper_length_mm > 210)) + 
+  geom_smooth(method = "lm", se = FALSE, color = "black")
+
+```
+
+6. 
+Part 1: Take the code you produced for Exercise 4 and... 
+
+1. Change the shape to be solid color squares with color mapped to the `species` variable. 
+
+```{r}
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm)) +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_point(aes(color = species),
+                 shape = 15)
+
+```
+
+2. Change the shape to be hollow squares with color mapped to the `species` variable. 
+
+```{r}
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm)) +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_point(aes(color = species),
+                 shape = 0)
+
+```
+
+3. Change the shape to be filled squares with color mapped to the `species` variable and fill set with a color of your choosing.
+
+```{r}
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm)) +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_point(aes(color = species),
+             shape = 22,
+             fill = "green")
+
+```
+
+Part 2: Use R code to recreate the graphs below
+
+A. https://drive.google.com/uc?export=view&id=18OVNxbNI2MhaNTVO7W5FN_Yn-2hkxKgG
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) + 
+  geom_point(aes(color = species,
+                 shape = island)) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue")
+
+```
+
+B. https://drive.google.com/uc?export=view&id=1giVWU7yzuD5XND7LE_Ub88tKohtswbtk
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = bill_depth_mm,
+             color = species)) +
+  geom_point(shape = 4,
+             alpha = 1)
+
+```
+
+C. https://drive.google.com/uc?export=view&id=1QpR3ph7oCJiLJXRE_hio_agWOQwgNWNd
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = bill_length_mm,
+             x = body_mass_g)) + 
+  geom_point(color = "red",
+             shape = 18) + 
+  geom_point(color = "green",
+             shape = 23)
+
+```
+
+*Bonus Challenge (ungraded):* See if you can think of a way to use what we demonstrated above to take your code from the Exercise 6, part 2, question 3, and give each observation a thicker outside border. The result should look like the graph below:
+
+https://drive.google.com/uc?export=view&id=1N_9zRcePm8j1ffGGoZgJzUP6XbqisHIR
+
+```{r}
+
+penguins %>%
+  ggplot(aes(y = bill_length_mm,
+             x = body_mass_g)) + 
+  geom_point(color = "green",
+             shape = 18,
+             size = 5) +
+  geom_point(color = "red",
+             size = 2,
+             shape = 18)  
+
+```
+
+7. Update the main graph you have been working with throughout the exercises to make the observations more translucent. First try doing so by mapping it to `island`. Then, create another graph where you set the alpha yourself. Try to pick the value you think makes the graph most legible and effective.
+
+```{r}
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm,
+                       color = island)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") 
+
+
+
+penguins %>%
+  ggplot(mapping = aes(y = body_mass_g,
+                       x = bill_depth_mm)) +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_point(aes(color = island),
+             alpha = .5)
+
+```
+
+Feedback 
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 100
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 1.4
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 8.3
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+***I liked the addition of an ungraded challenge! It made it so I could test what I knew so far without any pressure***
+

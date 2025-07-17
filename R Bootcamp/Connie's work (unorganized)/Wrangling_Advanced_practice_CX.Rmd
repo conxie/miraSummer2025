@@ -1,0 +1,218 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+```{r}
+library(tidyverse)
+```
+
+You will use the built in `iris` dataset in this assignment.
+
+Select all that columns that.. 
+
+1. start with "Sepal"
+
+```{r}
+view(iris)
+
+iris %>%
+  select(starts_with("Sepal"))
+
+```
+
+2. start with "Petal"
+
+```{r}
+
+iris %>%
+  select(starts_with("Petal"))
+
+```
+
+3. end with "Length"
+
+```{r}
+
+iris %>%
+  select(ends_with("Length"))
+
+```
+
+4. end with "Width"
+
+```{r}
+
+iris %>%
+  select(ends_with("Width"))
+
+```
+
+5. have a period in their name
+
+```{r}
+
+iris %>%
+  select(contains("."))
+
+```
+
+6. have punctuation in their name
+
+```{r}
+
+iris %>%
+  select(matches("[[:punct:]]"))
+
+```
+
+7. is the last one in the df
+
+```{r}
+
+iris %>%
+  select(last_col())
+
+```
+
+8. contain numeric data
+
+```{r}
+
+iris %>%
+  select(where(is.numeric))
+
+```
+
+9. contain factor data
+
+```{r}
+
+iris %>%
+  select(where(is.factor))
+
+```
+
+10. contain data that is not numeric
+
+```{r}
+
+iris %>%
+  select(!where(is.numeric))
+
+```
+
+Filter to return the observations that have a value...
+
+11. Starting with "Sepal" and are greater than 4
+
+```{r}
+
+iris %>%
+ filter(if_any(starts_with("Sepal"), ~ . > 4))
+
+```
+
+12. Ending with "width" and lower than 0.5
+
+```{r}
+
+iris %>%
+  filter(if_any(ends_with("width"), ~ . < 0.5))
+
+```
+
+13. Starting with "Sepal" or ending with "Length" and are less than 2
+
+```{r}
+
+iris %>%
+  filter(if_any(starts_with("Sepal") | (ends_with("Length")), ~ . < 2))
+
+```
+
+14. Containing numeric data, starting with "Petal", and are greater than or equal to 6
+
+```{r}
+
+iris %>%
+  filter(if_any(where(is.numeric))) %>%
+  filter(if_any(starts_with("Petal"), ~ . >= 6))
+
+```
+
+Across the variables...
+
+15. Log transform those that end with "Length"
+
+```{r}
+
+iris %>%
+  mutate(across(ends_with("Length"), log))
+
+```
+
+16. Round those that are numeric
+
+```{r}
+
+iris %>%
+  mutate(across(where(is.numeric), round))
+
+```
+
+17. Scale those that start with "Petal" and are numeric
+
+```{r}
+
+iris %>%
+  mutate(across((starts_with("Petal")) & where(is.numeric), scale))
+
+```
+
+18. Take your code from 17 but modify it to return only the observations with values less than -1.4
+
+```{r}
+
+iris %>%
+  mutate(across((starts_with("Petal")) & where(is.numeric), scale)) %>%
+  filter(if_all(starts_with("Petal"), ~ . < (-1.4)))
+
+```
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 80
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 3.4
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 8.3
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+**d(･∀･○)**
+

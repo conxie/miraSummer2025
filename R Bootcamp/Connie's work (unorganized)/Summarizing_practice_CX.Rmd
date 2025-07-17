@@ -1,0 +1,246 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# Modify the file path in the code below to properly load the "NFLScores2011.rda" file
+load("C:/Users/Connie/Downloads/NFLScores2011.rda")
+```
+
+Okay, so putting back on your football analytics hat. You realized that while you did a lot of cool things with the data last time... you were mostly just subsetting and reorganizing it, barely scratching the surface of the type of questions you are able to answer!
+
+
+
+1. It is usually considered a treat to get to play a Monday night game at home. Use *two different ways* to find the *number of times* each team had a home game on Monday.
+
+```{r}
+view(NFLScores2011)
+  
+NFLScores2011 %>%
+  select(c(HomeTeam, Day)) %>%
+  filter(Day == "Mon") %>%
+  pull(HomeTeam) %>%
+  table()
+
+NFLScores2011 %>%
+  count(Day,HomeTeam) %>%
+  filter(Day == "Mon") 
+
+```
+
+2. What about on Thursday?
+
+```{r}
+
+NFLScores2011 %>%
+  select(c(HomeTeam, Day)) %>%
+  filter(Day == "Thu") %>%
+  pull(HomeTeam) %>%
+  table()
+
+NFLScores2011 %>%
+  count(Day, HomeTeam) %>%
+  filter(Day == "Thu")
+
+```
+
+3. Create a graph to visualize the pattern from question 1
+
+```{r}
+
+NFLScores2011 %>%
+  ggplot(aes(y = HomeTeam,
+             x = Day)) + 
+  geom_jitter(aes(color = Day),
+              height = 0, 
+              width = 0.2) + 
+  scale_color_brewer(palette = "Set2") + 
+  labs(title = "Amount of Home Games Teams Had Across Weekdays",
+    x = "Days",
+    y = "Home Teams") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+```
+
+Use `summarize()` to find...
+
+4. The average points scored by the home and away team
+
+```{r}
+
+NFLScores2011 %>%
+ summarize(home_avg = mean(HomeScore),
+            away_avg = mean(AwayScore))
+```
+
+
+5. The average and standard deviation of the yards home teams had
+
+```{r}
+
+NFLScores2011 %>%
+  drop_na() %>%
+  group_by(HomeTeam) %>%
+  summarize(across(starts_with("HomeYards"),
+                   list(mean = mean, sd = sd)))
+
+```
+
+6. The average of the ratio of points scored by the home team to the away team
+
+```{r}
+NFLScores2011 %>%
+  summarize(home_avg = mean(HomeScore),
+            away_avg = mean(AwayScore),
+            ratio = mean(home_avg / away_avg))
+```
+
+
+7. The average *total* points scored on Thursday night games as well as a count of how many Thursday night games there were
+
+```{r}
+
+NFLScores2011 %>%
+  filter(Day == "Thu") %>%
+  summarize(Thu_total_pts = mean(HomeScore + AwayScore),
+            num_Thu_games = n())
+
+```
+
+8. The average points scored *by* each team when they were playing at home
+
+```{r}
+
+NFLScores2011 %>%
+  drop_na() %>%
+  group_by(HomeTeam) %>%
+  summarize(home_avg = mean(HomeScore))
+
+```
+
+9. Create a graph to visualize the data from #8
+
+```{r}
+
+NFLScores2011 %>%
+  ggplot(aes(y = HomeTeam,
+             x = HomeScore)) +
+  geom_boxplot() + 
+  coord_cartesian(xlim = c(0, 65)) + 
+  scale_x_continuous(breaks = seq(from = 0, to = 65, by = 5),
+                     labels = seq(from = 0, to = 65, by = 5),
+                     expand = c(0, 0)) + 
+  theme(axis.ticks = element_line(color = "black"),
+        plot.title = element_text(hjust = 0.5)) + 
+  labs(title = "Average Points scored by Home Teams",
+    x = "Home Score",
+    y = "Home Teams")
+
+
+```
+
+10. The average and standard deviation of the yards earned *by* each team when they were playing away from home
+
+```{r}
+
+NFLScores2011 %>%
+  group_by(AwayTeam) %>%
+  summarize(across(starts_with("AwayYards"),
+                   list(mean = mean, sd = sd)))
+
+```
+
+11. Create a graph to visualize the data from #10
+
+
+```{r}
+
+NFLScores2011 %>%
+  group_by(AwayTeam) %>%
+  summarize(across(starts_with("AwayYards"),
+                   list(mean = mean, sd = sd))) %>%
+  ggplot(aes(y = AwayYards_mean,
+             x = AwayTeam)) +
+  geom_bar(stat = "identity", fill = "blue", alpha = 0.6) +
+  geom_errorbar(aes(ymin = AwayYards_mean - AwayYards_sd,
+                    ymax = AwayYards_mean + AwayYards_sd),
+                width = 0.25, color = "black") +
+  labs(title = "Mean and Standard Deviation of AwayYards for Each AwayTeam",
+       x = "Away Team",
+       y = "AwayYards") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  coord_cartesian(ylim = c(0, 600)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 600, by = 20),
+                     labels = seq(from = 0, to = 600, by = 20),
+                     expand = c(0, 0))
+  
+```
+
+12. The average and standard deviation of points scored, yards earned, and time outs taken, *by* each team when playing at home.
+
+```{r}
+
+NFLScores2011 %>%
+  drop_na() %>%
+  group_by(HomeTeam) %>%
+  summarize(across(starts_with("Home"),
+                   list(mean = mean, sd = sd)))
+
+
+```
+
+13. First convert `Week` and `Year` to factors, then find the average for all values containing numeric data (this should be completed in a single pipe chain).
+
+```{r}
+
+NFLScores2011 %>%
+  mutate(across(c("Week", "Year"), as.factor),
+         across(where(is.numeric),
+                list(mean = mean)))
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 200
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 9.2
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 8.1
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+
+
+
+

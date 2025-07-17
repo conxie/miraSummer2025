@@ -1,0 +1,243 @@
+---
+title: "Customization Practice Problem Set"
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(patchwork)
+# Modify the file path in the code below to properly load the "diamonds_sample.RData" file
+load("diamonds_sample.RData") 
+```
+
+You are going to continue working with the `diamonds_sample` dataset.
+
+`diamonds_sample` contains the following variables: 
+
+* `price` - price in USD
+* `carat` - weight of the diamond
+* `cut` - quality of the cut
+* `color` - diamond color
+* `clarity` - a measurement of how clear the diamond is
+* `x` - length in mm
+* `y` - width in mm
+* `z` - depth in mm
+* `depth` - total depth percentage
+* `table` - width of top of diamond relative to widest point
+
+
+1. Use the `diamonds_sample` dataframe and create your own `base_graph`. Make sure to have a continuous variable on the y-axis and a categorical variable on the x-axis.
+
+```{r}
+
+```
+
+2. Take your code from #1 and add on code that will modify your `base_graph` so the scale is more appropriate and represents the full range.
+
+```{r}
+
+```
+
+3. Take your code from #2 and add on code that will modify your `base_graph` so the padding is gone.
+
+```{r}
+
+```
+
+4. Take your code from #3 and add on code that will modify your `base_graph` so that it has more appropriate titles for the y- and x-axis. Additionally, add an appropriate title, subtitle (if needed), figure tag, and caption.
+
+```{r}
+
+```
+
+5. Create a new variable called `modified_graph` that takes your `base_graph` and saves all modifications you've added in questions 2:4. Then, try applying some different themes to your `modified_graph`.
+
+```{r}
+
+```
+
+6. Add some code to `modified_graph` to modify your visualization's titles and increase their legibility.
+
+```{r}
+
+```
+
+7. Take your code from #6 and add on code that will modify your visualization's caption and increase its legibility.
+
+```{r}
+
+```
+
+8. Take your code from #7 and add on code that will modify your visualization's axes titles and increase their legibility.
+
+```{r}
+
+```
+
+9. Take your code from #8 and add on code that will modify your visualization's axes values and increase their legibility.
+
+```{r}
+
+```
+
+10. Create a new variable called `a` that takes your `modified_graph` and saves all the new modifications you've added in questions 6:9.
+
+```{r}
+
+```
+
+
+11. Take the code from questions 3, 11, 21, and 23, on your "geoms_practice" assignment, change any instances of `price` to `log10(price)`, and make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph. 
+
+Then, repeat steps similar to those for 1:9 above to customize these visualizations. Save these new visualizations to `b`, `c`, `d`, and `e`, and call each variable to create/print the new graphs.
+
+  B. 
+  
+```{r}
+
+```
+
+  C.
+  
+```{r}
+
+```
+
+  D.
+
+```{r}
+
+```
+
+  E.
+
+```{r}
+
+```
+
+
+12. Use `patchwork` to create plots with the following layouts:
+
+
+  A. 
+  
+|----|
+| d  |
+|----|
+| c  |
+|----|
+
+```{r}
+
+```
+
+  B. 
+
+|----|----|
+| b  |  e |
+|----|----|
+
+
+```{r}
+
+```
+
+
+  C. 
+
+|----|----|
+| a  |  b |
+|----|----|
+| c  |  d |
+|----|----|
+
+```{r}
+
+```
+
+  D. 
+
+|----|----|
+|    e    |
+|----|----|
+| c  |  d |
+|----|----|
+
+```{r}
+
+```
+
+  E.
+  
+|----|----|
+| a  |    |
+|----|  c |
+| b  |    |
+|----|----|
+
+```{r}
+
+```
+
+  F. 
+  
+|----|----|
+| e  |  a |
+|----|----|
+|    b    |
+|----|----|
+
+```{r}
+
+```
+
+  G.
+
+|----|----|
+|    |  e |
+| d  |----|
+|    |  b |
+|----|----|
+
+```{r}
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

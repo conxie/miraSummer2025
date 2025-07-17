@@ -1,0 +1,335 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# Modify the file path in the code below to properly load the "NFLScores2021.RData" file
+load("NFLScores2021.RData")
+```
+
+You realized after playing around a bit with your football analytics hat that maybe being a pokemon researcher was not the most lucrative opportunity for you to be implementing your R skills... After impressing with all your work so far, you were able to land a job doing some real NFL analytics! You have been given the data from the entire 2021 NFL season in the `NFL` df. 
+
+`NFL` contains the following variables:
+
+* `game_id` - an arbitrary ID for the game
+* `week` - what week of the season the game was played
+* `day` - what day of the week the game was played
+* `home_team` - who the home team was
+* `away_team` - who the away team was
+* `home_score` - the score of the home team
+* `away_score` - the score of the away team
+* `season_type` - whether this was the regular season or playoffs
+* `roof` - what type of stadium the game was played in
+* `surface` - the surface type the stadium had
+* `start_time` - what time the game started
+* `div_game` - whether this was a game with two teams from the same division
+
+Your job is to use this data to try and learn all you can to give your new team the edge in the upcoming season, and have been given a stack of tasks to complete to help with this. For each question, you must find the answers numerically AND create a graph to visualize it.
+
+*NOTE:* 
+> You may sometimes have to compute new variables or modify existing ones to answer these questions!
+> There may be more than one way to answer a question. Part of this exercise is thinking about what kind of evidence you can look for with the data you have, and what would help make a compelling answer.
+
+### Part 1:
+
+1. Does the playing surface impact points scored by the away team?
+
+  A. What are some reasons why this might be true?
+
+    - 
+  
+  B. What are some reasons this might not be true?
+
+    - 
+
+  C. What is your prediction?
+
+    -
+    
+  D. Investigate
+
+  
+```{r}
+
+
+```
+  
+  E. Summarize
+
+    - 
+    
+  F. Overall conclusion and rationale
+
+    -     
+
+
+2. Is there a home field advantage?
+
+  A. What are some reasons why there might be?
+
+    - 
+  
+  B. What are some reasons why there might not be?
+
+    - 
+
+  C. What is your prediction?
+
+    -
+    
+  D. Investigate
+
+  
+```{r}
+
+
+```
+  
+  E. Summarize
+
+    - 
+    
+  F. Overall conclusion and rationale
+
+    - 
+
+3. How does the number of points scored per game compare from the first half of the **REGULAR SEASON** to the second half of the **REGULAR SEASON**?
+
+  A. What is your prediction?
+
+    - 
+  
+  B. What are some reasons why this might be true?
+
+    - 
+
+  C. What are some reasons this might not be true?
+
+    -
+    
+  D. Investigate
+
+  
+```{r}
+
+
+```
+  
+  E. Summarize
+
+    - 
+
+  F. Conclusion
+
+    - 
+    
+  G. Now, instead of comparing the first half of the **REGULAR SEASON** to the second half, compare across the entire **REGULAR SEASON** week by week.
+
+  
+```{r}
+
+
+```
+
+  H. Is the pattern/relationship consistent with the one above? If not, in what way is it different?
+
+    - 
+    
+  I. Overall conclusion and rationale
+
+    - 
+
+
+4. Does the average difference between the winning score and the losing score (the score differential) increase or decrease as you get farther into the season? 
+  (*hint:* you may find the `abs()` function useful here)
+
+  A. What are some reasons why this might be true?
+
+    - 
+  
+  B. What are some reasons this might not be true?
+
+    - 
+
+  C. What is your prediction?
+
+    -
+    
+  D. Investigate
+
+  
+```{r}
+
+
+```
+  
+  E. Summarize
+
+    - 
+    
+  F. Now, use an alternative type of visualization to investigate
+
+  
+```{r}
+
+```
+
+  G. Is the pattern/relationship the same as above? If not, in what way is it different?
+
+    - 
+    
+  H. Overall conclusion and rationale
+
+    - 
+
+5. Come up with your own question you are interested in exploring with this data.
+
+  A. What is the question?
+
+    - 
+
+  B. What is your prediction?
+
+    - 
+  
+  C. What are some reasons why this might be true?
+
+    - 
+
+  D. What are some reasons this might not be true?
+
+    -
+    
+  E. Investigate
+
+  
+```{r}
+
+```
+  
+  F. Summarize
+
+    - 
+    
+  G. Overall conclusion and rationale
+
+    - 
+
+6. Come up with another question you are interested in exploring with this data.
+
+  A. What is the question?
+
+    - 
+
+  B. What is your prediction?
+
+    - 
+  
+  C. What are some reasons why this might be true?
+
+    - 
+
+  D. What are some reasons this might not be true?
+
+    -
+    
+  E. Investigate
+
+  
+```{r}
+
+```
+  
+  F. Summarize
+
+    - 
+    
+  G. Overall conclusion and rationale
+
+    - 
+    
+### Part 2:
+
+Answer the following without using visualizations:
+
+1. How many games did each team win?
+
+```{r}
+
+```
+
+2. Did home or away teams win more?
+
+```{r}
+
+```
+
+    - Answer here
+
+3. Which team scored the most points on average at home? Away?
+
+```{r}
+
+```
+
+    - Answer here
+
+4. Which team had the highest average *winning* point differential (the difference between the winning score and the losing score)?
+
+```{r}
+
+```
+
+    - Answer here
+
+5. Did the day the game was played impact the total points scored?
+
+```{r}
+
+```
+
+    - Answer here
+
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+
+
+

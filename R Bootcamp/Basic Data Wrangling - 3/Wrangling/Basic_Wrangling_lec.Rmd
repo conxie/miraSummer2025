@@ -1,0 +1,468 @@
+# Basic Wrangling
+
+```{r}
+library(tidyverse) # Load tidyverse packages
+library(palmerpenguins) # Load Data
+load(url("https://github.com/Psyc193L/Psyc193L.github.io/blob/main/data/mtcars2.RData?raw=true")) # Load example data
+```
+
+Data wrangling -- clean and prepare it for whatever task you have. 
+
+Wrangling function names are all verbs.
+
+## Arrange
+
+`arrange()` orders the rows of a data frame by the values of selected columns.
+
+```{r eval=FALSE}
+mtcars2 %>%
+  arrange(wt)
+```
+
+For descending order, wrap variable names in `desc()` within `arrange()`.
+
+## Rename
+
+`rename()` - renames columns.
+
+```{r}
+df %>%
+  rename("new_column_name" = "old_column_name")
+```
+
+> Replace the X's to rename the abbreviated columns in `mtcars2`
+
+```{r}
+mtcars2 %>%
+  rename("X" = "wt", 
+         "horse_power" = "X",
+         "X" = "cyl", 
+         "displacement" = "X") %>%
+  head()
+```
+
+### Saving Changes
+
+> Check the changes made above
+
+```{r}
+mtcars2 %>%
+  head()
+```
+
+Saving over an object is a permanent change. First verify code works, then save.
+
+```{r}
+
+
+```
+
+If you need to use the object in its current state again or make significant changes to it, create a new object.
+
+## Relocate
+
+`relocate()` reorders columns in your dataframe by specifying which column(s) you want to move, and what they should come *.before* or *.after*.
+
+> fill in the code below to move `wt` after `model`
+
+```{r}
+mtcars2 %>%
+  relocate(X, .after = X)
+```
+
+
+Can move multiple columns
+
+> fill in the code below to move `disp` and `wt` after `model`
+
+```{r eval=FALSE}
+mtcars2 %>%
+  relocate(c(X, X), .X = X)
+```
+
+
+## Select
+
+**subset** your data (cutting it to show only subsets of it).
+
+`select()` -- selects and returns only specified columns.
+
+`select(c(columns_of_interest))`
+
+> Complete the code below to return only the `cyl` and `gear` columns
+
+```{r eval=FALSE}
+mtcars2 %>%
+  select(c(X, X))
+```
+
+
+You can use `:` to return all the values in a range of *columns*
+
+> Complete the code below to return the `cyl` column, `hp` column, and all columns in between the two
+
+```{r eval=FALSE}
+mtcars2 %>%
+  select(c())
+```
+
+
+*get rid of columns* you do **NOT** want by negating with `!`
+
+> Complete the code below to *get rid of* the `cyl` and `gear` columns (select *NOT* `cyl` and `gear`)
+
+```{r eval=FALSE}
+mtcars2 %>%
+  select(c())
+```
+
+
+Select shortcut to move a variable to the front of your df:
+
+```{r}
+mtcars2 %>%
+  select(wt, everything())
+```
+
+## Filter
+
+`filter()` -- returns rows that meet specified condition(s).
+
+
+> Complete the code below so that only rows where `gear` has a value of `4` are returned
+
+```{r eval=FALSE}
+mtcars2 %>%
+  filter(X == X)
+```
+
+
+Any evaluative operator can be used in the conditions:
+
+> Complete the code below to return only rows that have a `disp` value greater than 300
+
+```{r eval=FALSE}
+mtcars2 %>%
+  filter()
+```
+
+
+Tests can be text strings as well
+
+> Complete the code below so that only rows for the "Lotus Europa" `model` of car are returned
+
+```{r eval=FALSE}
+mtcars2 %>%
+  filter()
+```
+
+
+Multiple conditions can be strung together using logical operators:
+
+> Complete the code below to return only rows where `cyl` does NOT have a value of 4 OR `hp` is less than 100
+
+```{r eval=FALSE}
+mtcars2 %>%
+  filter()
+```
+
+
+Be mindful about the order of operations and using parentheses to make sure the conditions are evaluated as you intended. For example:
+
+`filter(cyl == 4 | hp < 200 & gear == 5)` would be evaluated as:
+
+`filter(cyl == 4 | (hp < 200 & gear == 5))`
+
+which is different than:
+
+`filter((cyl == 4 | hp < 200) & gear == 5)`
+
+### %in%
+
+The `%in%` operator checks to see if the value of one variable is in a vector of possible values.
+
+> Complete the code that would result in the illustration below
+
+```{r eval=FALSE}
+mtcars2 %>%
+  filter()
+```
+
+
+### Pattern Matching
+
+To filter based on whether a value *contains* a certain string, use `grepl()`:
+
+`grepl(pattern_to_search_for, where_to_search)`
+
+> Complete the code below to return rows where "Porsche" is contained in the value for `model`
+
+```{r}
+mtcars2 %>%
+  filter(grepl("X", X))
+```
+
+## Indexing
+
+Two functions to help index within a pipe chain
+
+### pull()
+
+`pull()` will extract a variable from a df (like using `$` to index)
+
+> Use `pull()` to index the `cyl` variable from `mtcars`
+
+```{r}
+
+```
+
+The result is a vector, which allows it to be piped to other functions.
+
+> First, use select to select the `cyl` column and then pipe that to `mean()`. Below that, use `pull()` to index `cyl` and then pipe that to `mean()`
+
+```{r}
+mtcars2
+
+mtcars2
+```
+
+### pluck()
+
+`pluck()` allows you to index elements from an object.
+
+After indexing the `cyl` column, like above, if you wanted to get the 4th element from that vector:
+
+```{r}
+mtcars2 %>%
+  pull(cyl) %>%
+  pluck(4)
+```
+
+## Unique Entries
+
+`distinct()` -- gives the unique values of a variable
+
+> Complete the code to return all the unique values of the `cyl` variable
+
+```{r}
+mtcars2 %>%
+  X(X)
+```
+
+`n_distinct()` -- gives the *number* of unique values, takes a vector as input
+
+> below, first `pull()` to isolate the `cyl` variable, and then pipe that to `n_distinct()` to find the *number* of unique values
+
+```{r}
+
+```
+
+
+## Adding Variables
+
+To add new variables to your dataframe, you use the `mutate()` function.
+
+`mutate("new_col_name" = content_for_that_column)`
+
+For example:
+
+```{r wt}
+mtcars2 %>%
+  mutate(wt_lbs = wt * 1000)
+```
+
+1. All new variables must be the same length as the existing columns in the dataframe
+2. The R expression must return a vector
+
+Multiple new columns can be created simultaneously
+
+> Below, create a new column `cost_per_mile` that gives the cost per mile (hint: use `price_of_gas` and the `mpg` column), and another new column called `wt_lbs` that contains the car's actual weight in lbs instead of weight in 1000 lbs.
+
+```{r}
+price_of_gas = 6.25
+
+mtcars2 %>%
+  mutate(X = X / X,
+         X = X * X)
+```
+
+### Conditional Values
+
+You may want a variable to have a value based on some different conditions. `case_when()` can be extremely useful when creating new variables!
+
+> Fill in the blanks in the code below to create a new variable called `fuel_efficiency` which has the value of "Poor" when `mpg` is less than or equal to 19, "Average" when `mpg` is greater than or equal to 20 and less than or equal to 25, and "Great" in all other instances.
+
+```{r}
+mtcars2 %>%
+  mutate(fuel_efficiency = case_when(
+    mpg <= X ~ "Poor",
+    X >= 20 & mpg <= X ~ "X",
+    TRUE ~ "Great"
+  ))
+```
+
+`ifelse()` can be used in simple instances
+
+> Complete the code below to create a new column titled `power` that has the value "High" if `hp` is greater than or equal to 200, and "Low" otherwise.
+
+```{r}
+mtcars2 %>%
+  mutate(power = ifelse(X >= X, "High", "X"))
+```
+
+### Position
+
+You can specify what existing column you want the new column to appear `.before` or `.after`.
+
+> Complete the code below such that mutate will create this new column `.after` `mpg`
+
+```{r}
+price_of_gas = 6.25
+
+mtcars2 %>%
+  mutate(cost_per_mile = price_of_gas / mpg, X = "X")
+```
+
+### NAs
+
+`NA` values can cause major issues. For example:
+
+```{r}
+4 + NA + 2
+
+mean(c(4,5,3,NA))
+```
+
+Any time you have `NA` as part of your computation, the results are `NA`. 
+
+3 good ways to deal with this:
+
+`na.omit()` -- will remove *all* NAs. 
+
+`drop_na()` - will remove an entire row of data if it has an `NA` value for *specific* column(s) that you select.
+
+```{r}
+c(4, 5, 3, NA) %>%
+  na.omit() %>% 
+  mean()
+
+mean(c(4,5,3,NA), na.rm = TRUE)
+```
+
+```{r}
+ex_df = data.frame(A = c(NA, 1, 4), 
+           B = c(1, NA, 4), 
+           C = c(1,4,5))
+ex_df
+
+ex_df %>%
+  na.omit()
+
+ex_df %>%
+  drop_na()
+
+ex_df %>%
+  drop_na(A)
+```
+
+## Modifying Existing Variables
+
+`mutate()` can also be used to modify existing variables
+
+```{r}
+mtcars2 %>%
+  mutate(wt = wt * 1000)
+```
+
+
+### Change Variable Types
+
+You can change data type by using the `as.*` function. The one exception is that when changing something to a *factor*, you should use `factor()`
+
+> Complete the code below to turn `mpg` into `character` data and `cyl` into a `factor`
+
+```{r}
+mtcars2 %>%
+  mutate(X = as.X(mpg),
+         cyl = X(X)) %>%
+  glimpse()
+```
+
+### Factors
+
+#### Factor Conversion
+
+Consider the following:
+
+```{r}
+data.frame(test = factor(c("0", "1")))
+```
+
+Say you want to change this data from a factor to numeric:
+
+```{r}
+data.frame(test = factor(c("0", "1"))) %>% 
+  mutate(test = as.numeric(test))
+```
+
+
+Always double check that your code is doing what you intend it to, especially when converting to and from a *factor*!
+
+#### Reorder Levels
+
+You may at times want to change what that order is, most often in visualizations. Consider the following:
+
+```{r}
+mtcars2 %>%
+  mutate(cyl = factor(cyl)) %>%
+  ggplot(aes(x = cyl, fill = cyl)) +
+    geom_bar(position = "identity")
+```
+
+`fct_infreq()` -- reorders the levels of a factor **in** their **freq**uency of occurrence (with highest frequency first).
+
+```{r}
+mtcars2 %>%
+  mutate(cyl = factor(cyl) %>%
+           fct_infreq()) %>%
+  ggplot(aes(x = cyl, fill = cyl)) +
+    geom_bar(position = "identity")
+```
+
+`fct_rev()`--  for "**rev**erse **freq**uency" (lowest frequency first)
+
+```{r}
+mtcars2 %>%
+  mutate(cyl = factor(cyl) %>%
+           fct_infreq() %>%
+           fct_rev()) %>%
+  ggplot(aes(x = cyl, fill = cyl)) +
+    geom_bar(position = "identity")
+```
+
+*Note: You still need to first order the bars in their frequency, then reverse.*
+
+Most of the time you will visualize the relationship or comparison between two more more variables, like in the graph below:
+
+```{r warning = FALSE}
+mtcars2 %>%
+  mutate(cyl = factor(cyl)) %>%
+  ggplot(aes(y = mpg, x = cyl)) +
+  stat_summary(fun.data = "mean_se", geom = "pointrange")
+```
+
+`fct_reorder()` -- order levels of a factor by their relationship with another variable
+* Must specify:
+  + the factor to reorder 
+  + other variable you wish to reorder the levels by
+
+```{r warning = FALSE}
+mtcars2 %>%
+  mutate(cyl = factor(cyl)) %>%
+  ggplot(aes(y = mpg, x = fct_reorder(cyl, mpg))) +
+  stat_summary(fun.data = "mean_se", geom = "pointrange")
+```
+
+## Extras
+
+* [Factors cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/factors.pdf)

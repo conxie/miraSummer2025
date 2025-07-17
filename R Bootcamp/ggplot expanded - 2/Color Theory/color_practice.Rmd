@@ -1,0 +1,260 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(palmerpenguins)
+library(patchwork)
+library(RColorBrewer)
+library(colorspace)
+library(viridis)
+library(tidyverse)
+# Modify the file path in the code below to properly load the "diamonds_sample.RData" file
+load("diamonds_sample.RData") 
+```
+
+They say that diamonds are a person's best friend, so why stop using the `diamonds_sample` dataset now?! 
+
+As a reminder:
+
+`diamonds_sample` contains the following variables: 
+
+* `price` - price in USD
+* `carat` - weight of the diamond
+* `cut` - quality of the cut
+* `color` - diamond color
+* `clarity` - a measurement of how clear the diamond is
+* `x` - length in mm
+* `y` - width in mm
+* `z` - depth in mm
+* `depth` - total depth percentage
+* `table` - width of top of diamond relative to widest point
+
+You will be working with the code you wrote in the *Geoms Practice Problems* assignment. From that assignment, save the visualization from...
+
+- problem 8 to `plot_bar` (first mapping the `color` variable to fill aesthetic)
+- problem 15 to `plot_jitter` (first adding the width argument to `geom_jitter` and set it equal to 0.2, then mapping the `cut` variable to the color aesthetic)
+- problem 23 to `plot_raster`
+
+*NOTE: You do NOT have to use ONLY colorblind friendly color schemes/palettes for this exercise.*
+
+Save your graphs below:
+
+```{r}
+plot_bar =
+  
+plot_jitter = 
+  
+plot_raster = 
+```
+
+
+1. Using a manually specified scale (scale_*_manual/gradient)...
+
+  A. Choose 7 colors that you think are *equally distinct* and use them for the colors in `plot_bar`
+  
+```{r}
+
+```
+  
+  B. Choose 5 colors that you think are *in the same hue range* and use them for the colors in `plot_jitter`
+  
+```{r}
+
+```
+  
+  C. Create a gradient for `plot_raster` using *one hue*
+  
+```{r}
+
+```
+  
+  D. Create a gradient for `plot_raster` using *two hues* that you feel are *perceptually distinct*
+  
+```{r}
+
+```
+  
+  E. Create a gradient for `plot_raster` using *at least 4 hues*
+
+```{r}
+
+```
+
+2. Using scale_*_brewer/distiller...
+
+  A. Set the colors of `plot_bar` to your *least* favorite and *most* favorite brewer palettes of the appropriate type (hint: for this exercise, consider `color` not to be ordered)
+
+least:
+
+```{r}
+
+```
+
+most:
+
+```{r}
+
+```
+
+
+  B. Set the colors of `plot_jitter` to your *least* favorite and *most* favorite brewer palettes of the appropriate type (hint: think about whether your data is ordered)
+  
+least:
+
+```{r}
+
+```
+
+most:
+
+```{r}
+
+```
+
+  C. Set the colors of `plot_raster` to your NEXT *least* and *most* favorite brewer palettes of the appropriate type
+  
+least:
+
+```{r}
+
+```
+
+most:
+
+```{r}
+
+```
+
+3. Using scale_*_manual/gradientn...
+
+  A. Set the colors of `plot_bar` to an appropriate brewer palette that you have yet to use
+  
+```{r}
+
+```
+
+
+  B. Set the colors of `plot_jitter` to an appropriate brewer palette that you have yet to use
+  
+```{r}
+
+```
+
+  C. Set the colors of `plot_raster` to an appropriate brewer palette that you have yet to use
+  
+```{r}
+
+```
+
+
+4. Using `plot_bar` and `plot_jitter`...
+
+  A. Color them with the default grey scale
+  
+bar:  
+
+```{r}
+
+```
+
+jitter:
+
+```{r}
+
+```
+
+
+  B. Color them with a grey scale that is *high* luminance
+  
+bar:  
+
+```{r}
+
+```
+
+jitter:
+
+```{r}
+
+```
+
+  C. Color them with a grey scale that is *low* luminance
+
+bar:  
+
+```{r}
+
+```
+
+jitter:
+
+```{r}
+
+```
+
+5. There is not a built in function to create a continuous grey scale. However, think about how you could create one of your own for `plot_raster`
+
+```{r}
+
+```
+
+6. Use a different virids scales with scale_*_viridis to color the following graphs:
+
+  A. `plot_bar`
+  
+```{r}
+
+```
+
+  B. `plot_jitter`
+  
+```{r}
+
+```
+
+  C. `plot_raster`
+  
+```{r}
+
+```
+  
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

@@ -1,0 +1,407 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(patchwork)
+library(RColorBrewer)
+library(colorspace)
+library(viridis)
+library(tidyverse)
+# Modify the file path in the code below to properly load the files
+load("pokemon.RData")
+load("pokemon_starters.RData")
+```
+
+# Instructions
+
+Today, you are going to be working with a dataset containing information about pokemon. In case you are not familiar with pokemon, here is some quick background info from the official website (https://www.pokemon.com/us/parents-guide/ -- it says "parents guide," but I guess also substitute Gen Z):
+
+> "Pokémon are creatures of all shapes and sizes who live in the wild or alongside their human partners (called “Trainers”). During their adventures, Pokémon grow and become more experienced and even, on occasion, evolve into stronger Pokémon. Hundreds of known Pokémon inhabit the Pokémon universe, with untold numbers waiting to be discovered!"
+
+In the video game you play as a pokemon trainer. Trainers battle and catch wild pokemon to assemble a team. They then battle against other trainers' pokemon teams. When your pokemon wins a battle, it gains experience points. Every time your pokemon gets to a certain amount of experience points, they get to level up and become more powerful (most pokemon start at level 1, and the number goes up as they get stronger, a big number means a big and powerful pokemon). When they reach a high enough level, some pokemon will even "evolve", transforming into a completely different pokemon! 
+
+In addition to their level, every pokemon has characteristics ("stats") like health points (how many hits they can take in a battle), attack (how hard they hit in battle), and speed (how good they are at not getting hit). When a pokemon levels up, these stats all increase. 
+
+Every pokemon also has a primary type, (e.g., some are 'fire-type' which includes fire breathing creatures, 'water-type' which has swimming creatures, 'bug-type' which is exactly what it sounds like). At the beginning of each pokemon game, you get to choose one of three pokemon to start your team. This is your 'starter.' The three options for your starter are *always* between a fire, water, or grass primary type pokemon.
+
+Now you are all caught up! In the `pokemon` dataframe, each observation contains information about a specific pokemon. It has the following information:
+
+* `PokedexID` - ID number
+* `Name` - Name
+* `Type1` - Primary type
+* `Type2` - Secondary type (if they have one)
+* `Total` - The sum of all their stat points
+* `HealthPoints` - How much health they have
+* `Attack` - Attack score
+* `Defense` - Defense score
+* `SpAtk` - Special Attack score
+* `SpDef` - Special Defense score
+* `Speed` - Speed Score
+* `Generation` - What generation of pokemon they came from (each game has a "generation" consisting of several hundred pokemon)
+* `Legendary` - Whether or not the pokemon is Legendary, which are a special type of very rare and powerful pokemon
+* `capture_rate` - How easy or hard it is to capture that pokemon
+* `height_m` - The pokemon's height in meters
+
+Additionally, the `pokemon_starters` dataset contains all the same information, but only for the starter pokemon (and their evolutions) across the different games.
+
+In this assignment, you are going to become a pokemon researcher! You are going to use this data and create visualizations to answer different questions about pokemon! (kinda sounds like data science... must be a coincidence)
+
+This is where you are going to put all of your visualization skills to the test! The questions and tasks below will not give you direct instructions, as previous assignments have. You are going to use your judgment, considering the best practices and guidelines covered, and produce the best visualizations you can to answer the questions.
+
+# Part 1:
+
+First thing's first, you have to figure out which starter pokemon type you want to recommend people choose between the fire, grass, or water primary type starter pokemon! Use the `pokemon_starters` df for the following questions. 
+
+Make sure that in your visualizations below the pokemon primary Types have intuitive / appropriate colors (e.g., fire = red), and other aesthetics where appropriate, to make it easy to see the differences between groups.
+
+### 1. To help make your decision, maybe it makes sense to first investigate how the Total stats varies across the different starter primary types.
+
+*Prediction:*
+  Prediction here
+
+
+```{r}
+
+```
+
+*Summary:*
+  Summary here
+
+
+If you feel like this answers your question, explain what your recommendation is and how you came to that conclusion based on your investigation. If not, go on:
+
+### 2. If you do not feel like you have a good answer you can be confident in, try to explore the data by asking other questions you think would be helpful to know. 
+
+  - Show all of the visualizations you created while investigating different questions. 
+  - Write summary statements for each of them
+  
+```{r}
+
+```
+  
+  
+  
+  
+When you feel like you can make an informed recommendation, write that below and explain your rationale behind that decision.
+
+*Answer:*
+  Answer here
+
+
+
+### 3. Not to throw a wrench in your plan or anything... but after hearing your recommendation, imagine someone goes, "Is that true for ALL generations? Do you even know what game I'm playing and asking help for?!" 
+
+Shoot, they may be right....
+
+Explore whether your recommendation, based on whatever rationale you used, holds true across generations. You may use more than one visualization while investigating (separately OR creating graphs for different subsets in the same visualization). If so, write summaries for each below (identifying which visualization the summary corresponds to). When you have come to a conclusion about whether or not it does, write that and explain your rationale.
+
+```{r}
+
+```
+
+*Summary:*
+  Summary here
+
+
+*Answer:*
+  Answer here
+
+
+# Part 2:
+
+Woohoo! You just successfully got your first satisfied customer as a pokemon researcher! Before you can kick back and soak in your accomplishment, you notice a stack of papers on your desk full of requests of other questions for you to answer... One of the down sides of working in data science and industry is that you will very often have to answer the questions that other people want you to. Sometimes they may be good, interesting, and well reasoned. Other times, however... 
+
+Below will hopefully be a mix. Going forward, use the `pokemon` df, *NOT* the `pokemon_starters` df. There will be a series of questions and/or directions. Where it is labeled, provide a prediction before running the code, briefly summarize the visualization(s), and provide an answer to the question with an explanation for your conclusion.
+
+
+### 1. "I have a hypothesis that a pokemon's Defense and Speed are related. Could you look into that for me?"
+
+  A. What are some reasons why this might be true?
+    
+    *replace this with your answer*
+  
+  B. What are some reasons this might not be true?
+    
+    *replace this with your answer*
+
+  C. What is your prediction?
+    
+    *replace this with your answer*
+    
+  D. Investigate
+  
+```{r}
+
+```
+  
+  E. Summarize
+    
+    *replace this with your answer*
+    
+  F. Now, use an alternative type of visualization to investigate the same question
+  
+```{r}
+
+```
+
+  G. Is the pattern/relationship the same as above? If not, in what way is it different?
+    
+    *replace this with your answer*
+    
+  H. Overall conclusion and rationale
+    
+    *replace this with your answer*
+    
+
+### 2. "I have a hypothesis that a pokemon's Special Attack and Speed are related. Could you look into that for me?"
+
+  A. What are some reasons why this might be true?
+    
+    *replace this with your answer*
+  
+  B. What are some reasons this might not be true?
+    
+    *replace this with your answer*
+
+  C. What is your prediction?
+    
+    *replace this with your answer*
+    
+  D. Investigate
+  
+```{r}
+
+```
+  
+  E. Summarize
+    
+    *replace this with your answer*
+    
+  F. Conclusion and rationale
+    
+    *replace this with your answer*
+
+
+### 3. "Hey thanks for the recommendation for which starter to choose. Mine is already really strong! I'm curious about what other types of pokemon I should target for my team. I want my team to have the highest *Attack* possible. No one will stand a chance!"
+
+  A. Could you look into how strong in *Attack* the different primary *Type* are on average (with a **point**), including how variable those scores might be (with a **range**)?
+
+```{r}
+
+```
+
+  Summary:
+    
+    *replace this with your answer*
+
+  Conclusion and rationale:
+    
+    *replace this with your answer*
+
+> "Holy cow.... uh, wow okay that's interesting. Oh, maybe there just aren't that many of some pokemon types. Do you think that could explain this?"
+
+  B. Now I'm curious about the distribution of pokemon types. How many of each different pokemon type there are? What primary type is there most and least of? Does this change across generations?
+
+```{r}
+
+```
+
+  Summary:
+    
+    *replace this with your answer*
+
+  Conclusion and rationale:
+    
+    *replace this with your answer*
+
+### 4. "I have this dumb idea that pokemon might get taller across generations. I know, just humor me." 
+
+  A. What are some reasons why this might be true?
+    
+    *replace this with your answer*
+  
+  B. What are some reasons this might not be true?
+    
+    *replace this with your answer*
+
+  C. What is your prediction?
+    
+    *replace this with your answer*
+    
+  D. Investigate
+  
+```{r}
+
+```
+  
+  E. Summarize
+    
+    *replace this with your answer*
+    
+  F. Now, use an alternative type of visualization to investigate the same question
+  
+```{r}
+
+```
+
+  G. Is the pattern/relationship the same as above? If not, in what way is it different?
+    
+    *replace this with your answer*
+    
+  H. Overall conclusion and rationale
+    
+    *replace this with your answer*
+
+# Part 3:
+
+Sometimes, you are fortunate enough to get to investigate your OWN questions and ideas! Think of two questions or things you are curious about, or something you can visualize, using the data at your disposal. 
+
+If you have no ideas at all, here are a couple to either get you thinking or that you can just use:
+
+- Are legendary pokemon harder to catch?
+- Are taller pokemon harder to catch?
+- Do either of the above vary across generations? 
+- Does the number of legendary pokemon change across generations?
+
+(Note: You CAN take the average of a logical variable since `TRUE` and `FALSE` correspond to 1 and 0!)
+
+1. *Write your question here.*
+
+
+  A. What is your prediction?
+    
+    *replace this with your answer*
+
+  B. What are some reasons why this might be true?
+    
+    *replace this with your answer*
+  
+  C. What are some reasons this might not be true?
+    
+    *replace this with your answer*
+    
+  D. Investigate
+  
+```{r}
+
+```
+  
+  E. Summarize
+    
+    *replace this with your answer*
+    
+  F. Conclusion and rationale
+    
+    *replace this with your answer*
+
+
+2. *Write your question here.*
+
+  A. What is your prediction?
+    
+    *replace this with your answer*
+
+  B. What are some reasons why this might be true?
+    
+    *replace this with your answer*
+  
+  C. What are some reasons this might not be true?
+    
+    *replace this with your answer*
+    
+  D. Investigate
+  
+```{r}
+
+```
+  
+  E. Summarize
+    
+    *replace this with your answer*
+    
+  F. Conclusion and rationale
+    
+    *replace this with your answer*
+
+
+
+# Part 4:
+
+Recreate the following visualizations:
+
+https://drive.google.com/uc?export=view&id=1A5KszqsxRXpI2KbJHAEoFvMTXjYFp1ym
+
+```{r}
+
+```
+
+https://drive.google.com/uc?export=view&id=1NmG7S1ujgC7xfZ5PV4CT-Z8qwcEc9vsn
+
+```{r}
+
+```
+
+https://drive.google.com/uc?export=view&id=1UvlUJ_fsYUKsKdPv8A2y0txg9_mR7ZTO
+
+```{r}
+
+```
+
+https://drive.google.com/uc?export=view&id=1s1hdjhqGdulVDVUDF89LhnoIGtneOeH4
+
+```{r}
+
+```
+
+https://drive.google.com/uc?export=view&id=1g9lLPN0X0go2NLRFAPxURhMM2byYLsm2
+
+```{r}
+
+```
+
+https://drive.google.com/uc?export=view&id=1T91pzhpwndhSyfSeeoI3ts8Zg5kyo1gA
+
+```{r}
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

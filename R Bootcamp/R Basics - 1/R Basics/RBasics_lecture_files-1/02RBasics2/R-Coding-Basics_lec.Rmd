@@ -1,0 +1,291 @@
+# R Coding Basics
+
+Okay so what is R?
+
+## Operators
+
+### Arithmetic Operators
+
+R is a programming language used for statistical modeling, data analysis, and visualization. At it's most basic, it's a calculator which uses **operators** to perform arithmetic operations:
+
+- `+`  -- Addition
+- `-`  -- Subtraction
+- `*`  -- Multiplication
+- `/`  -- Division
+- `^`  -- Exponentiate (raise to the power of)
+- `%%` -- Modulus (find the remainder of *X* divided by *Y*)
+
+
+```{r simple arithmetic, strip.white=TRUE}
+2 + 2
+
+6 / 2
+
+3^2
+
+10 %% 4
+
+3^2/2*5/2
+```
+
+*comparison* operators return `TRUE` or `FALSE` values (aka booleans):
+
+- `<` less than, `>` greater than
+- `<=` less than or equal to, `>=` greater than or equal to
+- `==` exactly equal to
+
+> Look at some simple test expressions to see how they evaluate:
+
+```{r comparison examples}
+6 > 4
+
+(2+4) < (8+8)
+
+2.5 <= 2.5
+```
+
+
+*logical* operators also return `TRUE` or `FALSE` values (aka booleans):
+
+- `&` and
+- `|` or
+- `!` not
+- `%in%` Checks whether an element is in an object
+
+> Look at some more simple test expressions to see how they evaluate:
+
+```{r logical tests}
+TRUE & FALSE
+
+TRUE | FALSE
+
+!FALSE
+```
+
+`TRUE` also = 1, and `FALSE` also = 0.
+
+```{r logical arithmatic}
+TRUE < FALSE
+
+TRUE + TRUE
+
+TRUE + FALSE 
+```
+
+**Note: You must use ALL CAPS (when you spell the logical's name)**
+
+
+## Variable Assignment
+
+In R, you assign a value to a variable with an assignment operator: `=` or `<-`. e.g.,:
+
+`x = 4`
+
+`x <- 4`
+
+Think of `=` and `<-` to mean "gets".
+
+To reference or access the information stored in a variable, you "call" (type in the code) the variable's name:
+
+```{r objects}
+x <- 4
+x
+
+x+2
+
+x + x
+
+y <- x + 4
+y
+
+z <- "Hello world"
+z
+```
+
+R is very specific and finicky.
+
+```{r eval=F}
+myVar = 4
+myvar
+```
+
+## Variable/Data modes (types)
+
+R classifies all the data it works with into different *types* or storage *modes*, which can be organized into different categories:
+
+A. Continuous
+
+1. Numeric -- Whole numbers or decimals
+  + Integers (**int**) - whole numbers
+  + Double-precision (**dbl**) - real numbers (floating point numerical values)
+
+B. Discrete
+
+1. Character (**chr**) - a string of characters/text (can use " or ')
+2. Logical (**lgl**) - a logical `TRUE` or `FALSE`
+3. Factor (**fct**) - factors, which R uses to represent categorical variables with fixed possible values of discrete data.
+
+You can check the type of some data by using the `typeof()` function (more about functions later!).
+
+> use `typeof()` to check the types of `y` and `z`
+
+```{r}
+y
+
+typeof()
+
+z
+
+
+```
+
+		
+## Global environment		
+
+Global environment contains all saved objects. 
+`ls()` to print what's in your global environment.
+
+```{r}
+ls()
+```
+
+You can remove objects from your environment with the `rm()` command. 
+
+> remove `x` with `rm()` and then check your work space with `ls()`
+
+```{r}
+rm()
+
+
+```
+
+`rm(list=ls())` to clear entire workspace
+
+## Data Objects
+
+### Vectors
+
+**Vectors** are a series of elements. Each item in a vector is an element.
+
+You initiate a vector with `c()`
+
+> Create a vector with 4 different numbers and save it to the variable `myVector`. Then print out `myVector`
+
+```{r}
+
+myVector <- 
+
+
+```
+
+Arithmetic and logical operations can be performed on a vector:
+
+```{r} 
+myVector * 2
+
+myVector > 4
+```
+
+Observe the output here. What do you notice?
+
+```{r}
+c(1, "hello")
+```
+
+
+#### Indexing Vectors
+
+indexing, with brackets, lets you target/pull specific elements out of an object.
+
+> Index the 2nd element of `myVector`
+
+```{r}
+myVector[]
+```
+
+### Dataframes
+
+You can think of a data frame like an excel spreadsheet: a series of equal length vectors, where each vector is treated as a column and elements of those vectors are the rows.
+
+```{r dataframes}
+data.frame()
+
+# Column name in quotes, values as vectors
+data.frame("Exam" = c(1:4), 
+           "Score" = c(88,90,77,98)) 
+
+# When only one value is specified, it will be repeated. 
+data.frame("Exam" = c(1:4), 
+           "Score" = c(88,90,77,98), 
+           "Student" = c("Dave")) 
+
+# If two, it will cycle between the two.
+data.frame("Exam" = c(1:4), 
+           "Score" = c(88,90,77,98), 
+           "Student" = c("Dave", "Ally")) 
+```
+
+#### Indexing dfs
+
+```{r indexing DF}
+df <- data.frame("Exam" = c(1:4), 
+                "Score" = c(88,90,77,98), 
+                "Student" = c("Dave", "Ally", "Tyreek", "Kassi"))
+df
+
+  # Below are a few ways to index different parts of a df. 
+
+# [column] (single value only selects columns)
+# Select the second row of our df
+df[]
+
+# [row,column] to select a single element using numbers 
+# Select the value in the second row of the first column 
+df[]
+
+# Leave one value blank to select all
+# Select the value of the first row of all columns
+df[]
+# Select the value of the first column of all rows
+df[]
+```
+
+Use `$` to index column by name:
+
+> Use the `$` to index the `Exam` column from `df`
+
+```{r}
+
+```
+
+Note the difference between these two.
+
+Check with `typeof()`
+
+```{r}
+df[2]
+typeof(df[2])
+
+mean(df[2])
+
+df$Score
+typeof(df$Score)
+
+mean(df$Score)
+```
+
+You can further index the output from when you index with the `$`
+
+> first use the `$` to index the `Student` column, then use brackets to index the name of the 2nd student.
+
+```{r}
+
+```
+
+Instead of using the `$` to index by name, you can also use double brackets
+
+```{r}
+
+```
+
+This may be familiar if you have knowledge of other coding languages, but is a little more verbose.

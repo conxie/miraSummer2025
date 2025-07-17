@@ -1,0 +1,252 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+1. Define a variable called `confidence` that has *your* rating from 1-10 about how good you feel about control flow.
+
+```{r}
+
+confidence <- 8.2
+
+```
+
+2. Write an if statement that will print out the phrase "You are in good shape!" if `confidence` is greater than or equal to 6.
+
+```{r}
+
+if(confidence >= 6) {
+  print("You are in good shape!")
+}
+
+```
+
+3. Add an else condition to your code from above that will print "Better practice some more!" if `confidence` is less than 6.
+
+```{r}
+
+if(confidence >= 6) {
+  print("You are in good shape!")
+} else {
+  print("Better practice some more!")
+}
+
+```
+
+
+4. Okay, hang on. We know that when learning something new, people tend to under-weight their confidence. Let's make sure this gets accounted for. Write a new if statement that will print out the phrase "You are in great shape!" if `confidence` is greater than or equal to 8, "Good, keep at it!" if `confidence` is a value between 4 and 7, and "Better practice some more!" if `confidence` is less than 4.
+
+```{r}
+
+if(confidence >= 8) {
+  print("You are in great shape!")
+} else if ((4 < confidence) & (confidence < 7)) {
+  print("Good, keep at it!") 
+}  else {
+    print("Better practice some more!")
+}
+
+confidence
+
+```
+
+5. Rewrite your code for 3 using `ifelse()`.
+
+```{r}
+
+ifelse(confidence >= 6,
+       "You are in good shape!",
+       "Better practice some more!")
+```
+
+6. Rewrite your code for 4 using nested `ifelse()` commands.
+
+```{r}
+
+ifelse(confidence >= 8,
+       "You are in great shape!", 
+       ifelse((4 < confidence) &  (confidence < 7),
+       "Good, keep at it!",
+       "Better practice some more!"))
+
+```
+
+7. Rewrite your code for 3 using `case_when()`.
+
+```{r}
+
+case_when(
+  confidence >= 6 ~ "You are in good shape!",
+  TRUE ~ "Better practice some more!"
+)
+
+```
+
+8. Rewrite your code for 4 using `case_when()`.
+
+```{r}
+
+
+case_when(
+  confidence >= 8 ~ "You are in great shape!",
+  (4 < confidence) & (confidence < 7) ~ "Good, keep at it!", 
+  TRUE ~ "Better practice some more!"
+)
+
+```
+
+
+9. A lot of weird stuff happened during the early/lockdown portion of the COVID-19 pandemic. There were a lot of arcs and fads that happened. Some of which include:
+
+- Dalgona coffee (Coffee)
+- Making (sourdough) bread (Bread)
+- Tiger King (TK)
+- Animal Crossing (AC)
+- Queen's Gambit (QG)
+- Doing puzzles (Puzzles)
+- Having anxiety/panic attacks (Anxiety)
+
+Create a vector called `hobbies` that stores all the names (in parentheses) for each of these. 
+
+```{r}
+
+hobbies <- c("Dalgona coffee (Coffee)", "Making (sourdough) bread (Bread)", "Tiger King (TK)", "Animal Crossing (AC)", "Queen's Gambit (QG)", "Doing puzzles (Puzzles)", "Having anxiety/panic attacks (Anxiety)")
+
+
+```
+
+
+Next, use a for loop to iterate over each element of `hobbies` and print out each.
+
+```{r}
+
+for(i in 1:length(hobbies)) {
+  print(hobbies[i])
+}
+
+```
+
+10. 
+
+  A. Create a vector called `rating` that contains your ratings from 1-10 on each of the  hobbies in `hobbies`. 
+
+```{r}
+
+rating <- c(6, 4, 2, 10, 9, 7, 10)
+
+
+```
+
+  B. Use a for loop to change those ratings to be out of 100 instead of 10 (hint: each item needs to multiplied by 10).
+  
+```{r}
+
+for(i in 1:length(rating)) { 
+  rating[i] = (rating[i] * 10)
+  }
+
+
+```
+  
+
+11. 
+
+  A. Create a new vector called `participated` that has either a `TRUE` or `FALSE` rating for whether or not you participated in each of the hobbies in `hobbies`.
+  
+```{r}
+
+participated <- c(FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE)
+
+```
+  
+  B. Combine `hobbies`, `rating`, and `participated` to create a dataframe called `pandemic_hobbies`. It should have three columns, titled "hobby", "rating", and "participated".
+  
+```{r}
+
+pandemic_hobbies <- data.frame(hobbies, rating, participated)
+
+pandemic_hobbies
+  
+```
+  
+  C. Use a for loop with control flow to print the name and rating of the hobbies that you participated in.
+  
+```{r}
+
+pandemic_hobbies
+
+for (i in 1:nrow(pandemic_hobbies)) {
+  if(pandemic_hobbies$participated[i] == TRUE) {
+    g <- pandemic_hobbies$hobbies[i]
+    f <- pandemic_hobbies$rating[i]
+    print(paste(g, f))
+  }
+}
+
+
+```
+  
+  D. Modify your code above to do the following: 
+    - If you participated in a hobby, print 1. "I participated in", 2. The hobby name, 3. "I gave it a rating of", 4. The rating.
+    - If you did *not* participate in a hobby, print 1. "I did not participate in", 2. The hobby name.
+    
+**NOTE: it is fine to use `print()` more than once. The output does not have to be a singular string!**
+    
+```{r}
+
+for (i in 1:nrow(pandemic_hobbies)) {
+  h <- pandemic_hobbies$hobbies[i]
+j <- pandemic_hobbies$rating[i]
+  if(pandemic_hobbies$participated[i] == TRUE) {
+    g <- "I participated in"
+    i <- "I gave it a rating of"
+    print(paste(g, h, i, j))
+  }
+  else {
+    g <- "I did not participate in"
+    print(paste(g, h))
+  } 
+}
+
+```
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 300
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 9.7
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 2.3
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+**(ᇂ_ᇂ |||)**

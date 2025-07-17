@@ -1,0 +1,391 @@
+# Customization
+
+```{r}
+library(tidyverse) # Load tidyverse
+library(palmerpenguins) # Load penguins data
+```
+
+The following will serve as a base plot to customize:
+
+```{r}
+base_plot <- penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  geom_jitter(height = 0, width = 0.1, 
+              size = 2, alpha = 0.3,
+              aes(color=island)) +
+    stat_summary(fun.data = "mean_se",
+               geom = "pointrange",
+               color = "black",
+               aes(fill = island),
+               shape = 21,
+               size = 0.5)
+
+base_plot
+```
+
+
+## Scaling The Axes
+
+The axes can be changed using a `scale_*_*` function. 
+
+1st `*` = which axis to modify
+2nd `*` = the type of data or scale you want it to have. 
+
+> Replace the X's below to change the axis to run from 0 to 7000 in increments of 500
+
+```{r}
+base_plot +
+  scale_y_continuous(breaks = seq(from = X, to = X, by = X),
+                     labels = seq(from = X, to = X, by = X))
+```
+
+Graphs are plotted with (x,y) *cartesian* *coord*inates. Modify the limits of that coordinate system with `coord_cartesian()`
+
+> Replace the `_` in the code below change the y-axis to run from 0-7000 and add your completed `scale_y_continuous()` code from above.
+
+```{r}
+base_plot +
+  coord_cartesian(_lim = c(_,_))
+```
+
+
+### Get Rid Of Padding
+
+Eliminated with the `expand` argument.
+
+> Take your code from above and add an `expand()` argument to the `scale_y_continuous` to eliminate the padding.
+
+```{r}
+base_plot +
+  coord_cartesian(ylim = c(0,7000)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 7000, by = 500),
+                     labels = seq(from = 0, to = 7000, by = 500),
+                     expand = c(0,0))
+```
+
+## Titles, Captions, and Labels, Oh My!
+
+Uses `labs()`
+
+> Add your code from above and replace the X's below with appropriate titles and captions
+
+```{r}
+`Your Code Here` +
+  labs(title = "X",
+       subtitle = "X",
+       y = "X",
+       x = "X",
+       tag = "X",
+       caption = "X")
+```
+
+## Themes
+
+First, save all updates made so far to a new variable.
+
+```{r}
+modified_plot <- `Your Code Here`
+```
+
+Most common preset themes: `theme_minimal()`, `theme_bw()`, and `theme_classic()`.
+
+> Add each of the 3 themes listed above to `modified_plot` and observe the differences:
+
+```{r}
+modified_plot
+
+
+modified_plot
+
+
+modified_plot
+```
+
+
+To make manual changes to the theme's settings, you use the `theme()` function. 
+
+`theme(item-to-modify = element_type-of-element(modification code here))`
+
+For example:
+
+`theme(plot.title = element_text(size = 18))`
+
+
+
+### Titles
+
+> Replace the X's in the code below increase font size and make text more legible for the titles and tag, specifically making the subtitle less prominent.
+
+```{r}
+modified_plot +
+  theme_classic() +
+  theme(plot.title = element_text(size = X,
+                                  X = "bold"),
+        X.subtitle = element_text(X = 10, 
+                                     color = "grey50"),
+        plot.tag = X(face = X))
+```
+
+To change the location of the text, ad*just* its *v*ertical or *h*orizontal location using `vjust` or `hjust`. 
+
+When adjusting:
+* 0 == left-aligned
+* 0.5 == centered
+* 1 == right-aligned
+
+> Copy/paste your code from above and add adjustments to center the title and subtitle. When your code looks good, update `modified_plot` by saving over it.
+
+```{r}
+
+
+```
+
+### Captions
+
+> Left align the caption and make it italicized. When it works as intended, update `modified_plot`
+
+```{r}
+modified_plot +
+  theme(plot.caption = X)
+```
+
+
+### Axes Titles
+
+Change simultaneously (e.g., using `axis.title`) or individually (e.g., using `axis.title.x` and `axis.title.y`).
+
+> Increase the axis titles size and make them bold.
+
+```{r}
+
+```
+
+Lack of space causes TRouBLe. Modify the text's margins -- the area to the *t*op, *r*ight, *b*ottom, and *l*eft of it.
+
+> Replace the X's in the code below to increase the appropriate margins to improve legibility. Once it looks good, update `modified_plot`
+
+```{r}
+modified_plot +
+  theme(plot.subtitle = element_text(size = 10, 
+                                     color = "grey50",
+                                     hjust = 0.5,
+                                     margin = margin(X = X, 
+                                                     unit = "inch")),
+        axis.title.x = element_text(size = 16,
+                                    face = "bold",
+                                    margin = margin(X = X, 
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 16,
+                                    face = "bold",
+                                    margin = margin(X = X, 
+                                                    unit = "inch")))
+
+```
+
+
+### Axes Values
+
+> Replace the X's in the code below, try different values. Once it looks good, update `modified_plot`
+
+```{r}
+modified_plot +
+  theme(axis.line.x = element_line(color = "X", size = X),
+        axis.ticks = element_line(color = "X", size = X),
+        axis.text = element_text(X = "bold",
+                                 color = "X",
+                                 size = X))
+```
+
+### Setting a Default
+
+Below is all the customization code generated thus far:
+
+```{r}
+theme(plot.title = element_text(size = 18,
+                                face = "bold",
+                                hjust = 0.5),
+      plot.subtitle = element_text(size = 10, 
+                                   color = "grey50",
+                                   face = "bold",
+                                   hjust = 0.5,
+                                   margin = margin(b = 0.2, 
+                                                   unit = "inch")),
+      plot.tag = element_text(face = "bold"),
+      plot.caption = element_text(hjust = 0,
+                                  face = 'italic'),
+      axis.title.x = element_text(size = 16,
+                                  face = "bold",
+                                  margin = margin(t = 0.2, 
+                                                  unit = "inch")),
+      axis.title.y = element_text(size = 16,
+                                  face = "bold",
+                                  margin = margin(r = 0.2, 
+                                                  unit = "inch")),
+      axis.line.x = element_line(color = "gray40", size = 0.5),
+      axis.ticks = element_line(color = "gray40", size = 0.5),
+      axis.text = element_text(face = "bold",
+                               color = "black",
+                               size = 12))
+```
+
+Use `theme_set()` to set a default applied to all visualizations you make with ggplot.
+
+```{r}
+theme_set(theme_classic() + 
+            theme(plot.title = element_text(size = 18,
+                                face = "bold",
+                                hjust = 0.5),
+      plot.subtitle = element_text(size = 10, 
+                                   color = "grey50",
+                                   face = "bold",
+                                   hjust = 0.5,
+                                   margin = margin(b = 0.2, 
+                                                   unit = "inch")),
+      plot.tag = element_text(face = "bold"),
+      plot.caption = element_text(hjust = 0,
+                                  face = 'italic'),
+      axis.title.x = element_text(size = 16,
+                                  face = "bold",
+                                  margin = margin(t = 0.2, 
+                                                  unit = "inch")),
+      axis.title.y = element_text(size = 16,
+                                  face = "bold",
+                                  margin = margin(r = 0.2, 
+                                                  unit = "inch")),
+      axis.line.x = element_line(color = "gray40", size = 0.5),
+      axis.ticks = element_line(color = "gray40", size = 0.5),
+      axis.text = element_text(face = "bold",
+                               color = "black",
+                               size = 12)))
+```
+
+> Try making a new visualization to see the results:
+
+```{r}
+
+```
+
+### Legends
+
+To get rid of a legend altogether:
+
+```{r}
+modified_plot +
+  theme(legend.position = "none")
+```
+
+Below has the relevant code for the legend:
+
+```{r}
+theme(legend.box.background = element_rect(color = "black", # Add a defined box around legend
+                                           size = 2),
+      legend.title = element_text(face = "bold"), # Modify the title
+      legend.text = element_text(face = "bold"), # Modify text
+      legend.title.align = 0.5, # Change alignment of legend title. Think of this like an hjust.
+      legend.key = element_rect(fill = "white", colour = "black") # Add defined boxes around legend key graphic
+) 
+```
+
+> Modify the legend from `modified_plot` using the code examples above
+
+```{r}
+
+```
+
+
+## Combining Graphs
+
+`patchwork` -- combine and arrange multiple graphs into a single figure
+
+```{r}
+library(patchwork)
+```
+
+Take the following 3 graphs for example:
+
+```{r}
+a = penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  geom_jitter(height = 0, width = 0.1, 
+              size = 2, alpha = 0.3,
+              aes(color=island)) +
+    stat_summary(fun.data = "mean_se",
+               geom = "pointrange",
+               color = "black",
+               aes(fill = island),
+               shape = 21,
+               size = 0.5)
+a
+b = penguins %>%
+  ggplot(aes(y = body_mass_g, x = species)) +
+  geom_jitter(height = 0, width = 0.1, 
+              size = 2, alpha = 0.3,
+              aes(color=species)) +
+    stat_summary(fun.data = "mean_se",
+               geom = "pointrange",
+               color = "black",
+               aes(fill = species),
+               shape = 21,
+               size = 0.5)
+b
+c = penguins %>%
+  drop_na() %>%
+    ggplot(aes(y = body_mass_g, x = sex)) +
+    geom_point(size = 2, alpha = 0.3,
+               shape = 21,
+                aes(fill = sex),
+                position = position_jitter(width = 0.1)) +
+    stat_summary(fun.data = "mean_se",
+                 geom = "pointrange",
+                 color = "black",
+                 aes(fill = sex),
+                 shape = 21,
+                 size = 0.5)
+c
+```
+
+Patchwork combines graphs by using the `+`, `/`, and `|` operators. 
+
+`+` combines graphs using the default layout (creating as square a grid as possible)
+
+> Use `+` to combine plots `a` and `b`.
+
+```{r}
+
+```
+
+`/` will stack graphs on top of each other
+
+> Use `/` to arrange plot `b` on top of plot `c`
+
+```{r}
+
+```
+
+`|` places graphs next to each other and can nest arrangements created with the other operators.
+
+> Use `|` to arrange plot `c` on the left, and plot `a` over plot `b` to the right (hint: you may need to use parentheses to control the order of operations!)
+
+```{r}
+
+```
+
+
+## Saving Graphs
+
+use `ggsave()`
+
+In `ggsave()`, you must specify:
+
+* which `plot` you want to be saving
+* the `filename` you want your graph to be saved with
+* the `width` and `height` of the file
+
+> Use `ggsave()` to save plot `a`
+
+```{r}
+ggsave(plot = a, 
+       filename = "",
+       width = 12,
+       height = 8)
+```

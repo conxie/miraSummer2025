@@ -1,0 +1,293 @@
+---
+title: "ggplot intro practice problems"
+author: ""
+date: "X/XX/2022"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# Modify the file path in the code below to properly load the "diamonds_sample.RData" file
+load("C:/Users/Connie/Downloads/diamonds_sample.RData") 
+```
+
+
+## Intro
+
+You are going to work with a subset of data in the df `diamonds_sample`. All questions below will be in reference to `diamonds_sample`.
+
+* `price` - price in USD
+* `carat` - weight of the diamond
+* `cut` - quality of the cut
+* `color` - diamon color
+* `clarity` - a measurement of how clear the diamond is
+* `x` - length in mm
+* `y` - width in mm
+* `z` - depth in mm
+* `depth` - total depth percentage
+* `table` - width of top of diamond relative to widest point
+
+## Aesthetic Setting
+
+Let's first practice setting different aesthetics manually. In all the following graphs, use `geom_point()` to represent each individual observation with a point. After creating the visualization, write a brief sentence describing the relationship you see between the two variables.
+
+1. Create a graph with `price` on the y-axis, `carat` on the x-axis, and change the color of all the points to your favorite color.
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = price,
+             x = carat))+ 
+  geom_point(color = "green")
+
+```
+
+2. Create a graph with `table` on the y-axis, `depth` on the x-axis, and change the color of all the points to chartreuse
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = table,
+             x = depth)) + 
+  geom_point(color = "chartreuse")
+
+```
+
+3. Create a graph with `carat` on the y-axis, `table` on the x-axis, and change the shape of all points to 8
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = carat,
+             x = table)) +
+  geom_point(color = "orange",
+                 shape = 8)
+
+```
+
+4. Create a graph with `x` on the y-axis, `y` on the x-axis, and change the alpha to 0.25
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = x,
+             x = y)) + 
+  geom_point(color = "blue",
+                 alpha = 0.25)
+
+```
+
+5. Create a graph with `depth` on the y-axis, `z` on the x-axis, make the shape 13 and the color orchid
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = depth,
+             x = z)) + 
+  geom_point(shape = 13,
+             color = "orchid")
+
+```
+
+6. Create a graph with `table` on the y-axis, `carat` on the x-axis, make the color tomato, shape 3, size 2, and adjust the alpha to a level you think is best
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = table,
+             x = carat)) + 
+  geom_point(color = "tomato",
+             size = 2,
+             shape = 3,
+             alpha = 0.5)
+
+
+```
+
+(Challenge) Create a graph with `price` on the y-axis, `depth` on the x-axis, make each observation be represented by a smaller gold circle within a larger magenta circle outline (hint: think about your layering order).
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = price,
+             x = depth)) + 
+  geom_point(color = "gold",
+             size = 2) + 
+  geom_point(color = "magenta",
+             size = 3.5,
+             shape =  1)  
+
+```
+
+
+## Aesthetic Mapping
+
+Now, instead of manually setting the aesthetics you will map them to variables in the dataset. In doing so, you will be able to explore these relationships even further! You will be given instructions on how to generate a particular graph.
+
+Before running the code to create your graph...
+A. Write down the *question* that this graph is exploring.
+B. Write a brief *prediction* of what you expect the relationship or pattern to be. 
+
+After observing the visualization... 
+A. Write a brief *summary* describing what that relationship or pattern actually is, and explain what evidence you have for this (e.g., "all the brown colored dots that correspond to 'Ideal' cut diamonds are higher on the y-axis, which here is 'price'. So I can see that 'Ideal' cut diamonds tend to be the most expensive.")
+
+*NOTE: For some of these visualizations, it may be hard to discern any actual patterns or relationships. Just try your best to describe what you see. If it is too hard to determine anything, state that and explain why!*
+
+1. Create a graph with `price` on the y-axis, `carat` on the x-axis, and map the color of all the points to `cut`. Make any other aesthetic modifications you need to make the visualization ans legible as possible.
+
+Question:
+
+  *How are the price (USD) and carat (weight) of different cuts (quality) of diamonds related?*
+  
+
+Prediction:
+
+  *If the price of a diamond rises as the amount of carats in a cut of diamond increases, the data points would generally create a line of best fit that is linearly positive.*
+  
+  *If it is not the case that price of diamond has a positive relationship with carats, then the data points would generally create a straight line or a linearly negative line.*
+
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = price,
+              x = carat,
+              color = cut)) +
+  geom_point(aes(color = cut),
+             shape = 17,
+             alpha = .4,
+             size = 4) + 
+  geom_smooth(method = "lm", se = FALSE, color = "purple")
+
+```
+
+Summary:
+
+  *In this visualization, generally speaking, the higher the carat, the higher the price. Fair cuts of diamonds tend to be priced lower than their counterparts (Good, Very Good, Premium, Ideal) if they are over 2 carats. Very Good, Premium, and Ideal cuts of diamonds are priced similarly across carats.*
+
+
+2. Create a graph with `carat` on the y-axis, `z` on the x-axis, and map the color of all the points to `color`. Make any other aesthetic modifications you need to make the visualization ans legible as possible.
+
+Question:
+
+  *How does the depth (mm) of a diamond correlate with it's carats (weight), taking color of the diamond into account?*
+
+
+Prediction:
+
+  *If the more carats a diamond has means that it has greater depth, the data would show a general pattern of linearly positive relationship. If the color of the diamond affects the depth or carat, there would be clusters that have distinct colors.*
+
+  *If there is a negative relationship between carats and depth, the data should follow a pattern of decreasing to the right, If color by itself does not affect the depth or carat, there should not be noticable clusters*   
+
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = carat,
+             x = z,
+             color = color)) + 
+  geom_point(aes(color = color),
+             shape = 18,
+             alpha = .3,
+             size = 4) + 
+  geom_smooth(method = "lm", se = FALSE)
+
+```
+
+Summary:
+
+  *There do not appear to be significant clusters of colors, as such, color of the diamond does not appear to be important in determining the cut or depth of the diamond. All colors of diamonds have similar positive lines of best fit, showing that the depth and carat have a positive relationship. The greater the carat, the greater the depth (mm).There was one major out liar: A "G" diamond had 1 carat with a depth of 0mm.*
+
+3. Create a graph with `depth` on the y-axis, `y` on the x-axis, and map the color of all the points to `clarity`. Make any other aesthetic modifications you need to make the visualization ans legible as possible.
+
+Question:
+
+  *How is depth and width of diamonds of different clarity related?*
+
+
+Prediction:
+
+  *If the depth and width have a positive relationship, we expect to see data points following a pattern of increasing to the right. If clarity of the diamond affects depth or width, their lines of best fit should be different OR there should be different colors. *
+  
+  *If depth and width have no relationship, they should create a near linear line of best fit, or their data points should not have noticable patterns, If clarity of diamond has no effect, there will be no noticable clusters nor differing lines of best fit.*
+
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = depth,
+             x = y,
+             color = clarity)) + 
+  geom_point(aes(color = color),
+             shape = 15,
+             alpha = .3,
+             size = 2) + 
+  geom_smooth(method = "lm", se = FALSE)
+
+```
+
+Summary:
+
+  *The data points cluster around x = 60 to 65 and y = 3.75 to 8.75. The lines of best fit are roughly linear, meaning that width does not depend on depth. There are no noticable clusters of diamond clarity, meaning that clarity does not affect depth or width. Diamonds of clarity D, E, F, G, H, I have a wider range of both depth and y, than diamonds of clarity I, I1, IF, J, SI1, SI2, VS1, VS2, VVS1, VVS2*
+  
+  
+
+## Free Reign
+
+Below, try to make the worst, most illegible, visualization you can. Use whatever aesthetic modifications you want, but do so within reason (e.g., don't just set `size = 100` or something).
+
+4. Create a graph with `price` on the y-axis, `carat` on the x-axis.
+
+```{r}
+
+diamonds_sample %>%
+  ggplot(aes(y = price,
+              x = x,)) +
+  geom_point(aes(color = clarity),
+             shape = "triangle square",
+             size = 10,
+             alpha = .08) + 
+  geom_point(aes(color = "yellow"),
+             size = 15,
+             shape = 1,
+             alpha = .3)
+
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 150
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 2.4
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 8.2
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+**It was surprisingly difficult to create an ineligible graph within reason. I had fun trying!**
+
