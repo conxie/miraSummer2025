@@ -30,7 +30,7 @@ library(openxlsx)
 
 #additional hint: customfilename = read.csv('filepath')
 
-ASDScreeningData = read.csv("~/GitHub/miraSummer2025/ASDScreeningDataChildren.csv")
+ASDScreeningData = read.csv('/Users/miramateo/Desktop/GitHub/ASDScreeningDataChildren.csv')
 ```
 
 
@@ -77,19 +77,16 @@ summary(my_model)
 #Make a graph.
 #https://psyc193l.github.io/index.html <-- Ch 7 will help you figure out  
 
-ASDScreeningData %>%
-  ggplot(aes(y = Class.ASD, x = age)) +
-  geom_point()
 
 #make a bar chart that looks at count 
 
 countASD = ASDScreeningData %>%
-  group_by(_____) %>%
-  count(_____) %>%
-  filter(_____ == 1)
+  group_by(age) %>%
+  count(Class.ASD) %>%
+  filter(Class.ASD == 1)
 
 countASD %>%
-  ggplot(aes(x = _____ , y = _____)) +
+  ggplot(aes(x = age , y = Class.ASD)) +
   geom_bar(stat = "identity", fill = "blue") +
   labs(
     title = "Count of Autism Diagnoses by Age",
@@ -120,10 +117,6 @@ countASD %>%
 install.packages('dplyr')
 
 library(dplyr)
-
-
-
-#Class.ASD is not the variable to use. You should be using the autism variable
 
 
 # Select the columns of interest
