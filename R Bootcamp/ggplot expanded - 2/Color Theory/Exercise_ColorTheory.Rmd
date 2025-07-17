@@ -1,0 +1,186 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(palmerpenguins)
+library(RColorBrewer)
+library(colorspace)
+library(viridis)
+library(tidyverse)
+```
+
+For these questions, you will use template graphs *similar* to those used in the Color Theory lecture. Fill in the blanks below to complete the code and create your template graphs. These should **NOT** be *IDENTICAL* to any graphs from the lecture. Make any other additional tweaks you want.
+
+```{r}
+plot_bar = penguins %>%
+  ggplot(aes(y = , x = ,
+             fill = )) +
+  stat_summary(fun = "mean", geom = "bar") +
+  scale_y_continuous(expand = c(0,0))
+
+plot_jitter = penguins %>%
+  ggplot(aes(y = , x = )) +
+  geom_jitter(height = 0, width = 0.2, 
+              size = 2, alpha = 0.5,
+              aes(color = )) +
+    stat_summary(fun.data = "mean_se",
+               geom = "pointrange",
+               size = 0.5)
+
+plot_line = penguins %>%
+  ggplot(aes(y = , x = , color = )) +
+  stat_summary(fun = "mean", geom = "point", size = 2) +
+  stat_summary(fun = "mean", geom = "line", size = 1)
+
+plot_hex = penguins %>%
+  ggplot(aes(y = ,
+             x = ,
+             z = )) +
+  stat_summary_hex()
+```
+
+1. Change the colors in `plot_bar` and `plot_jitter` to manually set values. Find a combination of colors you think work well together and are perceptually uniform.
+
+```{r}
+
+```
+
+2. Using `plot_line` and/or `plot_hex`...
+
+A. Create 2 *single hue* gradients that you think seem perceptually uniform using...
+
+A light and dark purple:
+
+```{r}
+
+```
+
+A light and dark green:
+
+```{r}
+
+```
+
+
+B. Create 2 *multiple hue* gradients (using either function to do so) that you think seem perceptually uniform using...
+
+purple and yellow:
+
+```{r}
+
+```
+
+pink and green:
+
+```{r}
+
+```
+
+
+3. Create 2 visualizations using *divergent* scales that you think are equally uniform in both directions from the midpoint. Use `mean(penguins$X, na.rm = TRUE)` for the midpoint, replacing `x` with the appropriate variable from your graph.
+
+red and blue:
+
+```{r}
+
+```
+
+orange and yellow:
+
+```{r}
+
+```
+
+4. Modify each of your template visualizations to use a different palette from RColorBrewer (hint: make sure you use the appropriate type of color scale given the type of data!).
+
+`plot_bar` using "Set3"
+
+```{r}
+
+```
+
+`plot_jitter` using "Pastel2"
+
+```{r}
+
+```
+
+`plot_line` using "YlGn"
+
+```{r}
+
+```
+
+`plot_hex` using "GnBu"
+
+```{r}
+
+```
+
+
+5. Take your code from Exercise 4 and replace the color palettes from RColorBrewer with ones from viridis.
+
+`plot_bar` using "cividis"
+
+```{r}
+
+```
+
+`plot_jitter` using "plasma"
+
+```{r}
+
+```
+
+`plot_line` using "inferno"
+
+```{r}
+
+```
+
+`plot_hex` using "viridis"
+
+```{r}
+
+```
+
+
+# Feedback 
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

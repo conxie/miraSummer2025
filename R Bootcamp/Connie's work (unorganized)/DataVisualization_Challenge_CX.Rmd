@@ -1,0 +1,1137 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(patchwork)
+library(RColorBrewer)
+library(colorspace)
+library(viridis)
+library(tidyverse)
+# Modify the file path in the code below to properly load the files
+load("C:/Users/Connie/Desktop/viz_challenge_data/data/pokemon.RData")
+load("C:/Users/Connie/Desktop/viz_challenge_data/data/pokemon_starters.RData")
+```
+
+# Instructions
+
+Today, you are going to be working with a dataset containing information about pokemon. In case you are not familiar with pokemon, here is some quick background info from the official website (https://www.pokemon.com/us/parents-guide/ -- it says "parents guide," but I guess also substitute Gen Z):
+
+> "Pokémon are creatures of all shapes and sizes who live in the wild or alongside their human partners (called “Trainers”). During their adventures, Pokémon grow and become more experienced and even, on occasion, evolve into stronger Pokémon. Hundreds of known Pokémon inhabit the Pokémon universe, with untold numbers waiting to be discovered!"
+
+In the video game you play as a pokemon trainer. Trainers battle and catch wild pokemon to assemble a team. They then battle against other trainers' pokemon teams. When your pokemon wins a battle, it gains experience points. Every time your pokemon gets to a certain amount of experience points, they get to level up and become more powerful (most pokemon start at level 1, and the number goes up as they get stronger, a big number means a big and powerful pokemon). When they reach a high enough level, some pokemon will even "evolve", transforming into a completely different pokemon! 
+
+In addition to their level, every pokemon has characteristics ("stats") like health points (how many hits they can take in a battle), attack (how hard they hit in battle), and speed (how good they are at not getting hit). When a pokemon levels up, these stats all increase. 
+
+Every pokemon also has a primary type, (e.g., some are 'fire-type' which includes fire breathing creatures, 'water-type' which has swimming creatures, 'bug-type' which is exactly what it sounds like). At the beginning of each pokemon game, you get to choose one of three pokemon to start your team. This is your 'starter.' The three options for your starter are *always* between a fire, water, or grass primary type pokemon.
+
+Now you are all caught up! In the `pokemon` dataframe, each observation contains information about a specific pokemon. It has the following information:
+
+* `PokedexID` - ID number
+* `Name` - Name
+* `Type1` - Primary type
+* `Type2` - Secondary type (if they have one)
+* `Total` - The sum of all their stat points
+* `HealthPoints` - How much health they have
+* `Attack` - Attack score
+* `Defense` - Defense score
+* `SpAtk` - Special Attack score
+* `SpDef` - Special Defense score
+* `Speed` - Speed Score
+* `Generation` - What generation of pokemon they came from (each game has a "generation" consisting of several hundred pokemon)
+* `Legendary` - Whether or not the pokemon is Legendary, which are a special type of very rare and powerful pokemon
+* `capture_rate` - How easy or hard it is to capture that pokemon
+* `height_m` - The pokemon's height in meters
+
+Additionally, the `pokemon_starters` dataset contains all the same information, but only for the starter pokemon (and their evolutions) across the different games.
+
+In this assignment, you are going to become a pokemon researcher! You are going to use this data and create visualizations to answer different questions about pokemon! (kinda sounds like data science... must be a coincidence)
+
+This is where you are going to put all of your visualization skills to the test! The questions and tasks below will not give you direct instructions, as previous assignments have. You are going to use your judgment, considering the best practices and guidelines covered, and produce the best visualizations you can to answer the questions.
+
+# Part 1:
+
+First thing's first, you have to figure out which starter pokemon type you want to recommend people choose between the fire, grass, or water primary type starter pokemon! Use the `pokemon_starters` df for the following questions. 
+
+**Make sure that in your visualizations below the pokemon primary Types have intuitive / appropriate colors (e.g., fire = red)**, and other aesthetics where appropriate, to make it easy to see the differences between groups.
+
+### 1. To help make your decision, maybe it makes sense to first investigate how the Total stats varies across the different starter primary types.
+
+*Prediction:*
+  If different starter primary types have different total stats, the box plots would look different. For instance, if Firetype pokemon had higher overall stats, their box plot median line should be above Grass and Water-type median lines. Firetype's quartile lines would also be higher.  
+  
+ ***#gen form: thing i think will happen. if true, here is what graph would look like. ***
+
+
+```{r}
+
+a <- pokemon_starters %>%
+  ggplot(aes(y = Total,
+             x = Type1)) +
+  geom_boxplot(aes(color = Type1,
+                   fill = Type1),
+               alpha = 0.3)
+
+a + 
+  scale_y_continuous(breaks = seq(from = 300, to = 600, by = 25), 
+                     labels = seq(from = 300, to = 600, by = 25),
+                     expand = c(0,0)) + 
+  labs(title = "How Do Pokemon Total Stats Vary Across Starter Primary Types? ",
+       subtitle = "Main Types of Pokemon",
+       y = "Total Stats",
+       x = "Primary Type",
+       tag = "A") + 
+   theme(plot.title = element_text(size = 15,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 10),
+         axis.ticks = element_line(color = "black"))
+
+
+```
+
+*Summary:*
+  The box plots are of similar height and have similar quartiles as well as median lines. Fire and Water type pokemon have higher Total Stats (~530) than Grass type (~525). Grass Type pokemon have a higher base stat of around 320 whereas Fire and Water types have a base stat 310.5. 
+
+
+If you feel like this answers your question, explain what your recommendation is and how you came to that conclusion based on your investigation. If not, go on:
+
+### 2. If you do not feel like you have a good answer you can be confident in, try to explore the data by asking other questions you think would be helpful to know. 
+
+  - Show all of the visualizations you created while investigating different questions. 
+  - Write summary statements for each of them
+  
+```{r}
+
+b <- pokemon_starters %>%
+  ggplot(aes(y = HealthPoints,
+             x = Type1)) +
+  geom_boxplot(aes(color = Type1,
+                   fill = Type1),
+               alpha = 0.3) + 
+  scale_y_continuous(breaks = seq(from = 40, to = 115, by = 5), 
+                     labels = seq(from = 40, to = 115, by = 5),
+                     expand = c(0,0)) + 
+  labs(title = "How Do Pokemon Health Stats Vary Across Starter Primary Types? ",
+       subtitle = "Main Types of Pokemon",
+       y = "Health Stats",
+       x = "Primary Type",
+       tag = "B") + 
+   theme(plot.title = element_text(size = 15,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 10),
+         axis.ticks = element_line(color = "black"))
+
+b
+```
+
+*Summary:*
+  Firetype pokemons have a wider range in Health stats, but Watertypes have a higher median health. Water has the highest Q1 base, with a Health stat of 53, they also have the highest Q3 base, around 77.8, beating Firetype's Q3 of 77.5. 
+  
+```{r}
+
+c <- pokemon_starters %>%
+  ggplot(aes(y = Attack,
+             x = Type1)) +
+  geom_jitter(aes(color = Type1,
+                   fill = Type1),
+               alpha = 0.7,
+              width = 0.2, 
+              height = 0) + 
+  stat_summary(fun.data = "mean_se", 
+               geom = "pointrange", 
+               color = "black",
+               shape = 20) + 
+  coord_cartesian(ylim = c(30, 130)) +
+  scale_y_continuous(breaks = seq(from = 10, to = 130, by = 10), 
+                     labels = seq(from = 10, to = 130, by = 10), 
+                     expand = c(0,0)) + 
+  labs(title = "How Do Attack Scores Vary Across Starter Primary Types? ",
+       subtitle = "Main Types of Pokemon",
+       y = "Attack Score",
+       x = "Primary Type",
+       tag = "C") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 10),
+         axis.ticks = element_line(color = "black"))
+
+c
+
+```
+
+*Summary:* 
+  On average, Fire and Water type starter pokemons do the most damage of around 75 attack score. Grass starter pokemon has the lowest average of attack score (around 70). In general, there are more Firetype pokemon whose attack scores are higher than the average. 
+  
+```{r}
+
+pokemon_starters %>%
+  ggplot(aes(y = Type1,
+             x = Defense)) +
+  ggridges::geom_density_ridges(aes(color = Type1,
+                                    fill = Type1),
+                                alpha = 0.5, 
+                                jittered_points = TRUE,
+                                position = "raincloud",
+                                scale = 1) + 
+  coord_cartesian(xlim = c(0, 160)) +
+  scale_x_continuous(breaks = seq(from = 0, to = 160, by = 10), 
+                     labels = seq(from = 0, to = 160, by = 10), 
+                     expand = c(0,0)) + 
+  labs(title = "How Do Defense Scores Vary Across Starter Primary Types? ",
+       subtitle = "Main Types of Pokemon",
+       y = "Primary Type",
+       x = "Defense Score",
+       tag = "D") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 10),
+         axis.ticks = element_line(color = "black"))
+
+
+```
+  
+*Summary:*
+  Grass type pokemons tend to have higher defense scores than Grass and Fire types. There are more Firetype pokemons that have a defense score of around 45-60, whereas there are more Watertype pokemon that have a score of around 60-70. Grass type pokemon have a similar range as Watertype pokemon, but they tend to have more outliers with higher health scores. There is a Grass type with a defense score of 120 (the highest one of them all). 
+  
+  
+When you feel like you can make an informed recommendation, write that below and explain your rationale behind that decision.
+
+*Answer:*
+  Based on this data, if you wanted to focus on defense, I would recommend a Grass type pokemon since they have the highest defense score. If you wanted to focus more on attacking, I would recommend a Firetype pokemon as they have the highest average health and are tied for highest attack score. Watertype pokemons are a really good balance between wanting both a pokemon that can defend and a pokemon that is good for attacking. In general, I would reccomend Watertype primary pokemon for a balanced playing style. 
+
+
+
+### 3. Not to throw a wrench in your plan or anything... but after hearing your recommendation, imagine someone goes, "Is that true for ALL generations? Do you even know what game I'm playing and asking help for?!" 
+
+Shoot, they may be right....
+
+Explore whether your recommendation, based on whatever rationale you used, holds true across generations. You may use more than one visualization while investigating (separately OR creating graphs for different subsets in the same visualization). If so, write summaries for each below (identifying which visualization the summary corresponds to). When you have come to a conclusion about whether or not it does, write that and explain your rationale.
+
+```{r}
+
+pokemon_starters %>%
+  ggplot(aes(y = Total,
+             x = Generation)) +
+  geom_jitter(size = 3,
+              alpha = 0.7,
+              aes(fill = Type1),
+              pch = 21, 
+              position = position_jitterdodge()) + 
+  coord_cartesian(ylim = c(200, 600)) + 
+  scale_y_continuous(breaks = seq(from = 300, to = 700, by = 50), 
+                     labels = seq(from = 300, to = 700, by = 50),
+                     expand = c(0,0)) + 
+  labs(title = "How Do Total Stats Vary Across Pokemon Generations? ",
+       subtitle = "6 Generations of Pokemon",
+       y = "Total Stats",
+       x = "Pokemon Generation",
+       tag = "A1") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 10),
+         axis.ticks = element_line(color = "black"))
+
+
+```
+
+*Summary A1:*
+  Total Stats holds steady across generations, with the largest difference being in Firetype Pokemon of Generation 5. It has a difference in points of ~20. Primary Type pokemon across Generations appears to not differ a lot from one another. I would still recommend Watertype pokemon in this scenario as there is not much difference across generations. 
+  
+```{r}
+
+pokemon_starters %>%
+  ggplot(aes(y = HealthPoints,
+             x = Generation)) +
+  geom_boxplot(aes(color = Type1,
+                   fill = Type1),
+               alpha = 0.3) + 
+  facet_grid(cols = vars(Type1)) + 
+  scale_y_continuous(breaks = seq(from = 40, to = 115, by = 5), 
+                     labels = seq(from = 40, to = 115, by = 5),
+                     expand = c(0,0)) + 
+  labs(title = "How Do Pokemon Health Stats Vary Across Generations? ",
+       subtitle = "6 Generations",
+       y = "Health Points",
+       x = "Generation",
+       tag = "B1") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 7.5),
+         axis.ticks = element_line(color = "black"))
+```
+
+*Summary B1:*
+  There is much wider range in Health Points across generations. In the firetype pokemons, every generation except for 5 remains similar to each other. Generation 5's median is 30 points above the average of the other 5 generations. In Grass type pokemon, there is also a wide difference. Generations 1, 2, 5, and 6 have similar medians, but Gen 3 has a difference of around - 10 points, and Gen 4 has difference of +15 points. Water type pokemons are the least similar across generations. In this case, I would still reccomend Watertype pokemon for well-balanced playing style. Despire their varying medians across generations, they have good average score (beats most Grass generations and Fire geerations).
+
+```{r}
+
+pokemon_starters %>%
+  ggplot(aes(y = Attack,
+             x = Generation)) +
+  geom_boxplot(aes(color = Type1,
+                   fill= Type1),
+               alpha = 0.3) + 
+  facet_grid(cols = vars(Type1)) + 
+  coord_cartesian(ylim = c(30, 130)) +
+  scale_y_continuous(breaks = seq(from = 10, to = 130, by = 10), 
+                     labels = seq(from = 10, to = 130, by = 10),  
+                     expand = c(0,0)) + 
+  labs(title = "How Do Attack Scores Vary Across Pokemon Generations? ",
+       subtitle = "6 Generations",
+       y = "Attack Score",
+       x = "Generation",
+       tag = "C1") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 7.5),
+         axis.ticks = element_line(color = "black"))
+```
+
+*Summary C1:*
+  There is a lot of variation of attack scores across generations. In general, Fire and Water types are the pokemon that have the highest attack score across generations. Grass types a lower average attack score (Generation 4 and 6 are noteable exceptions). If one wanted to focus on attack, my recommendation would be to go with a Firetype pokemon. Watertype being a good balance between Fire and Grass still stands.  
+
+```{r}
+pokemon_starters %>%
+  ggplot(aes(y = Generation,
+             x = Defense)) +
+  ggridges::geom_density_ridges(aes(color = Type1,
+                                    fill = Type1),
+                                alpha = 0.5, 
+                                jittered_points = TRUE,
+                                position = "raincloud",
+                                scale = 1) + 
+  facet_grid(cols = vars(Type1)) + 
+  coord_cartesian(xlim = c(0, 150)) +
+  scale_x_continuous(breaks = seq(from = 0, to = 150, by = 10), 
+                     labels = seq(from = 0, to = 150, by = 10),
+                     expand = c(0,0)) + 
+  labs(title = "How Do Defense Scores Vary Across Pokemon Generations? ",
+       subtitle = "6 Generations",
+       y = "Generation",
+       x = "Defense Score",
+       tag = "D1") + 
+   theme(plot.title = element_text(size = 15,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 6.5),
+         axis.ticks = element_line(color = "black"))
+```
+
+*Summary D1:*
+  Water and Grass types of pokemon have the highest defense scores comparing across generations. Water tends to have the highest defense scores, with Fire types having the lowest defense score. Generation 3 Grass types are an interesting exception, as they have the lowest average defense score in the graph. Reccomendation of Watertype pokemon for balanced playing style still stands. They are nearly as good at defense as Grass types.
+  
+
+
+*Answer:*
+  Generation of pokemon matters, but in general if you are going for defense, a water or grass type would best suit your needs. When going for attack, opt for a Firetype pokemon. In general, health for all of them are fairly similar but Generation 5 fire types have the highest health overall. Water types have the highest average health. Total stats is very similar across generation for all primary types of pokemon. 
+  For well balanced playing, choose a Watertype!
+  
+
+
+# Part 2:
+
+Woohoo! You just successfully got your first satisfied customer as a pokemon researcher! Before you can kick back and soak in your accomplishment, you notice a stack of papers on your desk full of requests of other questions for you to answer... One of the down sides of working in data science and industry is that you will very often have to answer the questions that other people want you to. Sometimes they may be good, interesting, and well reasoned. Other times, however... 
+
+Below will hopefully be a mix. Going forward, use the `pokemon` df, *NOT* the `pokemon_starters` df. There will be a series of questions and/or directions. Where it is labeled, provide a prediction before running the code, briefly summarize the visualization(s), and provide an answer to the question with an explanation for your conclusion.
+
+
+### 1. "I have a hypothesis that a pokemon's Defense and Speed are related. Could you look into that for me?"
+
+  A. What are some reasons why this might be true?
+    
+    *Might be true because higher defense means tankier pokemon, which means lower speed as they are heavier. It could also be that higher defense means higher speed as pokemon would be able to dodge to decrease damage.*
+  
+  B. What are some reasons this might not be true?
+    
+    *Might not be true because defense might not have anything to do with speed. It might be the case that defense is related to health points, while speed is related to attack.*
+
+  C. What is your prediction?
+    
+    *If Defense and Speed are positively releated, Pokemon with higher defense scores should have a higher speed. It should be a positive linear relationship. If defense and speed are not related, there should be a nearly straight linear line.*
+    
+  D. Investigate
+  
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = Defense,
+             x = Speed)) + 
+  geom_point(color = "purple",
+             size = 3,
+             alpha = .5,
+             shape = 19) + 
+  geom_smooth(method = "lm", se = FALSE,
+              color = "black") +  
+  coord_cartesian(ylim = c(0, 210)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 210, by = 10), 
+                     labels = seq(from = 0, to = 210, by = 10),
+                     expand = c(0,0)) + 
+  labs(title = "How Do Defense Scores Vary Across Speed? ",
+       subtitle = "All Pokemon",
+       y = "Defense Score",
+       x = "Speed Score",
+       tag = "E") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 6.5),
+         axis.ticks = element_line(color = "black"))
+
+```
+  
+  E. Summarize
+    
+    *The line of best fit is a neutral line. It does not appear to slop down or upwards, as such defense and speed do not have any impact on each other, aka they are not related.*
+    
+  F. Now, use an alternative type of visualization to investigate the same question
+  
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = Defense,
+             x = Speed)) + 
+  geom_hex() + 
+  geom_smooth(method = "lm", se = FALSE,
+              color = "black") +  
+  coord_cartesian(ylim = c(0, 210)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 210, by = 10), 
+                     labels = seq(from = 0, to = 210, by = 10),
+                     expand = c(0,0)) + 
+  labs(title = "How Do Defense Scores Vary Across Speed? ",
+       subtitle = "All Pokemon",
+       y = "Defense Score",
+       x = "Speed Score",
+       tag = "E") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 6.5),
+         axis.ticks = element_line(color = "black"))
+
+```
+
+  G. Is the pattern/relationship the same as above? If not, in what way is it different?
+    
+    *Yes, the relationship is the same as above. The line of best fit in both graphs is nearly percetly straight with minimal slope downward. This graph differs in the sense that it more clearly shows the density level.*
+    
+    
+  H. Overall conclusion and rationale
+    
+    *Overall, speed and defense are not related to each other. The line of best fit shows us that the trend of data is straight across. Looking at the scatter plot, it appears that there is no order to the data. The hex plot shows us the same thing. Such an observation might lead us to wonder what speed IS related to. It could be that speed is related to attack, or primary type instead of defense. Defense could be related to type of pokemon, legendary, generation, etc.*
+    
+
+### 2. "I have a hypothesis that a pokemon's Special Attack and Speed are related. Could you look into that for me?"
+
+  A. What are some reasons why this might be true?
+    
+    *Might be true because a higher special attack score needs to hit faster. Might also be true if more damage means that speed is slower (heavy hitter pokemon).*
+  
+  B. What are some reasons this might not be true?
+    
+    *Might not be true because Special Attack might have to do with the primary type of pokemon, or legendary instead. Speed might not be relevant at all*
+
+  C. What is your prediction?
+    
+    *If Special Attack and Speed are not related, then there should be no discernable patern in the data. It should not trend upwards or downards. The data should be spread out across the graph. If Special Attack and Speed are related, then the pattern should show trends of either upward or downward movement.*
+    
+  D. Investigate
+  
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = SpAtk,
+             x = Speed)) + 
+  geom_point(color = "hotpink",
+             size = 3,
+             alpha = 0.8,
+             shape = 19) + 
+  geom_smooth(method = "lm", se = FALSE,
+              color = "dimgray") +  
+  coord_cartesian(ylim = c(0, 160)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 160, by = 10), 
+                     labels = seq(from = 0, to = 160, by = 10),
+                     expand = c(0,0)) + 
+   scale_x_continuous(breaks = seq(from = 0, to = 170, by = 10), 
+                     labels = seq(from = 0, to = 170, by = 10),
+                     expand = c(0,0)) +
+  labs(title = "How Do Special Attack Scores Vary Across Speed? ",
+       subtitle = "All Pokemon",
+       y = "Special Attack Score",
+       x = "Speed Score",
+       tag = "F") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 6.5),
+         axis.ticks = element_line(color = "black"))
+
+```
+  
+  E. Summarize
+    
+    *Special Attack Score and Speed Score have a positive relationship with one another. As Special Attack increases, so does Speed. There is a lot of variation in Special Attack score and speed, with several notiable outliers.*
+    
+  F. Conclusion and rationale
+    
+    *Special Attack and Speed are are indeed related to one another. They have a positive relationship. This could be because Special Attack is based on speed of the pokemon. One possible theory is that as speed of pokemon increases, so does it's level. As such, increase in level is what leads to a higher Special Attack. Of course, more testing would have to be done for such a conclusion!*
+
+
+### 3. "Hey thanks for the recommendation for which starter to choose. Mine is already really strong! I'm curious about what other types of pokemon I should target for my team. I want my team to have the highest *Attack* possible. No one will stand a chance!"
+
+  A. Could you look into how strong in *Attack* the different primary *Type* are on average (with a **point**), including how variable those scores might be (with a **range**)?
+
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = Attack,
+             x = Type1)) + 
+  geom_point(aes(color = Type1,
+                 fill = Type1)) + 
+  stat_summary(fun.data = "mean_se",
+               geom = "pointrange",
+               color = "black",
+               shape = 20) + 
+  theme(legend.position = "none") + 
+  coord_cartesian(ylim = c(0, 170)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 170, by = 10), 
+                     labels = seq(from = 0, to = 170, by = 10), 
+                     expand = c(0,0)) + 
+  labs(title = "How Do Attack Scores Vary Across Starter Primary Types? ",
+       subtitle = "All Types of Pokemon",
+       y = "Attack Score",
+       x = "Primary Type",
+       tag = "G") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 7),
+         axis.ticks = element_line(color = "black"))
+
+
+```
+
+  Summary:
+    
+    *There is a wide range of attack scores depending on the primary type of pokemon. The pokemon with the highest average score is Dragon types, with Psychic types having the lowest average score. Flying type pokemom have the largest range.*
+
+  Conclusion and rationale:
+    
+    *The pokemon type that had the highest average Attack Score across Primary Types was: Dragontype pokemon. Dragons are generally massive, and as such their attacks pack a punch. They also tend to have secondary types that are known for their attack (ex. Type 2 rock, fire, ground, etc), which can help explain this result!*
+    
+
+> "Holy cow.... uh, wow okay that's interesting. Oh, maybe there just aren't that many of some pokemon types. Do you think that could explain this?"
+
+*Possibly. There aren't a large number of Dragon Primary types, so adding a few data points can markedly change the outcome.*
+
+  B. Now I'm curious about the distribution of pokemon types. How many of each different pokemon type there are? What primary type is there most and least of? Does this change across generations?
+
+```{r}
+
+pokemon %>%
+  ggplot(aes(x = Generation)) + 
+  geom_bar(aes(fill = Generation),
+           color = "black") +
+  scale_fill_brewer(palette = "Dark2") + 
+  facet_grid(cols = vars(Type1)) + 
+  coord_cartesian(ylim = c(0, 40)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 40, by = 5), 
+                     labels = seq(from = 0, to = 40, by = 5), 
+                     expand = c(0,0)) + 
+  labs(title = "Frequency of Primary Pokemon Types Across Generations ",
+       subtitle = "All Types of Pokemon",
+       y = "Frequency",
+       x = "Generation",
+       tag = "H") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 7),
+         axis.ticks = element_line(color = "black"))
+
+
+#Counts in Total
+pokemon %>%
+  ggplot(aes(x = Type1)) + 
+  geom_bar() +
+  scale_y_continuous(breaks = seq(from = 0, to = 120, by = 5), 
+                     labels = seq(from = 0, to = 120, by = 5), 
+                     expand = c(0,0))
+  
+  
+
+```
+
+  Summary:
+  Now I'm curious about the distribution of pokemon types. How many of each different pokemon type there are? What primary type is there most and least of? Does this change across generations?
+    
+    *Here is a rough estimate of the Total: Bug (63), Dark (27), Dragon (22), Electric (36), Fairy (17), Fighting (25), Fire (47), Flying (2), Ghost (23), Grass (66), Ground (32), Ice (22), Normal (93), Poison (27), Psychic (47), Rock (40), Steel (27), Water (105). 
+    There is the most of the Water primary type (105), and the least of the Flying primary type (2).
+    How interesting.It does change across generations. For instance, Gen 1 has the highest count of water primary types while Gen 6 has the highest count of fairy primary types.*
+
+  Conclusion and rationale:
+    
+    *Different generations of pokemons have different amounts of primary types. This could potentially help explain the differences in attack, defense, and health scores we noticed across generations. Overall, there is the highest amount of Normal types across generation with Flying types having the least amount.*
+
+### 4. "I have this dumb idea that pokemon might get taller across generations. I know, just humor me." 
+
+  A. What are some reasons why this might be true?
+    
+    *Might be true because of differing amounts of the types primary types of pokemon across generations. Generations that have higher counts of pokemon types that are tall (dragon, etc), will have a higher average height.*
+  
+  B. What are some reasons this might not be true?
+    
+    *Might not be true because each Pokemon generation is different pokemons that might not be completely the same across generations. As such, height might average out, or might decrease across generations.*
+
+  C. What is your prediction?
+    
+    *If pokemon height does not vary across generations, then the medians should be different. There should be a wide range of heights depending on the generation. If pokemon height does not vary across generation, then the boxplots should look similar to one another.*
+    
+  D. Investigate
+  
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = height_m,
+             x = Generation)) + 
+  stat_summary(aes(color = Generation), fun.data = "mean_se", geom = "errorbar", width = 0.3) + 
+  stat_summary(fun = "mean", geom = "line", group = 1, linetype = "longdash") + 
+  stat_summary(fun = "mean", geom = "point") + 
+  labs(title = "How Does Pokemon Height Vary Across Generations? ",
+       y = "Height (meters)",
+       x = "Generation",
+       tag = "I") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 10),
+         axis.ticks = element_line(color = "black"))
+
+```
+  
+  E. Summarize
+    
+    *Pokemon Height tends to decrease across generations. The lowest height has been in Generation 5, with a height value of ~1.03. The highest value has been in Generation 1 with a height value of 1.204.*
+    
+  F. Now, use an alternative type of visualization to investigate the same question
+  
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = height_m,
+             x = Generation)) + 
+  geom_boxplot(aes(fill = Generation),
+               color = "black") + 
+   coord_cartesian(ylim = c(0, 15)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 15, by = 2), 
+                     labels = seq(from = 0, to = 15, by = 2), 
+                     expand = c(0,0)) + 
+  labs(title = "How Does Pokemon Height Vary Across Generations? ",
+       y = "Height (meters)",
+       x = "Generation",
+       tag = "I") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 10),
+         axis.ticks = element_line(color = "black"))
+
+```
+
+  G. Is the pattern/relationship the same as above? If not, in what way is it different?
+    
+    *It is somewhat Using the boxplot, it becomes clearer that the height different is very small. So much so, that it can be argued that pokemon height does not change across generations. *
+    
+  H. Overall conclusion and rationale
+    
+    *Regarding the idea that pokemon get taller across generations, these graphs show that the theory is incorrect. Height tends to decrease across generations, but at very small amounts. The biggest change is .174 meters (6.8 inches)*
+
+# Part 3:
+
+Sometimes, you are fortunate enough to get to investigate your OWN questions and ideas! Think of two questions or things you are curious about, or something you can visualize, using the data at your disposal. 
+
+If you have no ideas at all, here are a couple to either get you thinking or that you can just use:
+
+- Are legendary pokemon harder to catch?
+- Are taller pokemon harder to catch?
+- Do either of the above vary across generations? 
+- Does the number of legendary pokemon change across generations?
+
+(Note: You CAN take the average of a logical variable since `TRUE` and `FALSE` correspond to 1 and 0!)
+
+1. *Are pokemons with greater Health Points harder to catch?.*
+
+
+  A. What is your prediction?
+    
+    *If with larger healthpoints are harder to catch, then we should see a donward trend in the data. The greater the number of health points, the harder it is to catch the pokemon.*
+
+  B. What are some reasons why this might be true?
+    
+    *Might be true if larger amounts of healthpoints means that the pokemon is of a higher level. Higher level pokemons are harder to capture in general.*
+  
+  C. What are some reasons this might not be true?
+    
+    *Might not be true because healthpoint might be dependent on the type of pokemon, and type of pokemon may not be related to capture rate.*
+    
+  D. Investigate
+  
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = HealthPoints,
+             x = capture_rate)) + 
+  geom_point(color = "cyan4",
+             size = 3,
+             alpha = .5,
+             shape = 19) + 
+  geom_smooth(method = "lm", se = FALSE,
+              color = "black") +  
+  coord_cartesian(ylim = c(0, 270)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 270, by = 10), 
+                     labels = seq(from = 0, to = 270, by = 10),
+                     expand = c(0,0)) + 
+  labs(title = "How does Capture Rate Change with Health Points of Pokemon? ",
+       subtitle = "All Pokemon",
+       y = "Health Points",
+       x = "Capture Rate",
+       tag = "J") + 
+   theme(plot.title = element_text(size = 15,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 6.5),
+         axis.ticks = element_line(color = "black"))
+```
+  
+  E. Summarize
+    
+    *Health Points and Capture rate are related to each other; but negatively. As Health Point increases, Capture Rate decreases. There are several outliers to this.*
+    
+  F. Conclusion and rationale
+    
+    *The higher the amount of health points a pokemon has, the easier it is to capture it. That is in general. This could possibly be because Health Points is related to the type of pokemon. It is possible that specific types of pokemon that have lower health have a higher capture rate. It could also be that lower level pokemon have less health, so they are easier to capture.*
+
+
+2. *Does the number of legendary pokemon change across generations?.*
+
+  A. What is your prediction?
+    
+    *If the number of legendary pokemon does NOT change acorss generations, then the line of best fit should be neutral. The frequency should also remain very similar to each other.*
+
+  B. What are some reasons why this might be true?
+    
+    *This might be true because different generations have a quota of legendary pokemon to reach. Also might be true if the amounts of pokemon remains constant throughout generations AND the pokemon to legendary ratio is constant.*
+  
+  C. What are some reasons this might not be true?
+    
+    *It might not be true if different types of pokemon vary across generations. Assuming that different types of pokemon have different rates of legendary level ups. Also might not be true if ratio of normal pokemon to legendary is not constant.*
+    
+  D. Investigate
+  
+```{r}
+
+pokemon %>%
+  ggplot(aes(x = Legendary)) + 
+  geom_bar(aes(fill = Legendary),
+           alpha = 0.7) + 
+  scale_fill_manual(values = c("red", "green")) +  
+  facet_grid(cols = vars(Generation)) +
+  coord_cartesian(ylim = c(0,150)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 150, by = 10), 
+                     labels = seq(from = 0, to = 150, by = 10), 
+                     expand = c(0,0)) + 
+  labs(title = "Amount of Legendary Pokemons Across Generations",
+       subtitle = "All Pokemon across Generations",
+       y = "Frequency",
+       x = "Pokemon Legendary Status",
+       tag = "J") + 
+   theme(plot.title = element_text(size = 18,
+                                  hjust = 0.5),
+        plot.subtitle = element_text(size = 12,
+                                     hjust = 0.5),
+        plot.tag = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic",
+                                    hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(t = 0.1,
+                                                    unit = "inch")),
+        axis.title.y = element_text(size = 12,
+                                    face = "bold",
+                                    margin = margin(r = 0.1, 
+                                    unit = "inch")),
+        axis.text = element_text(color = "black",
+                                 size = 6.5),
+         axis.ticks = element_line(color = "black"))
+
+```
+  
+  E. Summarize
+    
+    *The amount of legendary pokemon vary across generations. It tends to go up, then goes back down. Generation 4 has the highest amount of legendary pokemon with a whopping 10. Generation 1 has the lowest amount with a score of 5.*
+    
+  F. Conclusion and rationale
+    
+    *If catching legendary pokemon was the goal, the player would have best luck in Generation 4. In general, the amount of legendary pokemon varies a decent amount. Generation 4 contains 2x the amount of legendary pokemon than Generation 1. This is possibly because of the different types of pokemon in each generation. A cross comparison would have to be done before any conclusion for that!*
+
+
+
+# Part 4:
+
+Recreate the following visualizations:
+
+https://drive.google.com/uc?export=view&id=1A5KszqsxRXpI2KbJHAEoFvMTXjYFp1ym
+
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = Type1,
+             x = Type2)) + 
+  geom_bin_2d(color = "black") + 
+  scale_fill_gradient(low = "white", high = "purple4") + 
+  theme(axis.text = element_text(color = "black",
+                                 size = 7))
+
+```
+
+https://drive.google.com/uc?export=view&id=1NmG7S1ujgC7xfZ5PV4CT-Z8qwcEc9vsn
+
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = capture_rate,
+             x = Speed)) + 
+  geom_point(color = "red",
+             alpha = 0.2,
+             shape = 19,
+             size = 3.5)  + 
+    geom_point(aes(color = Legendary,
+                   group = Legendary,
+                   shape = Legendary),
+             size = 3.5,
+             alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_color_manual(values = c("red", "green4")) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 275, by = 25), 
+                     labels = seq(from = 0, to = 275, by = 25)) + 
+  scale_x_continuous(breaks = seq(from = 0, to = 150, by = 25),
+                     labels = seq(from = 0, to = 150, by = 25))
+
+  
+```
+
+https://drive.google.com/uc?export=view&id=1UvlUJ_fsYUKsKdPv8A2y0txg9_mR7ZTO
+
+```{r}
+pokemon %>%
+  ggplot(aes(y = HealthPoints,
+             x = Generation)) + 
+  geom_violin(aes(color = Generation),
+              lwd = 1) +
+  scale_color_viridis(discrete = TRUE, option = "viridis") + 
+  geom_jitter(color = "black",
+              alpha = 0.2,
+              width = 0.1) + 
+  stat_summary(aes(color = Generation), fun = "mean", geom = "point", shape = 18, size = 7) + 
+   scale_y_continuous(breaks = seq(from = 0, to = 250, by = 25), 
+                     labels = seq(from = 0, to = 250, by = 25)) + theme_classic()
+
+
+```
+
+https://drive.google.com/uc?export=view&id=1s1hdjhqGdulVDVUDF89LhnoIGtneOeH4
+
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = capture_rate,
+             x = Generation)) + 
+  stat_summary(fun = "mean", geom = "bar") + 
+  facet_grid(cols = vars(Legendary)) + 
+  stat_summary(aes(fill = Generation), geom = "bar") + 
+  scale_fill_brewer(palette = "YlGn")
+
+```
+
+https://drive.google.com/uc?export=view&id=1g9lLPN0X0go2NLRFAPxURhMM2byYLsm2
+
+```{r}
+pokemon %>%
+  ggplot(aes(y = SpDef,
+             x = Legendary)) + 
+  stat_summary(aes(fill = Generation), fun = "mean", geom = "bar", position = position_dodge()) + 
+  stat_summary(aes(fill = Generation), fun.data = "mean_se", geom = "errorbar", size = 0.1, width = 0.2, position = position_dodge2())
+  
+```
+
+https://drive.google.com/uc?export=view&id=1T91pzhpwndhSyfSeeoI3ts8Zg5kyo1gA
+
+```{r}
+
+pokemon %>%
+  ggplot(aes(y = Defense,
+             x = height_m)) + 
+  geom_point(aes(fill = Generation),
+             alpha = 0.4,
+             shape = 21,
+             color = "black") +
+  scale_fill_brewer(palette = "Dark2") + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  facet_grid(cols = vars(Generation),
+             rows = vars(Legendary))
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 400
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 9.9
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 2.4
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+**laying on ground in defeat _(:_」∠)_**
+

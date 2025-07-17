@@ -1,0 +1,267 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+# Part 1:
+
+```{r}
+var1 = 9
+var2 = 6
+```
+
+
+ 1. Arithmetic Operators
+
+ A. Find the sum of 8 and 8
+```{r}
+
+```
+
+ B. Find the product of 2 and 7
+```{r}
+
+```
+
+ C. Exponentiate 3 to the power of 3
+```{r}
+
+```
+
+ D. Find the difference of 89 and 16
+```{r}
+
+```
+
+ E. Find the quotient of 9 and 2
+
+```{r}
+
+```
+
+ 2. Comparison Operators
+
+ A. Write a test to evaluate whether `var1` is less than `var2`
+```{r}
+
+```
+
+ B. Write a test to evaluate whether `var1` is equal to `var2`
+```{r}
+
+```
+
+ C. Write a test to evaluate whether the sum of `var1` and `var2` is greater than or equal to the product of `var1` and `var2`
+```{r}
+
+```
+
+ D. Write a test to evaluate whether `var2` squared is not equal to `var1` cubed.
+```{r}
+
+```
+
+ E. Write a test to evaluate whether the remained of `var1` squared divided by `var2` is greater than 0.
+
+```{r}
+
+```
+
+ F. Write a test to evaluate whether `var2` squared is less than or equal to 50
+
+```{r}
+
+```
+
+ 3. Logical Operators
+
+ A. Use `&` to evaluate 2A. and 2C.
+```{r}
+
+```
+
+ B. Use `!` to evaluate 2D.
+```{r}
+
+```
+
+ C. Use `|` to evaluate 2E. and 2B.
+```{r}
+
+```
+
+ D. Now, use each operator (`&`, `!`, and `|`) combined with at least one other operator (logical or comparison operators).
+
+`&`
+
+```{r}
+
+```
+
+`!`
+
+```{r}
+
+```
+
+`|`
+
+```{r}
+
+```
+
+ 4. Define one variable that contains the number 3, another containing "Hi!", and another containing `FALSE`. Use `typeof()` to verify the type of each of these variables.
+
+```{r exercise 4}
+ 
+```
+
+
+ 5. Create 3 vectors that each contain a different type of data (number, character, and logical). See which operations can be applied to each vector.
+
+```{r exercise 5}
+ 
+```
+
+ 6. Index and save the first element from your first vector to a variable called `first_first`, and the last element from your last vector to one called `last_last`.
+
+```{r exercise 6}
+ 
+```
+
+ 7. Complete the code below to create a dataframe called `my_df` that has information about you.
+
+```{r exercise 7}
+ <- data.frame("Name" = ,
+               "" = "PSYC193L",
+               "Term" = )
+```
+
+ 8. 
+ 
+ A. Index the first row of your dataframe and save it to a variable called `df_first_row`. Index the course name (1st value of 2nd row) and save it to a variable called `course_name`. 
+ 
+```{r exercise 8a}
+
+```
+ 
+ B. Now index the course name in a different way and save it to a variable called `course_name_alt`. Write a test to valuate whether `course_name` and `course_name_alt` are equivalent.
+
+```{r exercise 8b}
+
+```
+
+
+# Part 2:
+
+ 1. Install the packages listed below:
+
+- tidyverse
+- patchwork
+- magrittr
+- viridis
+- RColorBrewer
+- DT
+- ggExtra
+- gridExtra
+- reprex
+- knitr
+- markdown
+- palmerpenguins
+- janitor
+- ggridges
+
+```{r, eval = FALSE}
+
+```
+
+
+ 2. Create a new code chunk below. Name the code chunk "exercise 2".
+
+
+
+
+
+
+ 3. Clean up all the code below so that it follows the proper formatting guidelines listed above.
+
+```{r exercise 3, eval = FALSE}
+df[,4]
+df[ ,2]
+df[ , 0]
+
+mean (df$col, na.rm = TRUE)
+mean( df$col, na.rm = TRUE )
+
+3+4+5
+-2*8^2
+
+#compute persons height
+height<-feet*12+inches
+T+1<2
+!F|F+1
+
+long_computation('little',bunny=1,foo*2,hopping,through='forest')
+
+```
+
+ 4. Rewrite the following code as properly formatted pipe chains.
+
+```{r exercise 4, eval = FALSE}
+
+pull(swoop(loop(laces)))
+
+
+leave_house(get_dressed(get_out_of_bed(wake_up(me))))
+```
+
+ 5. Download the files for today's class that came with the assignment. Import both the .csv and .RData files. Make sure you save them to variables! Copy/paste their file path in the cell below.
+
+```{r exercise 6, eval = FALSE}
+
+```
+
+ 6. Export your `my_df` dataframe as a .csv file called "my_dataframe.csv". Export your dataframe and all the variables you saved to an .RData file called "my_data.RData".
+
+```{r exercise 7, eval = FALSE}
+
+```
+
+
+# Feedback 
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

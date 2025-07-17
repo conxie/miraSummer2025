@@ -1,0 +1,196 @@
+---
+title: "ggplot intro practice problems"
+author: ""
+date: "X/XX/2022"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# Modify the file path in the code below to properly load the "diamonds_sample.RData" file
+load("diamonds_sample.RData") 
+```
+
+
+## Intro
+
+You are going to work with a subset of data in the df `diamonds_sample`. All questions below will be in reference to `diamonds_sample`.
+
+* `price` - price in USD
+* `carat` - weight of the diamond
+* `cut` - quality of the cut
+* `color` - diamon color
+* `clarity` - a measurement of how clear the diamond is
+* `x` - length in mm
+* `y` - width in mm
+* `z` - depth in mm
+* `depth` - total depth percentage
+* `table` - width of top of diamond relative to widest point
+
+## Aesthetic Setting
+
+Let's first practice setting different aesthetics manually. In all the following graphs, use `geom_point()` to represent each individual observation with a point. After creating the visualization, write a brief sentence describing the relationship you see between the two variables.
+
+1. Create a graph with `price` on the y-axis, `carat` on the x-axis, and change the color of all the points to your favorite color.
+
+```{r}
+
+```
+
+2. Create a graph with `table` on the y-axis, `depth` on the x-axis, and change the color of all the points to chartreuse
+
+```{r}
+
+```
+
+3. Create a graph with `carat` on the y-axis, `table` on the x-axis, and change the shape of all points to 8
+
+```{r}
+
+```
+
+4. Create a graph with `x` on the y-axis, `y` on the x-axis, and change the alpha to 0.25
+
+```{r}
+
+```
+
+5. Create a graph with `depth` on the y-axis, `z` on the x-axis, make the shape 13 and the color orchid
+
+```{r}
+
+```
+
+6. Create a graph with `table` on the y-axis, `carat` on the x-axis, make the color tomato, shape 3, size 2, and adjust the alpha to a level you think is best
+
+```{r}
+
+```
+
+(Challenge) Create a graph with `price` on the y-axis, `depth` on the x-axis, make each observation be represented by a smaller gold circle within a larger magenta circle outline (hint: think about your layering order).
+
+```{r}
+
+```
+
+
+## Aesthetic Mapping
+
+Now, instead of manually setting the aesthetics you will map them to variables in the dataset. In doing so, you will be able to explore these relationships even further! You will be given instructions on how to generate a particular graph.
+
+Before running the code to create your graph...
+A. Write down the *question* that this graph is exploring.
+B. Write a brief *prediction* of what you expect the relationship or pattern to be. 
+
+After observing the visualization... 
+A. Write a brief *summary* describing what that relationship or pattern actually is, and explain what evidence you have for this (e.g., "all the brown colored dots that correspond to 'Ideal' cut diamonds are higher on the y-axis, which here is 'price'. So I can see that 'Ideal' cut diamonds tend to be the most expensive.")
+
+*NOTE: For some of these visualizations, it may be hard to discern any actual patterns or relationships. Just try your best to describe what you see. If it is too hard to determine anything, state that and explain why!*
+
+1. Create a graph with `price` on the y-axis, `carat` on the x-axis, and map the color of all the points to `cut`. Make any other aesthetic modifications you need to make the visualization ans legible as possible.
+
+Question:
+
+  *Question here*
+
+
+Prediction:
+
+  *Prediction here*
+
+
+```{r}
+
+```
+
+Summary:
+
+  *Summary here*
+
+
+2. Create a graph with `carat` on the y-axis, `z` on the x-axis, and map the color of all the points to `color`. Make any other aesthetic modifications you need to make the visualization ans legible as possible.
+
+Question:
+
+  *Question here*
+
+
+Prediction:
+
+  *Prediction here*
+
+
+```{r}
+
+```
+
+Summary:
+
+  *Summary here*
+
+3. Create a graph with `depth` on the y-axis, `y` on the x-axis, and map the color of all the points to `clarity`. Make any other aesthetic modifications you need to make the visualization ans legible as possible.
+
+Question:
+
+  *Question here*
+
+
+Prediction:
+
+  *Prediction here*
+
+
+```{r}
+
+```
+
+Summary:
+
+  *Summary here*
+
+## Free Reign
+
+Below, try to make the worst, most illegible, visualization you can. Use whatever aesthetic modifications you want, but do so within reason (e.g., don't just set `size = 100` or something).
+
+4. Create a graph with `price` on the y-axis, `carat` on the x-axis.
+
+```{r}
+
+```
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

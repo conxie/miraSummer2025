@@ -1,0 +1,184 @@
+# Data Transformation
+
+```{r}
+library(tidyverse) # Load tidyverse packages
+load(url("https://github.com/Psyc193L/Psyc193L.github.io/blob/main/data/bakers.RData?raw=true")) # Load example data
+```
+
+Data you get will not always be tidy, you may need to make data *not* tidy, and your data may not even all be in a singular object!
+
+## Pivots
+
+Two main functions to reshape data are `pivot_longer()` and `pivot_wider()`.
+
+### pivot_longer()
+
+`pivot_longer()` "lengthens" data, increasing the number of rows and decreasing the number of columns. Must specify:
+
+- specific **col**umn**s** to collapse
+- name for new column with **names** 
+- name for new column with **values**
+
+`pivot_longer(cols, names_to, values_to)`
+
+```{r}
+bakers_long <- bakers %>%
+  pivot_longer(cinnamon_1:nutmeg_3,
+               names_to = "spice",
+               values_to = "correct")
+
+bakers_long
+```
+
+`bakers` contains data from contestants on a baking show (where they had to guess a spice from a blind taste test).
+
+Observe how `pivot_longer()` can transform this df so that each row is a unique observation:
+
+
+> Use `pivot_longer()` to pivot `bakers`, have the names column called "spice" and the values column called "correct", and save to a new df called `bakers_long`
+
+```{r}
+
+view(bakers)
+
+bakers_long <- bakers %>%
+  pivot_longer(cinnamon_1:nutmeg_3,
+               names_to = "spice",
+               values_to = "correct")
+
+bakers_long
+
+```
+
+### pivot_wider()
+
+`pivot_wider()` "widens" data, increasing the number of columns and decreasing the number of rows. Must specify:
+
+- where new column **names** are *from*
+- where the **values** for those new columns are **from**
+
+`pivot_wider(names_from, values_from)`. 
+
+
+> To verify this is true, take `bakers_long` and try to recreate the original `bakers` df with `pivot_wider()`. Compare that output to `bakers`. Does it match?
+
+```{r}
+
+bakers_long %>%
+  pivot_wider(names_from = "spice",
+              values_from = "correct")
+
+bakers
+#identical cuz we just redid the pivot londer 
+```
+
+
+## Relational Data
+
+Processes that involve working with data in multiple objects are referred to as **relational data**.
+
+### `bind_rows()`
+
+```{r}
+bakers2
+```
+
+`bakers2` has data from contestants on a different episode, and has the same form as the data in `bakers`. You may want to work with all the data in one dataframe.
+
+`bind_rows()` -- *bind* all the *rows* of the objects passed to it. 
+
+> Complete the code below to combine `bakers` and `bakers2`
+
+```{r}
+bind_rows(bakers, bakers2)
+```
+
+
+If one object contains columns the other does not, those values will be filled with `NA`.
+
+```{r}
+bakers %>%
+  mutate("cumin_4" = c(1,1,0,0)) %>%
+  bind_rows(bakers2)
+```
+
+When individual dfs do not have identical columns you the observations from `x` to be matched to the corresponding observation in `y` (usually by the values of some ID columns appearing in both).
+
+## Mutating Joins
+
+Mutating Joins, like `mutate()`, add new columns to a dataframe.
+
+### inner_join()
+
+`inner_join()` -- returns a df containing all observations in `x` that have a matched observation in `y`, for all columns in `x` and `y`.
+
+### left_join()
+
+`left_join()` -- returns a df containing all observations in `x` and all columns from `x` and `y`.
+
+### right_join()
+
+`right_join()` -- basically the same as `left_join()` except swap `x` with `y`.
+
+### full_join()
+
+`full_join()` -- returns a df containing all observations (rows) from both `x` and `y` (containing all the original data from both `x` and `y`).
+
+## Set operators
+
+Quick and easy way to filter for different *sets* of observations.
+
+`bakers3` contains information about the contestants on an all-star version of this baking show.
+
+```{r}
+bakers_combined <- bind_rows(bakers, bakers2)
+
+bakers_combined
+
+bakers3
+```
+
+### union()
+
+`union()` -- returns a df containing all the unique observations (rows) in `x` and `y`
+
+> Use `union()` to find all the contestants appearing in any of the 3 episodes you have data for
+
+```{r}
+union(bakers_combined, bakers3)
+```
+
+### intersect()
+
+`intersect()` -- returns a df containing only the observations (rows) that are in **both** `x` AND `y`.
+
+> Use `intersect()` to find what contestants from episodes 1 and 2 (`bakers_combined`) were in the all-star episode.
+
+```{r}
+bakers_combined
+bakers3
+intersect(bakers_combined, bakers3)
+
+```
+
+### setdiff()
+
+`setdiff()` -- returns a df containing only the observations (rows) in `x` that **do NOT** appear in `y`.
+
+> Use `setdiff()` to find the contestants in the all-star episode who were not in episodes 1 or 2.
+
+```{r}
+
+setdiff(bakers_combined, bakers3)
+
+```
+
+
+## Extra Resources
+
+* [pivoting vignette](https://tidyr.tidyverse.org/articles/pivot.html)
+* [tidyexplain animated illustrations](https://github.com/gadenbuie/tidyexplain)
+* [r4ds relational data](https://r4ds.had.co.nz/relational-data.html#relational-data)
+* [more relational data](https://rstudio-education.github.io/tidyverse-cookbook/transform-tables.html#joins)
+
+## References

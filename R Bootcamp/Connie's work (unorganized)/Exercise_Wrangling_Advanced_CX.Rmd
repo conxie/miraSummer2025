@@ -1,0 +1,172 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+# Set up
+```{r}
+library(tidyverse)
+msleep2 = msleep %>%
+  select(-conservation)
+```
+
+With the `msleep2` dataset...
+
+1. Use helper functions to...
+   A. Select all columns that start with "sleep".
+   
+```{r}
+msleep2 %>%
+  select(starts_with("sleep"))
+
+view(msleep2)
+
+```
+   
+   B. Select all columns that end with "wt".
+
+```{r}
+
+msleep2 %>%
+  select(ends_with("wt"))
+
+```
+
+2. Select all columns that contain "re".
+
+```{r}
+
+msleep2 %>%
+  select(contains("re"))
+
+```
+
+3. Use `where()` to select...
+   A. All columns that are numeric.
+   
+```{r}
+
+msleep2 %>%
+  select(where(is.numeric))
+
+```
+   
+   B. All columns that are characters.
+
+```{r}
+
+msleep2 %>%
+  select(where(is.character))
+
+```
+
+4. User helper functions to select the columns that...
+   A. Contain "re" and are *numeric* data.
+   
+```{r}
+
+msleep2 %>%
+  select(contains("re")) %>%
+  select(where(is.numeric))
+
+```
+   
+   B. End with "e" and do not start with "sleep".
+
+```{r}
+
+msleep2 %>%
+  select(ends_with("e")) %>%
+  select(!starts_with("sleep"))
+
+```
+
+5. 
+   A. Filter for observations where scores in any variable that ends with "wt" are above 35.
+   
+```{r}
+
+msleep2 %>%
+  filter(if_any(ends_with("wt"), ~ . > 35))
+
+```
+   
+   B. Filter for observations where scores in any variable that starts with "sleep" are less than 2.
+
+```{r}
+
+msleep2 %>%
+  filter(if_any(starts_with("sleep"), ~ . < 2))
+
+```
+
+6. Use helper functions to...
+   A. Round all the columns that are *numeric*.
+   
+```{r}
+
+msleep2 %>%
+  mutate(across(where(is.numeric), round))
+
+
+```
+   
+   B. Round only the columns that are *numeric* and start with "sleep".
+   
+```{r}
+
+msleep2 %>%
+  select(starts_with("sleep")) %>%
+  mutate(across(where(is.numeric), round))
+
+```
+   
+   C. `scale()` the columns that end with "wt" and are *numeric*, then filter the results for only those where all columns that end with "wt" are greater than 0.
+
+```{r}
+
+msleep2 %>%
+  mutate(across(where(is.numeric))) %>%
+  mutate(across(ends_with("wt"), scale)) %>%
+   filter(if_all(ends_with("wt"), ~ . > 0))
+
+```
+
+
+# Feedback 
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 70
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 2.7
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 8.1
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+**ʕง•ᴥ•ʔง   ᶘಠᴥಠᶅ**
+

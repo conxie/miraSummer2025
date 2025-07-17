@@ -1,0 +1,202 @@
+# Control Flow
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## If/Else statements
+
+### Traditional
+
+`if` statements work as such: 
+
+**if** some test/condition evaluates to `TRUE`, execute some specific code. 
+
+`if` statement syntax:
+
+```{r eval=FALSE}
+if(some test/condition to evaluate) {
+  code for what to do if that test/condition evaluates to true
+}
+```
+
+For example:
+
+```{r}
+x = 4
+
+if(3 < x) {
+  print("The condition evaluated TRUE")
+}
+```
+
+> Fill in the blanks below to create an `if` statement that prints "hello world" if x is greater than 1
+
+```{r}
+if() {
+  print("")
+}
+```
+
+It is always good practice to set up an alternative for when the test evaluates to `FALSE`. That is where `else` statements come in.
+
+> Run the code below a few times and observe the output.
+
+```{r}
+x = sample(c(1:6), 1) # From the values 1 to 6, sample 1 value
+
+if(3 < x) {
+  print("The condition evaluated TRUE")
+} else {
+  print("the condition evaluated FALSE")
+}
+x
+```
+
+Instead of using `else`, you use `else if()` and specify another test. 
+
+> Run the code below a few times and observe the output.
+
+```{r}
+x = sample(c(1:6), 1)
+
+if(4 < x) {
+  print("The first condition evaluated TRUE")
+} else if (2 < x & x < 5) { 
+  print("The second condition evaluated TRUE")
+} else {
+  print("Neither the first or second condition evaluated TRUE.")
+}
+
+x
+```
+
+Writing `if` statements like this is most useful when the code you want to run executes a function
+
+There are two alternative ways to write `if...else` statements. 
+
+### ifelse()
+
+`ifelse()` statements take the form:
+
+`ifelse(test, the value to return if the test evaluates *TRUE*, the value to return if the test evaluates *FALSE*)`
+
+```{r}
+x = sample(c(1:6), 1)
+
+ifelse(3 < x, 
+       "The test evaluated to TRUE", 
+       "The test evaluated to FALSE")
+
+x
+```
+
+Multiple `ifelse()` statements can be chained together, akin to an `else if`.
+
+```{r}
+x = sample(c(1:6), 1)
+
+ifelse(4 < x, 
+       "The first condition evaluated true.",
+       ifelse(2 < x & x < 5, 
+              "The second condition evaluated true.", 
+              "Neither the first or second condition evaluated true."))
+
+x
+```
+
+### case_when()
+
+`case_when()` is just a different way to formulate `ifelse()` strings.
+
+```{r}
+x = sample(c(1:6), 1)
+
+case_when(
+  x < 4 ~ "The first condition evaluated true.",
+  2 < x & x < 5 ~ "The second condition evaluated true.",
+  TRUE ~ "Neither the first or second condition evaluated true."
+)
+
+x
+```
+
+**In sum:**
+
+- Traditional `if...else` for executing some code.
+- `ifelse()` and `case_when()` for returning specific values.
+
+## Loops
+
+Loops are used to repeat certain code iteratively.
+
+```{r eval=FALSE}
+for (val in sequence) 
+  {code to be executed}
+```
+
+The `for` initiates for for loop, `val` is completely arbitrary and can be replaced with anything.
+
+> Execute the code below and compare the values of x before and after the for loop code
+
+```{r}
+x = c(1:10) # Exam scores
+
+x
+
+for (i in 1:length(x)) {
+  x[i]= x[i] + 1 # Set the ith X to be equal to itself + 1
+  # This will be iterated through each value in x
+}
+
+x # Look at output to verify changes
+```
+
+`for` loops are often combined with `if` statements to apply conditional code iteratively through your data. 
+
+E.g., grant bonus credit for SONA participation:
+
+```{r}
+y = data.frame("Exam" = c(1:4), 
+               "Score" = c(88,90,77,98), 
+               "Student" = c("Dave", "Ally", 
+                             "Tyreek", "Jeanie"), 
+               "Sona" = c(0,1,1,0))
+
+y
+
+for (i in 1:nrow(y)) { 
+    # Use nrow for a dataframe
+  if(y$Sona[i] == 1){ 
+    # $ to index -- You want the y dataframe, 
+    # the Student column, and the ith row. 
+    y$Score[i] = y$Score[i] + 5 
+          # For every row in the Score column of 
+          # the y dataframe, if the condition y$Sona[i] == 1 
+          # evaluates to TRUE, that value is going to be 
+          # equal to what is currently there + 5.
+  }
+}
+```
+
+The same task can be accomplished using `ifelse()`, since the goal here is to return values:
+
+```{r}
+y = data.frame("Exam" = c(1:4), 
+               "Score" = c(88,90,77,98), 
+               "Student" = c("Dave", "Ally", 
+                             "Tyreek", "Jeanie"), 
+               "Sona" = c(0,1,1,0))
+
+for (i in 1:nrow(y)) {
+  y$Score[i] = ifelse(y$Sona[i] == 1, # Test
+                      y$Score[i]+5, # What to do if TRUE
+                      y$Score[i]) # What to do if FALSE
+}
+
+y
+```
+
+Only Ally and Tyreek's scores have changed.
+

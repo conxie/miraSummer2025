@@ -1,0 +1,851 @@
+# Different Geoms and When To Use Them
+
+Run all code in the chunk below first!
+
+```{r}
+library(tidyverse) # Load tidyverse
+library(palmerpenguins) # Load penguins data
+mtcars2 = mtcars %>%
+  mutate(gear = factor(gear),
+         cyl = factor(cyl))
+```
+
+
+## One Categorical
+
+Graphing one categorical variable is used to show counts or proportions.
+
+### Bar
+
+One good way of visualizing a single categorical variable is with a bar chart.
+
+Think about the following question:
+
+-- "How many penguin observations do we have from each island?"
+
+> Create a visualization that has a bar for each island, and that bar's height corresponds to the number of penguins recorded on that island. Use `geom_bar()` to do so, where all you need to specify is an x-axis variable.
+
+```{r}
+
+```
+
+The bars could also represent the *proportion* of all observations that came from each island instead of the raw counts.
+
+$$\frac{nObservationsFromIslandX}{sumOfObservationsFromAllIslands}$$
+
+If the **count**'s were on the y-axis before, then you would just want each `..count..` (numerator above) divided by the sum of all the `..count..`s (denominator above).
+
+```{r}
+penguins %>%
+  ggplot(aes(x = island)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..)))
+```
+
+**Note: Proportions must sum to 1! If your bars ever do not sum to one, there is an issue!**
+
+### Pie
+
+Code included here so you have a template if absolutely needed.
+
+```{r}
+penguins %>%
+  ggplot(aes(x = 1,
+             fill = species)) +
+  geom_bar() +
+  coord_polar("y", start = 0)
+```
+
+## One Continuous
+
+**Looking at distributions**
+
+Being able to understand and characterize distributions is an integral part of the Social/Data Scientists toolbox. 
+
+### Histogram
+
+In a histogram, values of the variable of interest are separated into different bins on the x-axis.
+
+The y-axis represents the *frequency* or *count* of some value or range of values in the distribution.
+
+> Using `geom_histogram()`, create a histogram to investigate the distribution of `flipper_length_mm`
+
+```{r}
+
+```
+
+Outline the bars with the color aesthetic.
+
+> Add a black outline to the bars from the visualization above.
+
+```{r}
+
+```
+
+#### Bins
+
+**bins** = number of bins (bars) in your histogram
+**binwidth** = width of each bin (bar)
+
+> Take the code above and compare the difference between using 5 bins and 15 bins.
+  
+```{r}
+
+```
+
+
+### Density
+
+**density plots**, in short, are a smoothed histogram. 
+
+> Use `geom_density()` to create a density plot showing the distribution of `flipper_length_mm`
+
+```{r}
+
+```
+
+### vlines
+
+You can add *vertical lines* to sections of a graph with `geom_vline()`, specifying where on the x-axis (intercept) that line should cross. Since you are doing something to the axis, you must make the specification in an `aes()` call.
+
+> Replace the X's in the code below to add black lines marking the range of scores between 180-200:
+
+```{r}
+penguins %>%
+  ggplot(aes(x = flipper_length_mm)) +
+  geom_histogram(color = 'black',
+                 bins = 15) +  
+  geom_vline(aes(xintercept = X), color = "X", size = 1) +
+  geom_vline(aes(X = X), X = "black", size = 1)
+
+```
+
+## Continuous ~ Continuous
+
+**Relationships**
+
+### Scatter plot
+
+`geom_point()` is used for scatter plots -- where each point on the visualization represents an observation in your data.
+
+> Replace the X's below to investigate the relationship between `body_mass_g` and `bill_depth_mm` with a scatter plot
+
+```{r}
+penguins %>%
+  ggplot(aes(y = X, x = X)) +
+  geom_X()
+```
+
+Use scatter plots for datasets with **lower n’s only**.
+
+
+### 2d Histogram
+
+For datasets with a **large n**, you can use a 2d histogram with `geom_bin2d()`.
+
+> Investigate the relationship between `body_mass_g` and `bill_depth_mm` with a 2d histogram
+
+```{r}
+
+```
+
+A hexbin plot using `geom_hex()` is essentially the same thing but uses hexagons.
+
+> Investigate the relationship between `body_mass_g` and `bill_depth_mm` with a hexbin plot
+  
+```{r}
+
+```
+
+
+### Adding Conditional Means
+
+You can add a line of best fit to show the trend of your data with `geom_smooth()`. 
+
+Two main arguments:
+
+- `method=` - always gets set to "lm"
+- `se=` - refers to whether or not to show error bars on the line (`TRUE` / `FALSE`).
+
+> Investigate the relationship between `body_mass_g` and `bill_depth_mm` with a scatter plot and add the line of best fit without error bars
+
+```{r}
+
+```
+
+
+### Rugs and Margins
+
+Including a "rug" to your scatter plots with `geom_rug()` adds some information about each individual distribution.
+
+> Investigate the relationship between `body_mass_g` and `bill_depth_mm` with a scatter plot and add a rug to the graph
+
+```{r}
+
+```
+
+> Tweak some of the aesthetic settings in the rug (e.g., alpha, size)
+
+```{r}
+
+```
+
+Another way to do so is using `ggMarginal()` from the `ggExtra` package (`ggExtra::ggMarginal()`).
+
+> Run the code below to see:
+
+```{r}
+(penguins %>%
+  ggplot(aes(y = body_mass_g, x = bill_depth_mm)) +
+  geom_point()) %>%
+ggExtra::ggMarginal(type = "histogram")
+```
+
+
+## Continuous ~ Categorical
+
+**Comparisons**
+
+For example: 
+
+"How does the average weight (`body_mass_g`) of the penguins compare across islands (`island`)?"
+
+Helpful to first examine how the values of the continuous variable vary to begin with.
+
+> Above, you learned about how to investigate a distribution. Use one of those methods to investigate `body_mass_g`.
+
+```{r}
+
+
+```
+^ This variability is what is trying to be explained (e.g., perhaps by `island`)
+
+### `stat_summary()`
+
+`stat_summary()` - versatile function used to create visualizations summarizing the y values for each unique x value. 
+
+2 main arguments:
+
+- `fun =` what type of summary to visualize for the y values. 
+- `geom =` how to visualize those summaries.
+
+You will most often use "mean" for the `fun`.
+
+#### Bar
+
+Use "bar" for `geom=`.
+
+Formal predictions should be made before running the graph code and short summaries should be written after observing them.
+
+> Replac the X's below to use `stat_summary()` and compare the mean `body_mass_g` (represented with bars) across `island`
+
+Prediction:
+--
+
+--
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) + 
+  X(fun = "X", X = "bar")
+```
+
+Summary:
+--
+
+--
+
+#### Point
+
+> Use `stat_summary()` to compare the mean `body_mass_g` (represented with a point) across `island`
+
+```{r}
+
+
+```
+
+
+Summary (compare to when the means were represented with bars)
+--
+
+--
+
+#### Line
+
+> Use `stat_summary()` to compare the mean `body_mass_g` (represented with a line) across `island`
+
+```{r}
+
+```
+
+
+> add `group = 1` to the code from above.
+
+```{r}
+
+
+```
+
+> Change the linetype from the visualization above
+
+```{r}
+
+```
+
+> Use `stat_summary()` to compare the mean `body_mass_g` (represented with a point AND a line) across `island`
+
+```{r}
+
+
+```
+
+
+### Error bars
+
+You will use the SEM in this course.
+
+You want the *s*tandard *e*rror of your *mean* ("mean_se"), and want that represented by error bars ("errorbar").
+
+> Replace the X's in the code below to add error bars to the means represented by a bar.
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  stat_summary(fun = "mean", geom = "X") +
+  stat_summary(fun.data = "X", geom = "X")
+```
+
+
+Note you have to use `fun.data = ` instead of `fun = `. 
+
+> Add a `width` aesthetic to the errorbar in the code above and find a value you think looks good.
+
+```{r}
+
+```
+
+> Use `stat_summary()` to compare the mean `body_mass_g` (represented with a point) across `island` and add errorbars to the means.
+
+```{r}
+
+```
+
+> Take your code from above and use "linerange" as the geom instead of "errorbar"
+
+```{r}
+
+```
+
+> Take your code from above, use "pointrange" as the geom, and get rid of the other `stat_summary()` call.
+
+```{r}
+
+```
+
+### Boxplots
+
+> Use `geom_boxplot()` to compare the mean `body_mass_g` across `island`
+
+```{r}
+
+```
+
+### Problem With Summary Stats
+
+Including nothing but summary statistics in your graphs is not much better than only reporting the summary statistics as numbers.
+
+It is recommended to visualize the actual distribution of your data! 
+
+### Violin Plots
+
+Best when your dataset has a large n.
+
+> Use `geom_violin()` to create a violin plot comparing the mean `body_mass_g` across `island`
+
+```{r}
+
+
+```
+
+> Use **both** a violin and boxplot to compare the mean `body_mass_g` across `island`
+
+```{r}
+
+
+```
+
+Since ggplot is an additive/layered system, you can combine different geoms.
+
+### Jitter Plots
+
+Since the x-axis is a categorical variable, all the data points will have the same value:
+
+> Run code below
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  geom_point()
+```
+
+Jitter plots are best for small n’s.
+
+> Use `geom_jitter()` to create a jitter plot comparing the `body_mass_g` scores across `island`
+
+```{r}
+
+
+```
+
+jitter plots pair well with other geoms.
+
+> Use **both** a boxplot and jitter plot to compare the `body_mass_g` across `island`
+
+```{r}
+
+```
+
+> Use **both** a violin and jitter plot to compare the `body_mass_g` across `island`. Include a point indicating the mean as well.
+
+```{r}
+
+
+```
+
+
+#### Limits
+
+1. Adding noise changes the data being visualized. Only jitter along a categorical variable. 
+
+> Add the appropriate argument (`height` or `width`) to the code below so it does not jitter along a continuous variable.
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  geom_jitter()
+```
+
+2. Jitter is randomly generated each time the code is executed.
+
+3. May see this message:
+
+*Warning messages: 1: Removed `X` rows containing non-finite values (stat_smooth). 2: Removed `X` rows containing missing values (geom_point).*
+
+**X** data points are being removed from the dataset when generating the graph.
+
+### Variations on Jitter
+
+#### Strip Chart
+
+> Create a strip chart plot by taking your jitter plot from above and adding `stat_summary()` to represent the mean using a "crossbar". Use aesthetics to clean up.
+
+```{r}
+
+```
+
+#### Beeswarm/Dot Plot
+
+> Run code below
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +   
+  geom_dotplot(stackdir = "center", 
+               binaxis = "y", 
+               binwidth = 80,
+               stackratio = 1,
+               fill = "cyan3", 
+               colour = "cyan3")
+```
+
+The settings can be quite temperamental, and you have to play around with the binwidth, stackratio, and dotsize, but once dialed in they can make some nice looking visualizations. 
+
+> Run code below
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +  
+  geom_boxplot() + 
+  geom_dotplot(binaxis = 'y', 
+               stackdir = 'center', 
+               stackratio = 1, 
+               binwidth = 80,
+               binpositions = "all",
+               dotsize = 1,
+               alpha = .45, 
+               fill = "cyan3", 
+               colour = "cyan3")
+```
+
+### Ridgeline Plot
+
+Requires the continuous variable to be on the x-axis and the categorical variable to be on the y-axis. 
+
+`geom_density_ridges()` from `ggridges`. The `scale` argument adds space between each distribution.
+
+> Create a ridgeline plot to compare the distributions of `body_mass_g` across `island`. Play with the `scale` to find the value you think makes the best looking graph.
+
+```{r}
+
+```
+
+raincloud plot:
+
+> Replace the X's in the code below by adding the `jittered_points` argument set to `TRUE` and `position` argument set to "raincloud" to the geom_density_rides() call.
+
+```{r}
+penguins %>%
+  ggplot(aes(x = body_mass_g, y = island)) +  
+  ggridges::geom_density_ridges(jittered_points = X, 
+                      X = "X",
+                      scale = 0.4)
+```
+
+
+## New Arguments and Functions
+
+### Faceting
+
+faceting -- separate subsets of data into entirely different graphs. 
+
+Done using `facet_grid()` -- specifying what *var*iable(*s*) you want to facet by, and whether you want those graphs spread across different *col*umn*s* or *rows*
+
+> In the code below, replace the Xs to first facet `island` across columns, then across rows.
+
+```{r}
+# By columns
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = bill_depth_mm)) +
+  geom_point() + 
+  facet_grid(cols = vars(X))
+
+# By rows
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = bill_depth_mm)) +
+  geom_point() +
+  facet_grid(X = X(X))
+```
+
+> Modify the code below to facet `island` across rows and `species` across columns:
+
+```{r}
+penguins %>%
+    ggplot(aes(y = body_mass_g, x = bill_depth_mm)) +
+    geom_point()
+```
+
+### Groups
+
+Grouping is another way you can plot subsets of data.
+
+> Replace the X's in the code below to look at how `wt` changes across `gear` for cars with different `cyl`inders by grouping by `cyl`.
+
+```{r}
+mtcars2 %>%
+    ggplot(aes(y = X, x = X, 
+               group = X, color = X)) +
+    stat_summary(fun = "mean", geom = "line")
+```
+
+### Positions
+
+position/adjustment arguments usually take the form: 
+
+`position = position_*()`
+
+Instead of `geom_jitter()`, could use `geom_point()` and setting a position argument. e.g.,
+
+`geom_point(position=position_jitter())`
+
+#### Identity
+
+`position_identity()` overlaps the elements
+
+> Set position below to "identity":
+
+```{r}
+penguins %>%
+ ggplot(aes(x = island, fill = species)) +
+  geom_bar(position = )
+```
+
+#### Dodging
+
+`“position_dodge()”` places overlapping objects directly beside one another
+
+> Replace the X's in the code below to set the position to dodge
+
+```{r}
+penguins %>%
+  ggplot(aes(x = island, fill = species)) +
+  geom_bar(X = X)
+```
+
+> Add code below to dodge the points, specifying a specific `width` argument.
+
+```{r}
+penguins %>%
+ ggplot(aes(y = body_mass_g, x = island, fill = species)) +
+     geom_point(shape = 21)
+```
+
+Observe the following. By default, they are often come out looking funky:
+
+```{r}
+data.frame(
+  x = c("a","a","b","b"),
+  y = 2:5,
+  g = rep(1:2, 2)
+) %>%
+  ggplot(aes(x, y, group = g)) +
+  geom_col(position = "dodge", fill = "grey50", colour = "black")+
+  geom_errorbar(
+  aes(ymin = y - 1, ymax = y + 1),
+  width = 0.2
+)
+```
+
+Adding some position adjustments corrects this!
+
+```{r}
+data.frame(
+  x = c("a","a","b","b"),
+  y = 2:5,
+  g = rep(1:2, 2)
+) %>%
+  ggplot(aes(x, y, group = g)) +
+  geom_col(position = "dodge", fill = "grey50", colour = "black")+
+  geom_errorbar(
+    aes(ymin = y - 1, ymax = y + 1),
+    width = 0.2,
+    position = position_dodge(width = 0.9)
+)
+```
+
+Simultaneously dodge and jitter with `position_jitterdodge()`.
+
+> Add code below to jitter and dodge the points, specifying a specific `width` argument.
+
+```{r}
+penguins %>%
+ggplot(aes(x = island, y = body_mass_g, fill = species)) +
+    geom_boxplot(outlier.size = 0) +
+    geom_point(shape = 21)
+```
+
+#### Stacking
+
+`position_fill()` -- each set of stacked bars is uniform in height.
+
+> Replace the X below to use the fill positional argument
+
+```{r}
+penguins %>%
+ggplot(aes(x = island, fill = species)) +
+  geom_bar(position = X)
+```
+
+## Categorical ~ Categorical
+
+> Replace the X's in the code below to map `species` to fill.
+
+```{r}
+# Counts
+penguins %>%
+  ggplot(aes(x = island)) + 
+  geom_bar(X)
+
+# Proportions
+penguins %>%
+  ggplot(aes(x = island)) + 
+    geom_bar(position = X)
+```
+
+### Cont ~ Cat + Cat
+
+Add another aesthetic to any Cont ~ Cat
+
+> Replace the X's in the code below so that `species` is mapped to fill
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  geom_jitter(aes(X),
+              size = 1, alpha = 0.7,
+              shape = 21,
+              position = position_jitterdodge()) +
+  stat_summary(aes(X),
+               fun.data = "mean_se",
+               geom = "pointrange",
+               color = "black",
+               shape = 21,
+               size = 0.5,
+               position = position_dodge(width = 0.7))
+```
+
+or facet
+
+> Add code below to facet `species` across columns
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  geom_jitter(height = 0, width = 0.2, 
+              size = 2, alpha = 0.4,
+              pch = 21,
+              aes(shape = island,
+                   fill = island)) +
+    stat_summary(fun.data = "mean_se",
+               geom = "linerange",
+               color = "black",
+               size = 2) +
+      stat_summary(fun = "mean",
+               geom = "point",
+               color = "black",
+               shape = 21,
+               size = 2.5,
+               aes(fill=island))
+```
+
+#### Raster
+
+> Replace the X's in the code below to show how the different levels of `species` and `island` combinations have different average values of `body_mass_g`
+
+```{r}
+penguins %>%
+  ggplot(aes(x = X,
+             y = X,
+             z = X)) +
+  stat_summary_2d(fun = "mean", geom = "tile")
+```
+
+### Cont ~ Cont + Cat
+
+Just facet a scatter plot
+
+> Add code below to facet `species` across columns
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = bill_depth_mm)) +
+  geom_point()
+```
+
+
+
+### Cont ~ Cont + Cont
+
+z-axis shows values on a continuous variable
+
+```{r}
+penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = bill_depth_mm,
+             z = flipper_length_mm)) +
+  stat_summary_2d(color = "black")
+
+penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = bill_depth_mm,
+             z = flipper_length_mm)) +
+  stat_summary_hex(color = "black")
+```
+
+## Custom geoms
+
+Other geoms can be loaded from packages or other sources. Code is included here to create 2 geoms that can be used to make 2 visualizations that are currently pretty popular.
+
+### Split Violin Plot
+
+A split violin plot allows you to easily compare two groups (and across the levels of another variable). 
+
+```{r}
+source(url("https://raw.githubusercontent.com/Psyc193L/Psyc193L.github.io/main/geom_split_violin.R"))
+```
+
+> Run the code below, make some step-wise tweaks (one at a time) to the different arguments to see if you can understand what each is doing.
+
+```{r}
+penguins %>%
+ggplot(aes(x = island, y = body_mass_g, fill = species)) +
+  geom_split_violin(trim = FALSE, alpha = .4)+
+  geom_boxplot(width = .2, alpha = .6, 
+               fatten = NULL, show.legend = FALSE) +
+  stat_summary(fun.data = "mean_se", geom = "pointrange", 
+               show.legend = F, 
+               position = position_dodge(.175))
+```
+
+### Raincloud
+
+```{r}
+#source(here::here("geom_flat_violin.R"))
+source(url("https://raw.githubusercontent.com/Psyc193L/Psyc193L.github.io/main/geom_flat_violin.R"))
+```
+
+Do not worry about understanding all parts of the code below.
+
+```{r}
+rain_height <- .1
+
+penguins %>%
+ggplot(aes(x = "", y = body_mass_g, fill = species)) +
+  # clouds  
+  geom_flat_violin(position = position_nudge(x = rain_height+.05),
+                   alpha = 0.4, trim = FALSE) + 
+  # rain
+  geom_point(aes(colour = species), size = 2, 
+             alpha = .5, show.legend = FALSE, 
+              position = position_jitter(width = 0.05, height = 0)) +
+  # boxplots
+  geom_boxplot(width = 0.05, alpha = 0.4, 
+               show.legend = FALSE, outlier.shape = NA,
+               position = position_nudge(x = -rain_height*2)) +
+  # mean and SE point in the cloud
+  stat_summary(fun.data = "mean_cl_normal", mapping = aes(color = species), 
+               show.legend = FALSE,
+               position = position_nudge(x = rain_height * 3)) +
+  # adjust layout
+  scale_x_discrete(name = "", expand = c(rain_height*3, 0, 0, 0.7)) +
+  scale_y_continuous(limits = c(2000, 7000)) +
+  coord_flip()
+```
+
+## Best Practices:
+
+Below are some guidelines and best practices that should be considered when designing your visualizations.
+
+* Graphs should be EASILY readable. 
+  + Label everything intuitively.
+  + Follow conventions: y = response variable, x = predictor, be mindful of variable types, etc.
+
+* Graphs should be purposeful
+  + What is the specific relationship or trend in your data that you are trying to communicate with this visualization?
+
+* Graphs should facilitate quantitative interpretation and comparison, and allow for inferential statistics by eye.
+  + Represent variability.
+  + Show relationship trends, means, etc.
+
+* Cool =/= best.
+  + Just because you CAN do something does not always mean you SHOULD. Keep things simple and clean.
+    
+* Make your visualization aesthetically pleasing but not at the cost of wasting ink.
+
+## Extra Resources
+
+* [ggplot2 reference](https://ggplot2.tidyverse.org/reference/)
+* [R graphics cookbook](http://www.cookbook-r.com/Graphs/) 
+* [ggplot2 book](https://ggplot2-book.org/) 
+* [ggplot2 cheat sheet](https://rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf)
+* [Help understand different types of graphs](https://datavizcatalogue.com/index.html)
+* [Recommendations on best graphs for visualizing particular relationships](https://www.data-to-viz.com/)
+* [r-specific information on how to construct graphs](https://www.r-graph-gallery.com/index.html)
+* [More r-specific stuff. Top 50 ggplot geoms](http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html)
+* [Info on plotly](https://plotly-r.com/overview.html)
+* [ggplot2 extensions](https://exts.ggplot2.tidyverse.org/gallery/)
+* [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/)
+
+## Citations
+
+As always, most illustrations by [@allison_horst](https://twitter.com/allison_horst)
+
+Custom violin plots modified from source code [here](https://psyteachr.github.io/introdataviz/advanced-plots.html)

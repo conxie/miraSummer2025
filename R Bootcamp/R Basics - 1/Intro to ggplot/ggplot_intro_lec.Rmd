@@ -1,0 +1,438 @@
+# Intro to ggplot2
+
+```{r}
+library(tidyverse) # Load tidyverse
+```
+
+> "The greatest value of a picture is when it forces us to notice what we never expected to see."— John Tukey
+
+>"There is no single statistical tool that is as powerful as a well‐chosen graph." (Chambers et al. 1983)
+
+*Why Do We Care About Visualizing Our Data?*
+
+The summary statistics of some variables and their linear relationships inherently overlook some aspects of the data. Visualizing your data is critically important.
+
+The point of a visualization, just like a summary statistic, is to understand a relationship or pattern in your data. 
+
+## When Visualizing Go Wrong
+
+A bad visualization is often times worse than no visualization at all. 
+
+It is not enough to just make *some* visualization, it is important to also consider the principles that make a ***GOOD*** visualization.
+
+## ggplot2
+
+`ggplot2` will be used to create visualizations. Graphs are constructed by mapping data to geometric objects (lines, bars, points, etc.) according to some aesthetic attributes (color, shape, size, etc.).
+
+### Meet the Penguins
+
+The `palmerpenguins` dataset will be used to create examples throughout. Contains measurements of things like bill length and depth, sex, etc., for penguins.
+
+There are 3 different species of penguins in this dataset, collected from 3 islands in the Palmer Archipelago, Antarctica.
+
+> Use `library()` to load in the `palmerpenguins` dataset
+
+```{r}
+
+```
+
+## A Basic Graph
+
+All ggplot graphs are build using the `ggplot()` call. The first thing it needs is some data.
+
+> pipe in the `penguins` dataframe to `ggplot()`
+
+```{r}
+
+```
+
+> ""
+
+ggplot needs to be told what variables from your data should be *map*ped to the *aes*thetics you want to render on your graph. You will do that with `aes()`.
+
+> Fill in the code below to examine how a penguin's `bill_length_mm` is related to its `flipper_length_mm`. 
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(y = ,
+                       x = ))
+```
+
+> ""
+
+You want ggplot to use those mappings to construct some **geom**etric object, and the way you do that is by adding a *geom*. 
+
+Geoms have the general syntax of `geom_X()`, where X usually refers to the specific geometric object you want to render. Here, you want a point on the graph for each penguin, so `geom_point()` will be used.
+
+> Replace the X in the code below to to put a point for each observation on the graph
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(y = flipper_length_mm,
+                       x = bill_length_mm)) +
+  geom_X()
+```
+
+> ""
+
+There are two important things to note here:
+
+1. The `+` was used instead of `%>%` to add on a new function. The ggplot system is additive/layered, `geom_point()` was being added to the code.
+
+2. The following showed up in the console: 
+
+**Warning message: Removed 2 rows containing missing values (geom_point).**
+
+Looking at your warnings and errors is always important, but especially so when creating visualizations! This says that it removed 2 rows of data.
+
+For every visualization you create, make a verbal description of the pattern seen underneath.
+
+
+# Aesthetics
+
+## Color
+
+One way the penguins seem to be grouped is with a cluster at the top and another at the bottom. Maybe this corresponds to the `sex` variable?
+
+To explore this idea: visually indicate which observations were from which sex.
+
+Prior to running code -- declare formal predictions by stating two mutually exclusive alternatives that you *could* observe:
+
+--
+prediction here
+--
+
+> Replace the X's in the code below to have map `color` to `sex`
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(y = flipper_length_mm,
+                       x = bill_length_mm),
+         X = X) +
+  geom_point()
+```
+
+> ""
+
+It actually kind of looks like there are 3 distinct clusters, not 2. Maybe this corresponds to the `species` variable?
+
+Predictions:
+
+--
+prediction here
+--
+
+> Replace the X's in the code below to have map `color` to `species`
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(y = flipper_length_mm,
+                       x = bill_length_mm,
+                       X = X)) +
+  geom_point()
+```
+
+> ""
+
+Summary:
+
+--
+Summary here
+--
+
+
+Visualizing your data in ways like this allow you to quickly get insights into different questions you may want to use your data to answer.
+
+### Global vs Local Aesthetics
+
+It can be helpful to add the line of best fit to see linear relationships using `geom_smooth()`.
+
+> Replace the X's in the code below to show the line of best fit
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(y = flipper_length_mm,
+                       x = bill_length_mm,
+                       color = species)) +
+  geom_point() +
+  X(method = "lm", se = FALSE)
+```
+
+>""
+
+**global** aesthetic -- put in the `ggplot()` call and applies to ALL parts of your graph 
+**local** aesthetic -- put in individual geoms and applies ONLY to those individual ones
+
+> Correct the code above so that only the points are mapped to `species`.
+
+```{r}
+
+```
+
+### Setting vs Mapping Aesthetics
+
+What if you just want to set the value of something yourself? 
+
+Look at the example below that changes all the points to orange (so they have a good contrast with the line).
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(color = orange) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+By writing `orange` like this, R thinks it is a variable in the `penguins` dataset that was piped in to ggplot! Instead just use quotes.
+
+> Replace the X in the code below to color all the points with the color "orange"
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(color = "X") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+This can be done for any geom.
+
+> Modify the code below to change the color of the smoothing line:
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(color = "orange") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+**Note: Aesthetic settings can only be set locally, not globally. Aesthetic mappings can be local OR global.**
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm),
+         color = "orange") +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+### Setting Colors
+
+When setting a color, this can be done by name, as was done above, or by hexcode:
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(color = "#9FE2BF") +
+  geom_smooth(method = "lm", se = FALSE, color = "#FFBF00")
+```
+
+Can also set your colors based on some logical operation:
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = flipper_length_mm > 200)) +
+  geom_smooth(method = "lm", se = FALSE, color = "#FFBF00")
+```
+
+## Shape
+
+### Mapping
+
+Shape is another aesthetic that can be changed.
+
+> Replace the X's below to map the point shape to `species` in addition to point color
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species,
+                 X = X)) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+>""
+
+> Replace the X's below to map shape to `island` instead:
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species,
+                 X = X)) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+Mapping variables to different aesthetics visualizes even more data and patterns, but can quickly become overwhelming and difficult to interpret.
+
+### Setting
+
+Can select shapes by number or by name.
+
+There appears to be 3 different kinds of triangles. Compare their differences below:
+
+* 17 or 'triangle'
+
+> Replace the X's below to map shape to the triangle 17 using number or name
+    
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species),
+             X = X) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
+* 2 or 'triangle open'
+
+> Replace the X's below to map shape to the triangle 2 using number or name
+    
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species),
+             X = X) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
+* 24 or 'triangle filled'
+
+> Replace the X's below to map shape to the triangle 24 using number or name
+    
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species),
+             X = X) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+
+```
+
+Some geoms have a 'color' argument, some have a 'fill' argument, some have both:
+
+'color' = outline/outside
+'fill' = the fill / inside
+
+## Size
+
+### Mapping
+
+Size is another aesthetic that can be set.
+
+> Replace the X's below to map `species` to `color`, `shape`, and `size`.
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(X = X,
+                 X = X,
+                 X = X)) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+>""
+
+This does is demonstrate what is meant by saying, **"ggplot is additive/layered"**. The last geom added is added *on top* of the graph rendered by the previous code.
+
+> Try adding the geoms in a different order and see what happens
+
+```{r}
+
+```
+
+This concept is very important to keep in mind when creating your visualizations. **Order matters!**
+
+### Setting
+
+Instead of mapping to a variable, can be set manually:
+
+For example, you could take one of the graphs from above and make the shapes a little bit larger.
+
+> Modify the code below to make the points size 4
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species),
+             shape = 24,
+             fill = 'darkgrey') +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
+## Alpha
+
+### Mapping
+
+The alpha aesthetic changes how translucent vs opaque something is.
+
+> Replace the X's below to map `alpha` to `species`
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species,
+                 shape = species,
+                 size = species,
+                 X = X)) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+>""
+
+### Setting
+
+Alpha values range from 0-1, with 0 being completely transparent and 1 being completely opaque.
+
+> In the graphs below, compare a high and low alpha value:
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species,
+                 shape = species),
+             size = 3,
+             alpha = ) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
+```{r}
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species,
+                 shape = species),
+             size = 3,
+             alpha = ) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+Even with a very low alpha, you can see just how many observations are overlapping.
+
+## References:
+
+Good color guides:
+
+* http://sape.inf.usi.ch/quick-reference/ggplot2/colour
+
+* http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#hexadecimal-color-code-chart

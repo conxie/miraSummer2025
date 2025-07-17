@@ -1,0 +1,247 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+
+1. Use each of the following operators in a new expression:
+
+"+"
+
+```{r}
+
+```
+
+"-"
+
+```{r}
+
+```
+
+"*"
+
+```{r}
+
+```
+
+"/"
+
+```{r}
+
+```
+
+"^"
+
+```{r}
+
+```
+
+"%%"
+
+```{r}
+
+```
+
+
+2. Use each of the following operators in a new expression:
+
+"<"
+
+```{r}
+
+```
+
+">"
+
+```{r}
+
+```
+
+"<="
+
+```{r}
+
+```
+
+">="
+
+```{r}
+
+```
+
+"=="
+
+```{r}
+
+```
+
+"!="
+
+```{r}
+
+```
+
+3. 
+  A. Use each of the operators below in a new expression. 
+
+"&"
+
+```{r}
+
+```
+
+"|"
+
+```{r}
+
+```
+
+"!"
+
+```{r}
+
+```
+
+B. Use *each* operator (`&`, `!`, and `|`) combined with at least one operator from exercise 1 or 2 as well.
+
+```{r}
+
+```
+
+
+C. Now, use *each* operator (`&`, `!`, and `|`) combined with at least one *other* operator (logical or comparison operators).
+
+```{r}
+
+```
+
+
+4. Define variables of each of the following types and use `typeof()` to verify their type.
+
+A. number
+
+```{r}
+
+```
+
+B. character
+
+```{r}
+
+```
+
+
+C. logical
+
+```{r}
+
+```
+
+5. Create 3 vectors that each contain a different type of data (number, character, and logical). See which operations can be applied to each vector.
+
+  A. number
+
+```{r}
+
+```
+
+  B. character
+
+```{r}
+
+```
+
+  C. logical
+
+```{r exercise 5}
+
+```
+
+6.
+
+  A. Index the 1st and 2nd element from the vector in 5A
+
+```{r}
+
+```
+
+  B. Index the 2nd and 3rd element from the vector in 5B.
+  
+```{r}
+
+```
+  
+  C. Save the first element from your first vector to a variable called `first_first`.
+  
+```{r}
+
+```
+
+  D. Save the last element from your last vector to one called `last_last`.
+  
+```{r}
+
+```
+  
+
+7. Create a dataframe called `my_df` that has information about your top 3 favorite animals. It should contain 3 columns: 1. One that has the words, "first", "second", and "third". 2. Another that has the animals names. 3. A third having a rating, on a scale of 1-10, of how likely you think it is you could beat that animal in a fight to the death.
+
+```{r exercise 7}
+
+```
+
+8. Index the second row of your dataframe and save it to a variable called `df_second_row`. Index the name of your second favorite animal and save it to a variable called `second_fave`. Index the battle likelihood rating for your third favorite animal and save it to a variable called `third_rating`.
+
+```{r exercise 8}
+
+```
+
+9. Rewrite the following code as properly formatted pipe chains.
+
+```{r, eval = FALSE}
+park(drive(start_car(find("keys")), to = "campus"))
+
+
+brush(tooth_paste(running_water(tooth_brush)), teeth)
+
+
+```
+
+
+# Feedback 
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

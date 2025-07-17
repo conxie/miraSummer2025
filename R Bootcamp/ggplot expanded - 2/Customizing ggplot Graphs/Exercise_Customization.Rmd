@@ -1,0 +1,144 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(patchwork)
+# Modify the file path in the code below to properly load the "diamonds_sample.RData" file
+load("diamonds_sample.RData") 
+```
+
+You are going to continue working with the `diamonds_sample` dataset.
+
+`diamonds_sample` contains the following variables: 
+
+* `price` - price in USD
+* `carat` - weight of the diamond
+* `cut` - quality of the cut
+* `color` - diamond color
+* `clarity` - a measurement of how clear the diamond is
+* `x` - length in mm
+* `y` - width in mm
+* `z` - depth in mm
+* `depth` - total depth percentage
+* `table` - width of top of diamond relative to widest point
+
+1. Create a jitter plot with `price` and `cut`. Show a point for the mean and include standard error lines around the mean. Additionally, in your ggplot code, wrap `price` in `log10()` (i.e., `log10(price)`. Make any aesthetic modifications that you think help improve the legibility or effectiveness of the graph. Save the results to a variable called `base_graph`, and call `base_graph` to show the graph.
+
+> As a quick aside, when you use a base 10 log transformation, the value corresponds to the exponent you need to raise 10 to to get that number. For example, the log base 10 of 100 is 2, because 10^2 = 100. log10(1000) = 3, because 10^3 = 1000, etc. 
+
+```{r}
+
+```
+
+  A. Change the interval of the Y-axis so it has breaks by 0.25 ranging from 0 to 5.25
+  
+```{r}
+
+```
+  
+  B. Change the limit of the Y-axis so it ranges from 0 to 5.25
+  
+```{r}
+
+```
+
+  C. Remove the padding at the bottom
+  
+```{r}
+
+```
+
+  D. Title the graph, "How Does Cut Quality Influence Diamond Price?". Also, add the subtitle, "Quality Assessed by Master Gemologist"
+  
+```{r}
+
+```
+
+  E. Change the y- and x-axis labels to, "Log10 Price USD" and "Cut Quality", respectively
+  
+```{r}
+
+```
+
+  F. Add the tag, "A", and caption "Note: Error bars represent +/- 1 SEM"
+  
+```{r}
+
+```
+  
+  G. Change the visualizations theme to `theme_bw()`, then create a new variable called `modified_graph` that takes your `base_graph` and saves all modifications you've added thus far. Then, call `modified_graph`.
+  
+```{r}
+
+```
+
+  H. Change the size of the title to 20 and subtitle to 12. Make the subtitle color "dimgray", the tag bold, and the caption italicized. 
+
+```{r}
+
+```
+
+  I. Make the title right-aligned, the subtitled centered, and the caption left-aligned.
+  
+```{r}
+
+```
+
+  J. Make the axis titles size 16 and bold, give them 0.3 inches in the margins bordering the axis values. Then, make the axis values size 12, blue, and bold. Finally, make the axis ticks black.
+  
+```{r}
+
+```
+
+2. Use the code you've generated throughout the previous few examples to create a new default theme setting.
+
+```{r}
+
+```
+
+3. Use patchwork to combine your `base_graph` and `modified_graph` to compare the two. Try arranging them in different layouts using different operators.
+
+```{r}
+
+```
+
+# Feedback 
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

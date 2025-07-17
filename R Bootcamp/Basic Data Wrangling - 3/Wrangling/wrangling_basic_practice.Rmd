@@ -1,0 +1,265 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# Modify the file path in the code below to properly load the "NFLScores2011.rda" file
+load("NFLScores2011.rda")
+```
+
+Do not save over the object unless you are told to *update*
+
+Examine the `NFLScores2011` dataset
+
+```{r}
+
+```
+
+1. Use `arrange()` to check `HomeScore` and `AwayScore` to find out what was the highest number of points scored by a team in a single game during this season
+
+```{r}
+
+```
+
+What was the team and how many points did they score?
+  - 
+  
+2. Use `arrange()` to check `HomeYards` and `AwayYards` to find out what was the fewest yards a team got in a single game during this season
+
+```{r}
+
+```
+
+What was the team and how many yeards did they get?
+  - 
+
+3. Use `rename()` to change all the variables using camelCase to use snake_case
+
+```{r}
+
+```
+
+4. Use `relocate()` to move the `Day` column after `Week`
+
+```{r}
+
+```
+
+5. Move `HomeYards` and `AwayYards` before `HomeScore`
+
+```{r}
+
+```
+
+Use `select()` too....
+
+6. Return the `HomeScore` variable
+
+```{r}
+
+```
+
+7. Keep only the variables relating to the Home Team
+
+```{r}
+
+```
+
+8. Keep only the variables related to the game's statistics (how many points and yards there were)
+
+```{r}
+
+```
+
+9. Keep all variables except `Date`, `DateStr`, and `YDM`
+
+```{r}
+
+```
+
+Use `filter()` too...
+
+10. Find only games played on a Monday
+
+```{r}
+
+```
+
+11. Find only games played after Week 10
+
+```{r}
+
+```
+
+12. Find the games where the home team was not "Green Bay Packers"
+
+```{r}
+
+```
+
+13. Find the games played on Monday's and Thursday's (hint: consider what logical operator you need)
+
+```{r}
+
+```
+
+14. Find games played on Sunday in week 7
+
+```{r}
+
+```
+
+15. Find games that are either on Sunday OR have a Home Score greater than 40
+
+```{r}
+
+```
+
+16. Find games played by teams in the AFC North division ("Baltimore Ravens", "Pittsburgh Steelers", "Cleveland Browns", "Cincinnati Bengals"). 
+
+*Hint: Make sure to check for both the `HomeTeam` and the `AwayTeam` to see if either of them has a team in the list of AFCN teams*
+
+```{r}
+
+```
+
+17. Find games played in week 6 and only keep columns for the teams and scores
+
+```{r}
+
+```
+
+18. Use `pull()` to index the scores by the "Baltimore Ravens". There will be scores from when they are the `HomeTeam` and when they are the `AwayTeam`. Save each to a vector called `Ravens_score_home` and `Ravens_score_away`, respectively.
+
+```{r}
+
+```
+
+19. Print out the two vectors from above. What was their highest point total at home? away? Use `pluck()` to pull out these values.
+
+```{r}
+
+```
+
+Using `distinct()` and `n_distinct()`...
+
+20. List the names of all the teams in the NFL
+
+```{r}
+
+```
+
+
+21. How many teams are there total?
+
+```{r}
+
+```
+
+22. How many teams scored 40 or more points as the `AwayTeam`?
+
+```{r}
+
+```
+
+23. Who were those teams?
+
+```{r}
+
+```
+
+Using `mutate()`...
+
+24. Add a new column that computes the total score of a game
+
+```{r}
+
+```
+
+25. Organize the dataframe by total score from greatest to least
+
+```{r}
+
+```
+
+26. Add a new column after AwayYards that computes the total yards for a game
+
+```{r}
+
+```
+
+27. Add a new column with the ratio of home team's score to away team's score
+
+```{r}
+
+```
+
+28. Add a new column that is `TRUE` if the ratio is 3 or greater
+
+```{r}
+
+```
+
+29. Keep only games before week 8 where this ratio is 3 or greater
+
+```{r}
+
+```
+
+30. Only keep the Away columns, find stats only for the Houston Texans, and add a new column called "yards_rank" that contains:
+
+"Meh" if `AwayScore` is less than 20
+
+"Great" if `AwayScore` is greater than or equal to 30
+
+"Decent" if `AwayScore` is anything else
+
+```{r}
+
+```
+
+31. Convert the `HomeTO` and `AwayTO` variables to be factors
+
+```{r}
+
+```
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+

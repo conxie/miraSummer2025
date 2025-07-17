@@ -1,0 +1,654 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+# Modify the file path in the code below to properly load the "NFLScores2021.RData" file
+load("C:/Users/Connie/Downloads/NFLScores2021.RData")
+```
+
+You realized after playing around a bit with your football analytics hat that maybe being a pokemon researcher was not the most lucrative opportunity for you to be implementing your R skills... After impressing with all your work so far, you were able to land a job doing some real NFL analytics! You have been given the data from the entire 2021 NFL season in the `NFL` df. 
+
+`NFL` contains the following variables:
+
+* `game_id` - an arbitrary ID for the game
+* `week` - what week of the season the game was played
+* `day` - what day of the week the game was played
+* `home_team` - who the home team was
+* `away_team` - who the away team was
+* `home_score` - the score of the home team
+* `away_score` - the score of the away team
+* `season_type` - whether this was the regular season or playoffs
+* `roof` - what type of stadium the game was played in
+* `surface` - the surface type the stadium had
+* `start_time` - what time the game started
+* `div_game` - whether this was a game with two teams from the same division
+
+Your job is to use this data to try and learn all you can to give your new team the edge in the upcoming season, and have been given a stack of tasks to complete to help with this. For each question, you must find the answers numerically AND create a graph to visualize it.
+
+*NOTE:* 
+> You may sometimes have to compute new variables or modify existing ones to answer these questions!
+> There may be more than one way to answer a question. Part of this exercise is thinking about what kind of evidence you can look for with the data you have, and what would help make a compelling answer.
+
+### Part 1:
+
+1. Does the playing surface impact points scored by the away team?
+
+  A. What are some reasons why this might be true?
+
+    - Might be true if different surfaces change the level of "grip" the shoes had. Teams not used to the different grip levels might get their balance thrown off and perform worse. It could also be that different kinds of playing surfaces have different friction coefficients in general, leading players to slide more or halt faster.
+  
+  B. What are some reasons this might not be true?
+
+    - Might not be true because away teams practice on different kinds of playing surfaces, and as such, probably has experience with the level of grip/traction the hometeam's stadium contains. Could also be that the differences in friction coefficients for the surfaces is miniscule, and does not actually affect the team's playing. 
+
+  C. What is your prediction?
+
+    - My prediction is that different playing surfaces will affect the points scored by the away team. If this is true, then the average of scores for the varying surfaces should be vastly different from each other. 
+    
+  D. Investigate
+
+  
+```{r, numerical}
+
+view(NFL)
+
+NFL %>%
+  group_by(surface) %>%
+  summarize(away_avg = mean(away_score))
+
+
+```
+
+```{r, graph}
+
+NFL %>%
+  ggplot(aes(y = away_score,
+             x = surface)) + 
+  stat_summary(aes(fill = surface), fun = "mean", geom = "bar") + 
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.4) + 
+  scale_fill_brewer(palette = "Set2") + 
+  coord_cartesian(ylim = c(0, 30)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 30, by = 2),
+                     labels = seq(from = 0, to = 30, by = 2),
+                     expand = c(0, 0)) + 
+  labs(title = "Playing Surface on Away Teams Scores",
+       y = "Away Scores (Mean)",
+       x = "Surface") + 
+  theme(plot.title = element_text(size = 15, hjust = 0.5))
+  
+```
+
+  
+  E. Summarize
+
+    - Looking at the numbers, the difference in largest and smallest score is (fieldturf - astroturf) 4.5 points. Looking at the graph reveals the same conclusion. Away teams that played on astroturf scored the highest while away teams that played on astroturf scored the lowesy. Teams playing on grass, matrixturf, and sporturf scored really similar to one another. Note that Sportturf and Matrixturf had the largest error bars. 
+    
+  F. Overall conclusion and rationale
+
+    -   While my prediction was correct, considering that a Field Goal is worth 3 points and a Touchdown is worth 6 points, the difference caused by the different playing surfaces is not large. A possible reason that the scores did not differ so much is probably because stadiums across the world are held to a specific standard when it comes to the surface, and as such, are not allowed to deviate a ton. The minute differences in scores can possibly be contributed to another variable; more testing would need to be done before any claim can be made.  
+
+
+2. Is there a home field advantage?
+
+  A. What are some reasons why there might be?
+
+    - Time zone is probably a BIG advantage. Players that are flying halfway across the world have their circadian rhythms mesed up, and if not fixed in time for the game, it can affect their playing. Could also be that home team knows their field more. Could also be that the crowd for the home team is going to generally be louder than the crowd for the away team, which could affect morale.
+  
+  B. What are some reasons why there might not be?
+
+    - Not might be an advantage because the away team and the home team are equally skilled. The playing time could also decrease the effects of messing up circadian rhythms for the away team; for example: if it feels like 10pm for the home team by 2pm for the away team. 
+
+  C. What is your prediction?
+
+    - My prediction is that the home team will score higher than the away team on average. This will mean that there will be higher mean scores for home teams compared to the away teams. 
+    
+  D. Investigate
+
+
+```{r}
+NFL %>%
+  drop_na(ends_with("score")) %>%
+  summarize(home_avg = mean(home_score),
+            away_avg = mean(away_score))
+
+```
+
+```{r, eval = FALSE}
+#for additional information in summary. (DO NOT GRADE)
+NFL %>%
+  drop_na() %>%
+  group_by(home_team) %>%
+  summarize(home_avg = mean(home_score),
+            away_avg = mean(away_score),
+            difference = mean(home_score) - mean(away_score)) %>%
+  print(n = 30)
+```
+
+```{r}
+
+NFL %>%
+  drop_na(ends_with("score")) %>%
+  summarize(home_avg = mean(home_score),
+            away_avg = mean(away_score)) %>%
+  pivot_longer(home_avg:away_avg,
+               names_to = "averages",
+               values_to = "means") %>%
+  ggplot(aes(x = averages,
+             y = means)) + 
+  stat_summary(aes(fill = averages), fun = "mean", geom = "bar") + 
+  theme(legend.position = "none") + 
+  coord_cartesian(ylim = c(0, 30)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 30, by = 2),
+                     labels = seq(from = 0, to = 30, by = 2),
+                     expand = c(0, 0)) + 
+  labs(title = "Is there a Home Field Advantage in Points Scored?",
+       y = "Scores (Mean)",
+       x = "Team Average") + 
+  theme(plot.title = element_text(size = 15, hjust = 0.5))
+  
+  
+  
+```
+  
+  E. Summarize
+
+    - Numerically, after dropping n/a values, the home_average is 1.9 points higher than the away average. Meaning that home teams tend to win more often. The hometeam pairing that had the highest difference was TB which won against the away team by a factor of 14.2 points on average. NYJ lost by an average of 9.22 in it's away games. Looking at the graph, it clearly shows that home teams have a higher average than away teams. 
+    
+  F. Overall conclusion and rationale
+
+    - In conclusion my prediction was correct with the result of the investigation showing a small home field advantage. An advantage of roughly 1.9 points. This is possibly attibuted to the reasons listed above. Including, but not limited to: time zone benefits, home crowd, comfortability. However, it is not a remarkbly large difference. 
+
+3. How does the number of points scored per game compare from the first half of the **REGULAR SEASON** to the second half of the **REGULAR SEASON**?
+
+  A. What is your prediction?
+
+    - My prediction is that the number of points scored per game in the first half of the regular season will be higher than the points scored in the second half. If this is true, then the average will be higher in the first half compared to the second half. 
+    
+  B. What are some reasons why this might be true?
+
+    - This might be true because teams have gotten more footage on their opponents in the second half of the game, leading to plays that make it so the opposing team has a harder time scoring. Might also be true because morale is higher in the first half of the regular season, leading to more intense plays. 
+
+  C. What are some reasons this might not be true?
+
+    - Might not be true because playing might get more wild in the second half, leading to more player mistakes as tension rises, meaning the opposing team scores more, leading to more points scored in general. 
+    
+  D. Investigate
+
+```{r}
+
+NFL %>%
+  filter((season_type == "REG") & (week <= 18)) %>%
+  mutate(game_half = ifelse(row_number() <= nrow(NFL) / 2, 
+                            "First_Half", 
+                            "Second_Half")) %>%
+  group_by(game_half) %>%
+  summarize(avg_points_per_game = mean(home_score + away_score))
+
+
+```
+
+```{r}
+
+NFL %>%
+  filter((season_type == "REG") & (week <= 18)) %>%
+  mutate(game_half = ifelse(row_number() <= nrow(NFL) / 2, 
+                            "First_Half", 
+                            "Second_Half")) %>%
+  group_by(game_half) %>%
+  summarize(avg_points_per_game = mean(home_score + away_score)) %>%
+  ggplot(aes(y = avg_points_per_game,
+             x = game_half,)) +
+  geom_bar(stat = "identity",fill = "steelblue") +
+  labs(title = "Average Points per Game: First Half vs. Second Half of REGULAR SEASON",
+       x = "Half of Regular Season",
+       y = "Average Points per Game") +
+  coord_cartesian(ylim = c(0, 50)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 50, by = 2),
+                     labels = seq(from = 0, to = 50, by = 2),
+                     expand = c(0, 0)) + 
+  theme(plot.title = element_text(size = 15, hjust = 0.5)) + 
+  theme_minimal()
+```
+
+
+```{r, eval = FALSE}
+#for myself. DO NOT GRADE
+
+NFL %>%
+  filter(season_type == "REG" & (week >= 9 & week <= 18)) %>%
+  group_by(week) %>%
+  summarize(SecondHalf = mean(home_score + away_score)) 
+
+NFL %>%
+  filter(season_type == "REG" & week <= 8) %>%
+  group_by(week) %>%
+  summarize(FirstHalf = mean(home_score + away_score))
+
+```
+  
+  E. Summarize
+
+    - Numerically, First_Half of the season on average scored 1.5 points more than the second hald of the season. First Half scored 46.7 while Second Half scored 45.2. Looking at the bar graph yeilds the same result, that the FIrst Half of the season had higher average points per game than the Second Half. In the First Half, the week that had the highest average points was week 5 (50,1), in the Second Half it was week 18 (51.1)
+
+  F. Conclusion
+
+    - My prediction was correct. Compared to the First Half of the regular season, the Second Half saw less points on average. However, the difference between the two scores is very tiny, meaning that the teams played balanced each other out throughout the season. Despite more footage being shown in the Second Half, the points scored on average did not differ by a significant amount. 
+    
+  G. Now, instead of comparing the first half of the **REGULAR SEASON** to the second half, compare across the entire **REGULAR SEASON** week by week.
+
+  
+```{r}
+NFL %>%
+  drop_na(ends_with("score")) %>%
+  filter(season_type == "REG") %>%
+  group_by(week) %>%
+  summarize(across(ends_with("score"), mean)) %>%
+  mutate(total_mean = (away_score + home_score)/ 2)
+
+```
+
+```{r}
+
+NFL %>%
+  drop_na(ends_with("score")) %>%
+  filter(season_type == "REG") %>%
+  group_by(week) %>%
+  summarize(across(ends_with("score"), mean)) %>%
+  mutate(total_mean = (away_score + home_score)/ 2) %>%
+  ggplot(aes(x = week,
+             y = total_mean,
+             group = 1)) + 
+  stat_summary(fun = "mean", geom = "point") + 
+  stat_summary(fun = "mean", geom = "line", linetype = "dashed") + 
+  coord_cartesian(xlim = c(0, 18)) + 
+  coord_cartesian(ylim = c(19, 26)) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue")+ 
+  scale_y_continuous(breaks = seq(from = 0, to = 30, by = .5),
+                     labels = seq(from = 0, to = 30, by = .5),
+                     expand = c(0, 0)) + 
+  labs(title = "Averages of Scores Throughout REGULAR SEASON",
+       y = "Total Mean",
+       x = "Week") + 
+  theme(plot.title = element_text(size = 15, hjust = 0.5))
+
+```
+
+
+  H. Is the pattern/relationship consistent with the one above? If not, in what way is it different?
+
+    - It is fairly consistent if looking at the line of best fit. Both graphs show a slow decrease in points earned throughout the season (first half compared to second half). However, comparing the season week by week shows much more variety in the scores. Week 14 had the highest peak in avgs of 25.6 points earned per game, while Week 15 had the lowest trough of the regular season with a avg of 19.3 points earned per game.
+    
+  I. Overall conclusion and rationale
+
+    - Overall, my prediction was right. The First Half of the regular season saw higher average of points per game than the Second Half of the regular season. This could be because of what I said earlier, with morale being higher in the first half of the season. Following the weeks allows us to ask detailed questions about morale, but data would need to be collected on the players each week before and after a gamme before conclusions could be made. The difference in averages could also be theorized with a possibility of starting times for the games, but more testing would need to be done!
+
+
+4. Does the average difference between the winning score and the losing score (the score differential) increase or decrease as you get farther into the season? 
+  (*hint:* you may find the `abs()` function useful here)
+
+  A. What are some reasons why this might be true?
+
+    - The differential might decrease as we get farther into the season as teams get elimiated and only the best of the best play against each other, leading to very tight games.
+  
+  B. What are some reasons this might not be true?
+
+    - The differential might increase as we get father into the season because teams get tired of playing intense football games months on end, and their playing gets a little sloppy, meaning that it gets easier for teams to get points against each other.
+
+  C. What is your prediction?
+
+    - My prediction is that the score differential decreases across the season, meaning that as the weeks progress, the difference between home team and away team scores is smaller. That will show a negative relationship. 
+    
+  D. Investigate
+
+  
+```{r}
+
+NFL %>%
+  group_by(week) %>%
+  summarize(home_avg = mean(home_score),
+            away_avg = mean(away_score),
+            difference = mean(home_score) - mean(away_score),
+            abs(difference)) %>%
+  print(n = 22)
+
+```
+
+```{r}
+NFL %>%
+  group_by(week) %>%
+  summarize(home_avg = mean(home_score),
+            away_avg = mean(away_score),
+            difference = mean(home_score) - mean(away_score),
+            abs(difference)) %>%
+  ggplot(aes(y = abs(difference),
+             x = week,
+             group = 1)) + 
+  geom_point(size = 2) + 
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+   coord_cartesian(ylim = c(0, 16)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 18, by = 2),
+                     labels = seq(from = 0, to = 18, by = 2),
+                     expand = c(0, 0)) + 
+  labs(title = "Score Differential Throghout Season",
+       y = "Absolute Difference",
+       x = "Week") + 
+  theme(plot.title = element_text(size = 15, hjust = 0.5))
+  
+  
+```
+
+  
+  E. Summarize
+
+    - The score differential increases across the season. This can be seen in the graph's line of best fit that slopes upward. The largest score differential was in week 19 (15.2). The smallest score differential was in week 21 (0). There were 2 games in week 21, one game had the home team win by 3 points and the other game had the away team win by 3 points. Those cancelled out to get a score differential of 0 for week 21.  
+    
+  F. Now, use an alternative type of visualization to investigate
+
+  
+```{r}
+
+NFL %>%
+  group_by(week) %>%
+  summarize(home_avg = mean(home_score),
+            away_avg = mean(away_score),
+            difference = mean(home_score) - mean(away_score),
+            abs(difference)) %>%
+  ggplot(aes(y = abs(difference),
+             x = week)) + 
+  stat_summary(fun = "mean", geom = "bar", aes(fill = week)) + 
+  theme_classic() +
+  theme(legend.position = "none") + 
+  coord_cartesian(ylim = c(0, 16)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 18, by = 2),
+                     labels = seq(from = 0, to = 18, by = 2),
+                     expand = c(0, 0)) + 
+  labs(title = "Score Differential Throghout Season",
+       y = "Absolute Difference",
+       x = "Week") + 
+  theme(plot.title = element_text(size = 15, hjust = 0.5))
+
+```
+
+  G. Is the pattern/relationship the same as above? If not, in what way is it different?
+
+    - Yes, the pattern is the same. Looking at the bar graph version shows us that the distribution is bimodal in apperance, with peaks in Weeks 19, and 7. Week 19 has the largest peak. Interestingly, despite the peaks in Week 17 and 19, Weeks 18, 20, and 21 had fairly low score differentials. 
+    
+  H. Overall conclusion and rationale
+
+    - Overall, my prediction was incorrect. I predicted that the score differential would decrease throughout the season, and instead it increased throughout the season. The highest score differential was near the end of the season as well. This could be because as the season goes on, players get tired, and the crowd dies down, leading there to be less morale on the field (assuming that morale is tied to scores earned). It could also be weather that contributed to the peaks in weeks 19, and 17. Further research would be needed.
+
+5. Come up with your own question you are interested in exploring with this data.
+
+  A. What is the question?
+
+    - How does later start times affect the points earned by the home teams? 
+
+  B. What is your prediction?
+
+    - My prediction is that later start times will lead home teams to score less. This means that the pattern should be a negative relationship. As start time increases along the x axis (it gets later), then home scores should decrease. 
+  
+  C. What are some reasons why this might be true?
+
+    - This might be true if circadian rhythms would make it so that they are tired at specific times. If this is true, then we should see troughs around dinner time (5-7pm), and decreases in score later on. It could also be that away teams are more tired, since later start time for them could mean their body is operating either hours ahead or behind, leading the home team to get points more easily.
+
+  D. What are some reasons this might not be true?
+
+    - This might not be true if the NFL teams have a lot of expereince with late night practices, and are equally good in both the day time and the night time. Solo practices also come into play here. Also the away team might be from a similar time zone. 
+    
+  E. Investigate
+
+  
+```{r}
+
+NFL %>%
+  drop_na() %>%
+  group_by(start_time) %>%
+  summarize(home_mean = mean(home_score))
+  
+```
+
+```{r}
+
+NFL %>%
+  ggplot(aes(y = home_score,
+             x = start_time,
+             group = 1)) + 
+  stat_summary(fun = "mean", geom = "point") + 
+  stat_summary(fun = "mean", geom = "line") + 
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  coord_cartesian(ylim = c(12, 28)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 28, by = 4),
+                     labels = seq(from = 0, to = 28, by = 4),
+                     expand = c(0, 0)) + 
+  labs(title = "How Do Start Time Affect Home Score Averages?",
+       y = "Home Score Average",
+       x = "Start Time") + 
+  theme(plot.title = element_text(size = 15, hjust = 0.5))
+```
+
+  
+  F. Summarize
+
+    - Looking at the graph, there is a line of best fit that slopes upward generally, meaning that on average, as the start time gets later (increases), home teams tend to score more. The highest average home score of 27.3 was at 18:30:00 . There are two major troughs. One at 17:00:00 and another at 12:30:00. They both have a home score average of 14 points. 
+    
+  G. Overall conclusion and rationale
+
+    - Overall, my prediction was wrong. Later start times tend to follow a pattern of higher scores. It is important to note though that the troughs occur at common meal times (17:00:00 being dinner time and 12:30:00 being lunch time). This trend can be possibly explained if NFL players tend to have night practices more often in the months leading up to the NFL, in preparation for the games. 
+
+6. Come up with another question you are interested in exploring with this data.
+
+  A. What is the question?
+
+    - What roof type had the highest average points per game?   
+
+  B. What is your prediction?
+
+    - My prediction is that closed roofs will have the highest average of points per game.
+  
+  C. What are some reasons why this might be true?
+
+    - The closed surfaces protect from any bad weather, which means that teams are able to focus on the game more. Closed roofs also mean that there is really bright light inside the stadium. This can help deal with circadian rythms, assuming that messed up circadian rythms means less goals are made. 
+
+  D. What are some reasons this might not be true?
+
+    - Might not be true if the lights of a stadium is consistent in both outdoors and indoor stadiums. Teams might have more experience in outdoor fields, which means that they might score higher in areas that they are familar with. 
+    
+  E. Investigate
+
+  
+```{r}
+
+NFL %>%
+  drop_na() %>%
+  group_by(roof) %>%
+  summarize(avg_score = mean(home_score + away_score))
+
+```
+
+```{r}
+NFL %>%
+  drop_na() %>%
+  group_by(roof) %>%
+  summarize(avg_score = mean(home_score + away_score)) %>%
+  ggplot(aes(y = avg_score,
+             x = roof)) + 
+  stat_summary(fun = "mean", geom = "bar") + 
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.6) + 
+  coord_cartesian(ylim = c(0, 54)) + 
+    scale_y_continuous(breaks = seq(from = 0, to = 54, by = 5),
+                     labels = seq(from = 0, to = 54, by = 5),
+                     expand = c(0, 0)) + 
+  labs(title = "Roof Type Effects on the Averages of Scores",
+       y = "Average Scores",
+       x = "Roof Type") + 
+  theme(plot.title = element_text(size = 15, hjust = 0.5))
+```
+
+  
+  F. Summarize
+
+    - Looking at the numbers, closed roof had the highest average score, coming in hot with a score of 52.1. Outdoors had the lowest average score with 44.7. That leads to a difference of 7.4. The bar graph reveals the same. 
+    
+  G. Overall conclusion and rationale
+
+    - In conclusion, my prediction of clsoed having the highest score was correct. The difference is not insignificant, as a touchdown is worth 6 points and a regular goal is worth 3 points. The difference between closed and dome vs outdoors might be because of enviromental factors. Wind, rain, the moon, etc. All of these might have made it harder for teams to score. 
+    
+### Part 2:
+
+Answer the following without using visualizations:
+
+1. How many games did each team win?
+
+
+```{r}
+
+#games where the home team won
+home_team_wins <- NFL %>% 
+  filter(home_score > away_score) %>% 
+  count(home_team)
+home_team_wins
+
+#games where the away team won
+away_team_wins <- NFL %>%
+  filter(home_score < away_score) %>%
+  count(away_team)
+away_team_wins
+
+#total number of wins for each team
+total_wins <- bind_rows(home_team_wins, away_team_wins) %>%
+             group_by(team = coalesce(home_team, away_team)) %>%
+             summarize(wins = sum(n))
+
+print(total_wins) %>%
+  arrange(desc(wins)) %>%
+    print(n = 32) 
+```
+
+
+2. Did home or away teams win more?
+
+```{r}
+
+NFL %>%
+  group_by(home_team, away_team) %>%
+  mutate(result_home = if(home_score[1] == away_score[1]){print("ties")
+    } else if (home_score[1] < away_score[1]) {
+      print("WIN")
+    } else {
+      print("LOSE")
+    }
+) %>%
+  pull(result_home) %>%
+  table()
+
+
+```
+
+    - Home teams lost more. They lost 143 games to away teams and won 141 games.  
+
+3. Which team scored the most points on average at home? Away?
+
+```{r}
+
+#AT HOME
+NFL %>%
+  drop_na() %>%
+  group_by(home_team) %>%
+  summarize(home_total = mean(home_score)) %>%
+  arrange(desc(home_total)) %>%
+  print(n = 30)
+  
+
+#AWAY
+NFL %>%
+  drop_na() %>%
+  group_by(away_team) %>%
+  summarize(away_total = mean(away_score)) %>%
+  arrange(desc(away_total)) %>%
+  print(n = 32)
+  
+
+
+```
+
+    - The home team that scored the highest on average is DAL with an average score of 34.2. The away team that scored the highest on average was BUF with a score of 31.3.
+
+4. Which team had the highest average *winning* point differential (the difference between the winning score and the losing score)?
+
+```{r}
+#winning point differential means that means must be calculated differently for home vs away
+NFL %>%
+  drop_na() %>%
+  group_by(home_team) %>%
+  summarize(home_total = mean(home_score - away_score)) %>%
+  arrange(desc(home_total)) %>%
+  print(n = 32)
+
+NFL %>%
+  drop_na() %>%
+  group_by(away_team) %>%
+  summarize(away_total = mean(away_score - home_score)) %>%
+  arrange(desc(away_total)) %>%
+  print(n = 32) 
+
+
+```
+
+    - That would be home team TB with a winnning differential of 14.2 points. 
+
+5. Did the day the game was played impact the total points scored?
+
+```{r}
+
+NFL %>%
+  group_by(day) %>%
+  summarize(mean_total_score = mean(home_score + away_score))
+
+```
+
+    - Yes. The most amount of points scored on average was Saturday at 47.1 points. The least amount of points scored on average was on Tuesday at 37 points. 
+
+
+
+# Feedback
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 600
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 10
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 8.6
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+
+**coding!!!! The struggle with code is usually boils down to making it neat and efficient.**
+
+

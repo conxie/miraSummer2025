@@ -1,0 +1,515 @@
+---
+title: ""
+author: ""
+date: ""
+output: html_document
+---
+
+### Set up
+
+```{r}
+library(tidyverse)
+msleep2 = msleep %>%
+  select(-conservation)
+```
+
+For all questions below, you will use the `msleep2` dataframe.
+
+1. 
+  A. Use `arrange()` to order the dataset by `bodywt`.
+
+```{r}
+
+msleep2 %>%
+  arrange(bodywt)
+
+```
+
+  B. Modify your `arrange()` call to order the `bodywt` column from greatest to least.
+
+```{r}
+
+msleep2 %>%
+  arrange(desc(bodywt))
+
+```
+
+  C. What is the largest animal recorded in this dataset?
+
+    *The largest animal in the dataset is the African elephant of genus Loxodonta.*
+
+2. Both of the weight columns in this dataset are measuring in kilograms. Use `rename()` to give those variables more informative names. **Note: Do NOT save over the `msleep2` dataset. Just run the code.**
+
+```{r}
+
+msleep2 %>%
+  rename("Brain_Weight(kg)" = brainwt,
+         "Body_Weight(kg)" = bodywt)
+
+```
+
+3. Use `relocate()` to...
+  A. Move the `order` column to be positioned before the `vore` column.
+
+```{r}
+
+msleep2 %>%
+  relocate(order, .before = vore)
+
+```
+
+  B. Move the `sleep_total` column to be positioned after the `sleep_cycle` column.
+
+```{r}
+
+msleep2 %>%
+  relocate(sleep_total, .after = sleep_cycle)
+
+```
+
+  C. Move both wt columns to be positioned after `genus`.
+
+```{r}
+
+msleep2 %>% 
+  relocate(c(bodywt, brainwt), .after = genus)
+
+```
+
+4. Use `select()` to get...
+  A. The `name` and `vore` columns.
+
+```{r}
+
+msleep2 %>%
+  select(c(name, vore))
+
+```
+
+  B. The `genus` and `order` columns.
+
+```{r}
+
+msleep2 %>%
+  select(c(genus, order))
+
+```
+
+  C. All the sleep related columns.
+
+```{r}
+
+msleep2 %>%
+  select(c(sleep_total : sleep_cycle))
+
+```
+
+5. Use `select()` to get rid of...
+  A. The `awake` column.
+
+```{r}
+
+msleep2 %>% 
+  select(!awake)
+
+msleep2
+
+```
+
+  B. All columns related to the animal's weight.
+
+```{r}
+
+msleep2 %>%
+  select(!c(brainwt, bodywt))
+
+#select(ends_with("wt")) works too :D
+
+```
+
+6. `filter()` the data to show only the observations where...
+  A. The animals are of Rodentia order.
+
+```{r}
+
+msleep2 %>%
+  filter(order == "Rodentia")
+
+```
+
+  B. The animals have a body weight of 5 or greater.
+
+```{r}
+
+msleep2 %>%
+  filter(bodywt >= 5)
+
+```
+
+  C. The animals are not herbivores.
+
+```{r}
+
+msleep2 %>%
+  filter(!vore == "herbi")
+
+```
+
+
+7. Use `filter()` to show only the observations where...
+  A. The animals who sleep for over 14 hours total and weigh less than 3
+
+```{r}
+
+msleep2 %>%
+  filter((sleep_total > 14) & (bodywt < 3))
+
+```
+
+  B. The carnivores who spend over 10 hours awake, then subset only the `awake`, `vore`, and `sleep_total` columns.
+
+```{r}
+
+msleep2 %>%
+  filter(awake > 10) %>%
+  select(c(awake, vore, sleep_total))
+  
+
+```
+
+  C. All animals have a brain weight greater than 0.1 or spend less than 1 hour in rem, **except those who are herbivores**, then subset only the `brainwt`, `sleep_rem`, and `name` columns, and arrange those results by `brainwt` from greatest to least.
+
+```{r}
+
+msleep2 %>%
+  filter(((brainwt > 0.1) | (sleep_rem < 1)), !vore == "herbi") %>%
+  select(c(brainwt, sleep_rem, name)) %>%
+  arrange(desc(brainwt))
+
+```
+
+8. 
+
+  A. `filter()` the data to show animals in the "Cetacea", "Cingulata", or "Pilosa" order, who sleep for a total of anywhere between 5 and 10 hours.
+
+```{r}
+
+msleep2 %>%
+  filter(order %in% c("Cetacea", "Cingulata", "Pilosa")) %>%
+  filter((sleep_total > 5) & (sleep_total <10))
+
+```
+
+  B. Modify the code from above to show only the `name`, `order`, `sleep_total`, and `brainwt`.
+
+```{r}
+
+msleep2 %>%
+  filter(order %in% c("Cetacea", "Cingulata", "Pilosa")) %>%
+  filter((sleep_total > 5) & (sleep_total <10)) %>%
+  select(c(name, order, sleep_total, brainwt))
+
+```
+
+  C. Modify the code from above to arrange by `sleep_total` from least to greatest.
+
+```{r}
+
+msleep2 %>%
+  filter(order %in% c("Cetacea", "Cingulata", "Pilosa")) %>%
+  filter((sleep_total > 5) & (sleep_total <10)) %>%
+  select(c(name, order, sleep_total, brainwt)) %>%
+  arrange(sleep_total)
+
+```
+
+9. Filter the data to show...
+  A. All observations for seals
+
+```{r}
+
+msleep2 %>%
+  filter(grepl("seal", name))
+
+```
+
+  B. All observations for elephants
+
+```{r}
+
+msleep2 %>%
+  filter(grepl("elephant", name))
+
+```
+
+10. Using a pipe chain (`%>%`)...
+  A. Index the `sleep_total` variable from `msleep2`.
+
+```{r}
+
+msleep2 %>%
+  pull(sleep_total)
+
+```
+
+  B. Find the mean of `sleep_total`.
+
+```{r}
+
+msleep2 %>%
+  pull(sleep_total) %>%
+  mean()
+
+```
+
+  C. Subset the data to only include carnivores, index the `bodywt` column, and find the average value. 
+  
+```{r}
+
+msleep2 %>%
+  filter(vore == "carni") %>%
+  pull(bodywt) %>%
+  mean()
+
+```
+  
+  
+  Now do the same for herbivores. 
+  
+```{r}
+
+msleep2 %>%
+  filter(vore == "herbi") %>%
+  pull(bodywt) %>%
+  mean()
+
+```
+  
+  Which has a higher average body weight?
+
+    *Herbivors have a higher average body weight. Herbivores have mean body weight of 366.8773, whereas carnivores have mean body weight of 90.75111.*
+
+11.
+  A. Subset the data for primates who spend more than 13 hours awake, arrange the `awake` column from greatest to least, index the `awake` variable, and the 2nd value from the resulting vector.
+
+```{r}
+
+msleep2 %>%
+  filter(order == "Primates") %>%
+  filter(awake > 13) %>%
+  arrange(desc(awake)) %>%
+  pull(awake) %>%
+  pluck(2)
+
+```
+
+  B. Using a process similar to the one above, write some code that will result in the value for the 2nd lowest brain weight for omnivores who spend less than 2 hours in rem.
+
+```{r}
+
+msleep2 %>%
+  filter(vore == "omni") %>%
+  filter(sleep_rem < 2) %>%
+  arrange(sleep_rem) %>%
+  pull(brainwt) %>%
+  pluck(2)
+
+```
+
+12. 
+  A. Find the unique values in the `vore` column.
+
+```{r}
+
+msleep2 %>%
+  distinct(vore)
+
+```
+
+  B. Find the *number* of unique values in the `vore` column.
+
+```{r}
+
+msleep2 %>%
+  pull(vore) %>%
+  n_distinct()
+
+```
+
+13. 
+  A. The sleep variables are all measured in hours. Create a new variable called `sleep_total_m` that measures total **minutes** of sleep.
+
+```{r}
+
+msleep2 %>%
+  mutate(sleep_total_m = sleep_total * 60)
+
+```
+
+  B. Create a new variable that represents the proportion of total sleep spent in rem, move that column to come after `sleep_rem`, filter to show only observations with a ratio of 0.25 or greater, arrange the new column from greatest to least, and index the `bodywt` of the animal with the highest ratio.
+
+```{r}
+
+msleep2 %>%
+ mutate(sleep_total_rem = (sleep_total / sleep_rem)) %>%
+  relocate(sleep_total_rem, .after = sleep_rem) %>%
+  filter(sleep_total_rem > .25) %>%
+  arrange(desc(sleep_total_rem)) %>%
+  pull(bodywt) %>%
+  pluck(1)
+
+```
+
+14. 
+  A. Find out what the average total sleep is for all animals, then use `case_when()` to create a new column that has the value "sleepyhead" if the animal has a `sleep_total` higher than average, "wide-awake" if lower than average, and "average" if exactly average.
+
+```{r}
+
+mean_total_sleep <- msleep2 %>%
+  pull(sleep_total) %>%
+  mean() 
+mean_total_sleep
+
+  
+msleep2 %>%
+  mutate(nightnight = case_when(sleep_total >= mean_total_sleep ~ "sleepyhead",
+                                sleep_total < mean_total_sleep ~ "wide-awake",
+                                sleep_total == mean_total_sleep ~ "average"))
+
+```
+
+  B. Use `ifelse()` to create a new column just indicating whether the animal had a "higher" or "lower" `sleep_total` than average.
+
+```{r}
+
+msleep2 %>%
+  mutate(avg_sleep_total = ifelse(sleep_total > mean_total_sleep, 
+                                  "higher", "lower"))
+
+```
+
+15. 
+  A. Use `drop_na()` to remove all observations with an `NA`.
+
+```{r}
+
+msleep2 %>%
+  drop_na()
+
+```
+
+  B. Only get rid of observations with an `NA` for `brainwt`.
+
+```{r}
+
+msleep2 %>%
+  drop_na(brainwt)
+
+```
+
+16. 
+  A. As mentioned above, the weight columns are measured in kg. Change these columns so that they contain the weight in lbs (1kg = ~2.205 lbs). Arrange the new body weight column from least to greatest, and index the value for the lightest animal in the dataset.
+
+```{r}
+
+msleep2 %>%
+  mutate(bodywt = bodywt * 2.205) %>%
+  mutate(brainwt = brainwt * 2.205) %>%
+  arrange(bodywt) %>%
+  pull(bodywt) %>%
+  pluck(1)
+
+msleep2
+
+```
+
+  B. Change the `vore` column to be a *factor* instead of *character*, and the `awake` column to be a *character* instead of *numeric*.
+
+```{r}
+
+msleep2 %>%
+  mutate(vore = as.factor(vore)) %>%
+  mutate(awake = as.character(awake))
+
+msleep2
+
+```
+
+17. Take 2 visualizations you created in the exercises from the data visualization lectures and reorder the factor levels so they are in a more sensible order.
+
+```{r}
+library(palmerpenguins) # Load penguins data
+
+
+penguins %>%
+    mutate(sex = factor(sex) %>%
+           fct_infreq()) %>%
+  drop_na() %>%
+    ggplot(aes(y = body_mass_g, x = sex)) +
+    geom_point(size = 2, alpha = 0.3,
+               shape = 21,
+                aes(fill = sex),
+                position = position_jitter(width = 0.1)) +
+    stat_summary(fun.data = "mean_se",
+                 geom = "pointrange",
+                 color = "black",
+                 aes(fill = sex),
+                 shape = 21,
+                 size = 0.5)
+
+
+```
+
+```{r}
+penguins %>%
+  mutate(island = factor(island)) %>%
+  ggplot(aes(y = body_mass_g, x = fct_reorder(island, body_mass_g))) +
+  geom_jitter(height = 0, width = 0.1, 
+              size = 2, alpha = 0.3,
+              aes(color=island)) +
+    stat_summary(fun.data = "mean_se",
+               geom = "pointrange",
+               color = "black",
+               aes(fill = island),
+               shape = 21,
+               size = 0.5)
+
+
+```
+
+
+# Feedback 
+
+Please save the appropriate number to the variables below:
+
+1. Approximately how long (in minutes) do you think it took you to complete this assignment?
+
+```{r}
+timeEstimate = 120
+```
+
+2. How difficult or challenging did you find this assignment?
+
+Extremely easy -------------------------------------- Extremely challenging 
+                                                     (impossible to complete)
+    1                                                           10
+    
+```{r}
+challenge = 2.3
+```
+    
+    
+3. How engaging or fun did you find this assignment?
+  
+Extremely Boring and Dry -------------------------------------- Extremely Engaging and Fun 
+          1                                                                   10
+
+```{r}
+engagement = 8.3
+```
+
+4. If you have any other feedback about this assignment, please provide it below.
+
+
+**(っ´ω｀c)**
+
