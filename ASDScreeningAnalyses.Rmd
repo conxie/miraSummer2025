@@ -86,7 +86,7 @@ countASD = ASDScreeningData %>%
   filter(Class.ASD == 1)
 
 countASD %>%
-  ggplot(aes(x = age , y = Class.ASD)) +
+  ggplot(aes(x = age , y = n)) +
   geom_bar(stat = "identity", fill = "blue") +
   labs(
     title = "Count of Autism Diagnoses by Age",
@@ -153,7 +153,7 @@ countASD = ASDScreeningData %>%
   filter(Class.ASD == 1)
 
 countASD %>%
-  ggplot(aes(x = jundice , y = Class.ASD)) +
+  ggplot(aes(x = jundice , y = n)) +
   geom_bar(stat = "identity", fill = "blue") +
   labs(
     title = "Count of Autism Diagnoses by Jaundice Diagnoses",
