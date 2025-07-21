@@ -388,7 +388,7 @@ You use `write_csv()` in the instances where you need to export your data:
 > Replace the X's below to save `mtcars` to a file called "mtcars.csv"
 
 ```{r}
-write_csv(X, file = "X")
+write_csv(mtcars, file = "mtcars.csv")
 ```
 
 
@@ -399,7 +399,7 @@ You can save R data object that you can easily load in to R using `save()`
 > Replace the X's below to save `mtcars` to a file called "mtcars.RData"
 
 ```{r}
-save(X, file = "X")
+save(mtcars, file = "mtcars.RData")
 ```
 
 

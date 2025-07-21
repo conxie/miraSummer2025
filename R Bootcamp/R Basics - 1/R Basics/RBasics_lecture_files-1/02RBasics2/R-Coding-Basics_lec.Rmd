@@ -132,7 +132,7 @@ You can check the type of some data by using the `typeof()` function (more about
 ```{r}
 y
 
-typeof()
+typeof(z)
 
 z
 
@@ -154,8 +154,8 @@ You can remove objects from your environment with the `rm()` command.
 > remove `x` with `rm()` and then check your work space with `ls()`
 
 ```{r}
-rm()
-
+rm(x)
+ls()
 
 ```
 
@@ -173,7 +173,8 @@ You initiate a vector with `c()`
 
 ```{r}
 
-myVector <- 
+myVector <- c(2, 4, 6, 8)
+myVector
 
 
 ```
@@ -190,6 +191,7 @@ Observe the output here. What do you notice?
 
 ```{r}
 c(1, "hello")
+c(5, "HELLO")
 ```
 
 
@@ -200,7 +202,7 @@ indexing, with brackets, lets you target/pull specific elements out of an object
 > Index the 2nd element of `myVector`
 
 ```{r}
-myVector[]
+myVector[2]
 ```
 
 ### Dataframes
@@ -237,17 +239,17 @@ df
 
 # [column] (single value only selects columns)
 # Select the second row of our df
-df[]
+df[2]
 
 # [row,column] to select a single element using numbers 
 # Select the value in the second row of the first column 
-df[]
+df[2, 1]
 
 # Leave one value blank to select all
 # Select the value of the first row of all columns
-df[]
+df[1,]
 # Select the value of the first column of all rows
-df[]
+df[,1]
 ```
 
 Use `$` to index column by name:
@@ -255,6 +257,7 @@ Use `$` to index column by name:
 > Use the `$` to index the `Exam` column from `df`
 
 ```{r}
+df$Exam
 
 ```
 
@@ -279,13 +282,13 @@ You can further index the output from when you index with the `$`
 > first use the `$` to index the `Student` column, then use brackets to index the name of the 2nd student.
 
 ```{r}
-
+df$Student[2]
 ```
 
 Instead of using the `$` to index by name, you can also use double brackets
 
 ```{r}
-
+df[["Student"]][2]
 ```
 
 This may be familiar if you have knowledge of other coding languages, but is a little more verbose.
