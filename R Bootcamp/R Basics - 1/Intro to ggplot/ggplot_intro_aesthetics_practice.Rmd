@@ -34,37 +34,59 @@ Let's first practice setting different aesthetics manually. In all the following
 1. Create a graph with `price` on the y-axis, `carat` on the x-axis, and change the color of all the points to your favorite color.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price,
+             x = carat)) + 
+  geom_point(color = "pink")
 ```
 
 2. Create a graph with `table` on the y-axis, `depth` on the x-axis, and change the color of all the points to chartreuse
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = table,
+             x = depth)) + 
+  geom_point(color = "chartreuse")
 ```
 
 3. Create a graph with `carat` on the y-axis, `table` on the x-axis, and change the shape of all points to 8
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = carat,
+             x = table)) +
+  geom_point(shape = 8)
 ```
 
 4. Create a graph with `x` on the y-axis, `y` on the x-axis, and change the alpha to 0.25
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = x,
+             x = y)) +
+  geom_point(alpha = 0.25)
 ```
 
 5. Create a graph with `depth` on the y-axis, `z` on the x-axis, make the shape 13 and the color orchid
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = depth,
+             x = z)) +
+  geom_point(shape = 13,
+             color = "orchid")
 ```
 
 6. Create a graph with `table` on the y-axis, `carat` on the x-axis, make the color tomato, shape 3, size 2, and adjust the alpha to a level you think is best
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = table,
+             x = carat)) +
+  geom_point(color = "tomato",
+             shape = 3,
+             size = 2,
+             alpha = 0.8)
 ```
 
 (Challenge) Create a graph with `price` on the y-axis, `depth` on the x-axis, make each observation be represented by a smaller gold circle within a larger magenta circle outline (hint: think about your layering order).
@@ -92,61 +114,75 @@ A. Write a brief *summary* describing what that relationship or pattern actually
 Question:
 
   *Question here*
-
+Does the quality of the diamond cut increase as price and carat number increase?
 
 Prediction:
 
   *Prediction here*
-
+Yes, quality of cut increases with price and carat number increases.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price,
+             x = carat,
+             color = cut)) +
+  geom_point(alpha = 0.8)
 ```
 
 Summary:
 
   *Summary here*
-
+Increasing price and carat number seems to correspond to an increase in cut quality, as the yellow dots indicating Ideal cut display a positive correlation pattern.
 
 2. Create a graph with `carat` on the y-axis, `z` on the x-axis, and map the color of all the points to `color`. Make any other aesthetic modifications you need to make the visualization ans legible as possible.
 
 Question:
 
   *Question here*
-
+Does diamond color and weight increase with an increase in diamond depth?
 
 Prediction:
 
   *Prediction here*
-
+Yes, diamond color and weight increases with an increase in diamond depth.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = carat,
+             x = z,
+             color = color)) +
+  geom_point(alpha = 0.8)
 ```
 
 Summary:
 
   *Summary here*
+Diamond color and weight seem to mostly increase with an increase in diamond depth, since the data points display a positive correlation. However, there are a few data points that are increasing in weight (carats) and color even if they have a depth of 0, which implies there are a few outliers to this data.
 
 3. Create a graph with `depth` on the y-axis, `y` on the x-axis, and map the color of all the points to `clarity`. Make any other aesthetic modifications you need to make the visualization ans legible as possible.
 
 Question:
 
   *Question here*
-
+Does diamond clarity and depth increase with an increase in diamond width?
 
 Prediction:
 
   *Prediction here*
-
+Yes, diamond clarity and depth increase with an increase in diamond width.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = depth,
+             x = y,
+             color = clarity)) +
+  geom_point(alpha = 0.4)
 ```
 
 Summary:
 
   *Summary here*
+An increase in diamond clarity and depth doesn't seem to correspond with an increase in diamond width, as the yellow dots indicating the best clarity are clustered at a depth of 60, while the greater diamond widths have poor clarity ratings. 
 
 ## Free Reign
 
@@ -155,7 +191,13 @@ Below, try to make the worst, most illegible, visualization you can. Use whateve
 4. Create a graph with `price` on the y-axis, `carat` on the x-axis.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price,
+             x = carat,
+             color = depth)) +
+  geom_point(alpha = 0.008, 
+             size = 3,
+             shape = "triangle")
 ```
 
 
@@ -166,7 +208,7 @@ Please save the appropriate number to the variables below:
 1. Approximately how long (in minutes) do you think it took you to complete this assignment?
 
 ```{r}
-timeEstimate = 
+timeEstimate = 25
 ```
 
 2. How difficult or challenging did you find this assignment?
@@ -176,7 +218,7 @@ Extremely easy -------------------------------------- Extremely challenging
     1                                                           10
     
 ```{r}
-challenge = 
+challenge = 6
 ```
     
     
@@ -186,7 +228,7 @@ Extremely Boring and Dry -------------------------------------- Extremely Engagi
           1                                                                   10
 
 ```{r}
-engagement = 
+engagement = 7
 ```
 
 4. If you have any other feedback about this assignment, please provide it below.

@@ -33,7 +33,9 @@ There are 3 different species of penguins in this dataset, collected from 3 isla
 > Use `library()` to load in the `palmerpenguins` dataset
 
 ```{r}
-
+install.packages("palmerpenguins")
+library(tidyverse)
+library(palmerpenguins)
 ```
 
 ## A Basic Graph
@@ -43,7 +45,7 @@ All ggplot graphs are build using the `ggplot()` call. The first thing it needs 
 > pipe in the `penguins` dataframe to `ggplot()`
 
 ```{r}
-
+ggplot(penguins)
 ```
 
 > ""
@@ -54,8 +56,8 @@ ggplot needs to be told what variables from your data should be *map*ped to the 
 
 ```{r}
 penguins %>%
-  ggplot(mapping = aes(y = ,
-                       x = ))
+  ggplot(mapping = aes(y = bill_length_mm,
+                       x = flipper_length_mm))
 ```
 
 > ""
@@ -70,7 +72,7 @@ Geoms have the general syntax of `geom_X()`, where X usually refers to the speci
 penguins %>%
   ggplot(mapping = aes(y = flipper_length_mm,
                        x = bill_length_mm)) +
-  geom_X()
+  geom_point()
 ```
 
 > ""
@@ -100,6 +102,8 @@ Prior to running code -- declare formal predictions by stating two mutually excl
 
 --
 prediction here
+There will be no correlation between penguin sex and penguin physical features.
+There will be a correlation between penguin sex and penguin physical features.
 --
 
 > Replace the X's in the code below to have map `color` to `sex`
@@ -108,8 +112,15 @@ prediction here
 penguins %>%
   ggplot(mapping = aes(y = flipper_length_mm,
                        x = bill_length_mm),
-         X = X) +
+                color = sex) +
   geom_point()
+
+penguins %>%
+  ggplot(mapping = aes(y = flipper_length_mm,
+                       x = bill_length_mm,
+                       color = sex)) +
+  geom_point()
+#this code is correct because color = sex is included in the yellow parentheses of the aes() function!
 ```
 
 > ""
@@ -120,6 +131,8 @@ Predictions:
 
 --
 prediction here
+There is no correlation between penguin species and penguin physical features.
+There is a correlation between penguin species and penguin physical features.
 --
 
 > Replace the X's in the code below to have map `color` to `species`
@@ -128,7 +141,7 @@ prediction here
 penguins %>%
   ggplot(mapping = aes(y = flipper_length_mm,
                        x = bill_length_mm,
-                       X = X)) +
+                       color = species)) +
   geom_point()
 ```
 
@@ -138,6 +151,7 @@ Summary:
 
 --
 Summary here
+There appears to be a correlation between penguin species and penguin physical features according to the current data. This correlation is observable in the way that the data points, when distinguished by species type, creates three distinct colored clusters on the scatter plot.
 --
 
 
@@ -155,7 +169,7 @@ penguins %>%
                        x = bill_length_mm,
                        color = species)) +
   geom_point() +
-  X(method = "lm", se = FALSE)
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 >""
@@ -166,7 +180,11 @@ penguins %>%
 > Correct the code above so that only the points are mapped to `species`.
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 ### Setting vs Mapping Aesthetics
@@ -191,7 +209,7 @@ By writing `orange` like this, R thinks it is a variable in the `penguins` datas
 penguins %>%
   ggplot(aes(y = flipper_length_mm,
              x = bill_length_mm)) +
-  geom_point(color = "X") +
+  geom_point(color = "orange") +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -204,7 +222,7 @@ penguins %>%
   ggplot(aes(y = flipper_length_mm,
              x = bill_length_mm)) +
   geom_point(color = "orange") +
-  geom_smooth(method = "lm", se = FALSE)
+  geom_smooth(method = "lm", se = FALSE, color = "pink")
 ```
 
 **Note: Aesthetic settings can only be set locally, not globally. Aesthetic mappings can be local OR global.**
@@ -212,8 +230,8 @@ penguins %>%
 ```{r}
 penguins %>%
   ggplot(aes(y = flipper_length_mm,
-             x = bill_length_mm),
-         color = "orange") +
+             x = bill_length_mm,
+         color = "orange")) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
 ```
@@ -253,7 +271,7 @@ penguins %>%
   ggplot(aes(y = flipper_length_mm,
              x = bill_length_mm)) +
   geom_point(aes(color = species,
-                 X = X)) +
+                 shape = species)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -266,7 +284,7 @@ penguins %>%
   ggplot(aes(y = flipper_length_mm,
              x = bill_length_mm)) +
   geom_point(aes(color = species,
-                 X = X)) +
+                 shape = island)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -287,8 +305,9 @@ penguins %>%
   ggplot(aes(y = flipper_length_mm,
              x = bill_length_mm)) +
   geom_point(aes(color = species),
-             X = X) +
+             shape = 17) +
   geom_smooth(method = "lm", se = FALSE)
+
 ```
 
 
@@ -301,7 +320,7 @@ penguins %>%
   ggplot(aes(y = flipper_length_mm,
              x = bill_length_mm)) +
   geom_point(aes(color = species),
-             X = X) +
+             shape = 2) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -315,7 +334,8 @@ penguins %>%
   ggplot(aes(y = flipper_length_mm,
              x = bill_length_mm)) +
   geom_point(aes(color = species),
-             X = X) +
+             shape = 24,
+             fill = "darkgrey") +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -340,9 +360,9 @@ Size is another aesthetic that can be set.
 penguins %>%
   ggplot(aes(y = flipper_length_mm,
              x = bill_length_mm)) +
-  geom_point(aes(X = X,
-                 X = X,
-                 X = X)) +
+  geom_point(aes(color = species,
+                 shape = species,
+                 size = species)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -353,7 +373,14 @@ This does is demonstrate what is meant by saying, **"ggplot is additive/layered"
 > Try adding the geoms in a different order and see what happens
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_point(aes(color = species,
+                 shape = species,
+                 size = species))
+#notice that the shapes are now above the best fit line. order is important!
 ```
 
 This concept is very important to keep in mind when creating your visualizations. **Order matters!**
@@ -372,7 +399,8 @@ penguins %>%
              x = bill_length_mm)) +
   geom_point(aes(color = species),
              shape = 24,
-             fill = 'darkgrey') +
+             fill = 'darkgrey',
+             size = 4) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -392,7 +420,7 @@ penguins %>%
   geom_point(aes(color = species,
                  shape = species,
                  size = species,
-                 X = X)) +
+                 alpha = species)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -411,7 +439,7 @@ penguins %>%
   geom_point(aes(color = species,
                  shape = species),
              size = 3,
-             alpha = ) +
+             alpha = 1) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
@@ -423,7 +451,7 @@ penguins %>%
   geom_point(aes(color = species,
                  shape = species),
              size = 3,
-             alpha = ) +
+             alpha = 0.3) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 

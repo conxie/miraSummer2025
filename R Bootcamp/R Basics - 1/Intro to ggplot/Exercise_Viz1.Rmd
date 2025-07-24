@@ -14,33 +14,55 @@ library(palmerpenguins)
 1. Create your own graph using the `penguins` data and pick 2 of the following to put on your x and y axes: `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, or `body_mass_g` (Note: This should *NOT* be code directly from the lecture or notes).
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_depth_mm,
+             x = body_mass_g))
 ```
 
 
 2. Update your graph above by telling ggplot you want it to render a point for each observation in the penguins dataset. Describe the pattern/relationship you see under the code chunk.
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_depth_mm,
+             x = body_mass_g)) +
+  geom_point()
 ```
 
 *Summary here*
-
+There appears to be two main clusters of data, penguins with lower body mass and greater bill depth, and penguins with higher body mass and shorter bill depth.
 
 3. Think about what patterns you notice in the visualization you created, and test whether `sex` or `species` might explain those patterns. Write a prediction before the code chunk, test that prediction, and then describe what you see.
 
 *Prediction here*
+There may be a correlation between sex and body mass, which can affect bill depth. 
+There could be a correlation between species type and body mass, which can affect bill depth.
 
 ```{r}
+penguins %>%
+  ggplot(aes(y = bill_depth_mm,
+             x = body_mass_g,
+             color = sex)) +
+  geom_point()
 
+penguins %>%
+  ggplot(aes(y = bill_depth_mm,
+             x = body_mass_g,
+             color = species)) +
+  geom_point()
 ```
 
 *Summary here*
+There appears to be more of a species-based correlation between body mass and bill depth, as the graph distinguishing the data by sex has both male and female penguins in both clusters, while the clusters distinguishing the data by species has one cluster with only Gentoo penguins and the other cluster with only Adelie and Chinstrap penguins. If these variables were more influenced by sex, the clusters for the first graph would be more homogenous.
 
 4. Add in the line of best fit with `geom_smooth()`, making sure that your code produces a single line that is fit to ***all*** your data.
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_depth_mm,
+             x = body_mass_g,)) +
+  geom_point(aes(color = species)) + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 5. Use R code to create or recreate the graphs below
@@ -48,7 +70,11 @@ library(palmerpenguins)
 A. Make a visualization to investigate the relationship between bill length (on the y-axis) and bill depth (on the x-axis)
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_length_mm,
+             x = bill_depth_mm,
+             color = species)) +
+  geom_point()
 ```
 
 B. https://drive.google.com/uc?export=view&id=11Ig5Xq3z8CZwn0ElYmw4GNX0MK09Ja5E
@@ -59,7 +85,11 @@ B. https://drive.google.com/uc?export=view&id=11Ig5Xq3z8CZwn0ElYmw4GNX0MK09Ja5E
 
 C. Make a visualization to investigate the relationship between body mass and flipper length. In doing so, make the geometric figure rendering the observations appear in blue. 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = body_mass_g)) +
+  geom_point(color = "blue") + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 D. https://drive.google.com/uc?export=view&id=1hcgTg902GsvRNS2SnZxiv-rtFXRpCiAR
@@ -80,19 +110,35 @@ Part 1: Take the code you produced for Exercise 4 and...
 1. Change the shape to be solid color squares with color mapped to the `species` variable. 
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_depth_mm,
+             x = body_mass_g)) +
+  geom_point(aes(color = species), 
+             shape = "square") + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 2. Change the shape to be hollow squares with color mapped to the `species` variable. 
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_depth_mm,
+             x = body_mass_g)) +
+  geom_point(aes(color = species), 
+             shape = "square open") + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 3. Change the shape to be filled squares with color mapped to the `species` variable and fill set with a color of your choosing.
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_depth_mm,
+             x = body_mass_g)) +
+  geom_point(aes(color = species), 
+             shape = "square filled",
+             fill = 'white') + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 Part 2: Use R code to recreate the graphs below
@@ -100,19 +146,33 @@ Part 2: Use R code to recreate the graphs below
 A. https://drive.google.com/uc?export=view&id=18OVNxbNI2MhaNTVO7W5FN_Yn-2hkxKgG
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm))+
+  geom_point(aes(color = species,
+             shape = island)) + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 B. https://drive.google.com/uc?export=view&id=1giVWU7yzuD5XND7LE_Ub88tKohtswbtk
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = body_mass_g,
+             x = bill_depth_mm))+
+  geom_point(aes(color = species),
+             shape = 4)
 ```
 
 C. https://drive.google.com/uc?export=view&id=1QpR3ph7oCJiLJXRE_hio_agWOQwgNWNd
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_length_mm,
+             x = body_mass_g)) +
+  geom_point(shape = "diamond filled",
+             color = "chartreuse",
+             fill = "red")
 ```
 
 *Bonus Challenge (ungraded):* See if you can think of a way to use what we demonstrated above to take your code from the Exercise 6, part 2, question 3, and give each observation a thicker outside border. The result should look like the graph below:
@@ -120,7 +180,14 @@ C. https://drive.google.com/uc?export=view&id=1QpR3ph7oCJiLJXRE_hio_agWOQwgNWNd
 https://drive.google.com/uc?export=view&id=1N_9zRcePm8j1ffGGoZgJzUP6XbqisHIR
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = bill_length_mm,
+             x = body_mass_g)) +
+  geom_point(shape = "diamond filled",
+             color = "chartreuse",
+             fill = "red",
+             size = 3,
+             stroke = 2)
 ```
 
 7. Update the main graph you have been working with throughout the exercises to make the observations more translucent. First try doing so by mapping it to `island`. Then, create another graph where you set the alpha yourself. Try to pick the value you think makes the graph most legible and effective.
@@ -136,7 +203,7 @@ Please save the appropriate number to the variables below:
 1. Approximately how long (in minutes) do you think it took you to complete this assignment?
 
 ```{r}
-timeEstimate = 
+timeEstimate = 30
 ```
 
 2. How difficult or challenging did you find this assignment?
@@ -146,7 +213,7 @@ Extremely easy -------------------------------------- Extremely challenging
     1                                                           10
     
 ```{r}
-challenge = 
+challenge = 6
 ```
     
     
@@ -156,7 +223,7 @@ Extremely Boring and Dry -------------------------------------- Extremely Engagi
           1                                                                   10
 
 ```{r}
-engagement = 
+engagement = 8
 ```
 
 4. If you have any other feedback about this assignment, please provide it below.

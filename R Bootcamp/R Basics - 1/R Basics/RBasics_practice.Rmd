@@ -50,37 +50,38 @@ output: html_document
 "<"
 
 ```{r}
-
+5 < 8
 ```
 
 ">"
 
 ```{r}
+6 > 20
 
 ```
 
 "<="
 
 ```{r}
-
+1 <= 1
 ```
 
 ">="
 
 ```{r}
-
+203 >= 405
 ```
 
 "=="
 
 ```{r}
-
+6 == 6
 ```
 
 "!="
 
 ```{r}
-
+5 != 8
 ```
 
 3. 
@@ -89,32 +90,36 @@ output: html_document
 "&"
 
 ```{r}
-
+TRUE & FALSE
 ```
 
 "|"
 
 ```{r}
-
+TRUE | FALSE
 ```
 
 "!"
 
 ```{r}
-
+!TRUE
 ```
 
 B. Use *each* operator (`&`, `!`, and `|`) combined with at least one operator from exercise 1 or 2 as well.
 
 ```{r}
-
+!FALSE == !TRUE
+TRUE & TRUE <= FALSE
+TRUE | FALSE == !FALSE
 ```
 
 
 C. Now, use *each* operator (`&`, `!`, and `|`) combined with at least one *other* operator (logical or comparison operators).
 
 ```{r}
-
+TRUE & FALSE < FALSE
+!FALSE + !TRUE
+FALSE | TRUE == TRUE | FALSE
 ```
 
 
@@ -123,20 +128,23 @@ C. Now, use *each* operator (`&`, `!`, and `|`) combined with at least one *othe
 A. number
 
 ```{r}
-
+x <- 8
+typeof(x)
 ```
 
 B. character
 
 ```{r}
-
+y <- "Salamat"
+typeof(y)
 ```
 
 
 C. logical
 
 ```{r}
-
+z <- TRUE
+typeof(z)
 ```
 
 5. Create 3 vectors that each contain a different type of data (number, character, and logical). See which operations can be applied to each vector.
@@ -144,19 +152,25 @@ C. logical
   A. number
 
 ```{r}
+Vector1 <- c(1, 4, 6) 
+Vector2 <- c("Hi", "Hola", "Bonjour")
+Vector3 <- c(TRUE, FALSE)
 
+Vector1 * 3
+Vector1 / 2
 ```
 
   B. character
 
 ```{r}
+Vector2[2]
 
 ```
 
   C. logical
 
 ```{r exercise 5}
-
+!Vector3
 ```
 
 6.
@@ -164,49 +178,68 @@ C. logical
   A. Index the 1st and 2nd element from the vector in 5A
 
 ```{r}
-
+Vector1[1]
+Vector1[2]
 ```
 
   B. Index the 2nd and 3rd element from the vector in 5B.
   
 ```{r}
-
+Vector2[2]
+Vector2[3]
 ```
   
   C. Save the first element from your first vector to a variable called `first_first`.
   
 ```{r}
-
+first_first <- Vector1[1]
+first_first
 ```
 
   D. Save the last element from your last vector to one called `last_last`.
   
 ```{r}
-
+last_last <- Vector3[2]
+last_last
 ```
   
 
 7. Create a dataframe called `my_df` that has information about your top 3 favorite animals. It should contain 3 columns: 1. One that has the words, "first", "second", and "third". 2. Another that has the animals names. 3. A third having a rating, on a scale of 1-10, of how likely you think it is you could beat that animal in a fight to the death.
 
 ```{r exercise 7}
-
+my_df <- data.frame("Rank" = c("first", "second", "third"),
+                    "Name" = c("Dog", "Wolf", "Cat"),
+                    "Rating" = c(5, 1, 7))
+my_df
 ```
 
 8. Index the second row of your dataframe and save it to a variable called `df_second_row`. Index the name of your second favorite animal and save it to a variable called `second_fave`. Index the battle likelihood rating for your third favorite animal and save it to a variable called `third_rating`.
 
 ```{r exercise 8}
-
+df_second_row <- my_df[2, ]
+second_fave <- my_df[2, 2]
+third_rating <- my_df[3, 3]
+df_second_row
+second_fave
+third_rating
 ```
 
 9. Rewrite the following code as properly formatted pipe chains.
 
 ```{r, eval = FALSE}
 park(drive(start_car(find("keys")), to = "campus"))
-
+find %>%
+  keys %>%
+  start_car %>%
+  drive to campus %>%
+  park
 
 brush(tooth_paste(running_water(tooth_brush)), teeth)
 
-
+toothbrush %>%
+  running water %>%
+  toothpaste on teeth %>%
+  brush
 ```
 
 
@@ -217,7 +250,7 @@ Please save the appropriate number to the variables below:
 1. Approximately how long (in minutes) do you think it took you to complete this assignment?
 
 ```{r}
-timeEstimate = 
+timeEstimate = 15
 ```
 
 2. How difficult or challenging did you find this assignment?
@@ -227,7 +260,7 @@ Extremely easy -------------------------------------- Extremely challenging
     1                                                           10
     
 ```{r}
-challenge = 
+challenge = 4
 ```
     
     
@@ -237,7 +270,7 @@ Extremely Boring and Dry -------------------------------------- Extremely Engagi
           1                                                                   10
 
 ```{r}
-engagement = 
+engagement = 7
 ```
 
 4. If you have any other feedback about this assignment, please provide it below.
