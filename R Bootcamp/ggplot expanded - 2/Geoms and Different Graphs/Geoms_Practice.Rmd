@@ -18,7 +18,7 @@ You are going to work with a subset of data in the df `diamonds_sample`. All que
 * `price` - price in USD
 * `carat` - weight of the diamond
 * `cut` - quality of the cut
-* `color` - diamon color
+* `color` - diamond color
 * `clarity` - a measurement of how clear the diamond is
 * `x` - length in mm
 * `y` - width in mm
@@ -43,50 +43,70 @@ These are clearly marked in the questions that expect them. When a question has 
 1. Use `geom_bar()` to create a bar graph for `clarity`.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(x = clarity)) + 
+  geom_bar(color = "white",
+           fill = "skyblue")
 ```
 
 2. Use `geom_bar()` to create a bar graph for `color`. Make the bars themselves be filled with violet and have a blue outline. 
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(x = color)) + 
+  geom_bar(color = "blue",
+           fill = "violet")
 ```
 
 3. Use `geom_histogram()` to create a histogram for `price`.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(x = price)) + 
+  geom_histogram(color = "white",
+           fill = "skyblue")
 ```
 
 4. Use `geom_histogram()` to create a histogram for `carat`. Make the bars themselves be filled with cyan with a turquoise outline. Add a vertical bar at where you think the average might be.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(x = carat)) + 
+  geom_histogram(color = "turquoise",
+           fill = "cyan") + 
+  geom_vline(xintercept = 0.8, color = "violet")
 ```
 
 5. Use `geom_point()` to create a scatter plot for `carat` and `depth`. Add the line of best fit, and make any aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 Question:
-  *Question here*
+  Does diamond weight increase with an increase in diamond depth?
 
 Prediction:
-  *Prediction here*
+  I predict that there is an increase in diamond weight with an increase in diamond depth.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = depth, x = carat)) + 
+  geom_point(size = 0.5, 
+             alpha = 0.2, color = "turquoise") + 
+  geom_smooth(color = "violet")
 ```
 
 Summary:
-  *Summary here*
+ Most of the data points seem to cluster at a depth of 55 to 70, which corresponds to 0.2 to 2.5 carats, but there are a few outliers that bring the trendline upwards, suggesting there is a very slight correlation (if at all) with an increase in carats and an increase in depth.
 
 
 6. Create 2D histogram (regular or hexbin) for `y` and `table`.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = y, x = table)) + 
+  geom_bin_2d(color = "white") + 
+  geom_smooth()
 ```
 Summary:
-  *Summary here*
+  Most of the data seems to cluster around 48 to 71 in table measurements, which corresponds to a width of about 0.2 to 11 mm. The line of best fit is also mostly horizontal, suggesting a lack of positive or negative correlation between diamond table and width.
 
 
 7. Take your visualizations from questions 5 and 6 and add information about the individual distributions to the margins (whichever way you prefer).
@@ -97,170 +117,209 @@ Summary:
 
 Do you think one of these two is better/more effective than the other? If so, which and why? If not, why not?
 
-*answer here*
+I think the scatterplot was a better and more easily readable visualization because of its clarity--you can see each data point and its position on the graph, allowing for more accurate analysis.
 
 
 8. Use `stat_summary()` to show the mean `depth` for `color`. Represent the mean with a bar (note: *not* a vline), and include standard error *bars*. Make any aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 Question:
-  *Question here*
+  Is there a correlation between mean depth and mean color?
 
 Prediction:
-  *Prediction here*
+  I predict there is a positive correlation between mean depth and mean color.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = depth, x = color)) + 
+  stat_summary(fun = "mean", geom = "bar")
 ```
 
 Summary:
-  *Summary here*
+  All the bars are the same height, suggesting there is no correlation between mean depth and mean color. If there was a correlation, the bars would increase in height from left to right.
 
 
 9. Use `stat_summary()` to show the mean `price` for `cut`. Represent the mean with a point, and include standard error *lines*. Make any aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price, x = cut)) +
+  stat_summary(fun = "mean", geom = "bar") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.3) + 
+  stat_summary(fun = "mean", geom = "point", color = "turquoise")
 ```
 
 Summary:
-  *Summary here*
+  The mean price for cut is the highest with a premium cut, and the lowest with an ideal cut.
 
 
 10. Take your code from question 9 and modify it so that there is a longdash line connecting each of the points.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price, x = cut)) +
+  stat_summary(fun = "mean", geom = "bar") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.3) + 
+  stat_summary(fun = "mean", geom = "point", color = "turquoise") + 
+  geom_line()
+#idk how to do the connecting line T-T
 ```
 
 11. `geom_boxplot()` to create a boxplot for `depth` and `clarity`. Make the boxplots sienna with a salmon outline. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = depth, x = clarity)) + 
+  geom_boxplot(color = "salmon", 
+               fill = "sienna")
 ```
 
 What more can you say from this visualization than the one you made in question 8?
 
-*answer here*
+There appears to be more of a correlation between clarity and depth than color and depth, as the boxplots seem to decrease in height from left to right.
 
 
 12. `geom_boxplot()` to create a boxplot for `price` and `cut`. Make the boxplots' color and outline (the *fill* and *color* arguments) depend on their `cut`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph (make sure the median line is visible).
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price, x = cut)) + 
+  geom_boxplot(aes(color = cut, fill = cut), color = "black")
 ```
 
 What more can you say from this visualization than the one you made in question 9?
 
-*answer here*
+Most of the diamonds in the data set are premium or very good cuts, as those boxplots are the largest.
 
 
 13. Use `geom_violin()` to create a violin plot for `carat` and `clarity`. Include a boxplot inside the violin. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = carat, x = clarity)) + 
+  geom_violin(aes(color = clarity)) + 
+  geom_boxplot(size = 0.3, width = 0.2, alpha = 0)
 ```
 
 Summary:
-  *Summary here*
+ Carat and clarity appear to be generally negatively correlated, as the violin plots and mean points slope downward from left to right.
 
 
 14. Use `geom_violin()` to create a violin plot for `carat` and `color`. Include a point for the mean, and error bars around the mean. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = carat, x = clarity)) + 
+  geom_violin(aes(color = clarity)) + 
+  stat_summary(fun = "mean", geom = "point", color = "red") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.5)
 ```
 
 15. Use `geom_jitter()` to create a jitter plot for `price` and `cut`. Include a point for the mean and error lines around the mean. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 Question:
-  *Question here*
+ Is there a correlation between price and cut?
 
 Prediction:
-  *Prediction here*
+  I predict there is a positive correlation between price and cut.
 
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price, x = cut)) + 
+  geom_jitter(aes(color = cut)) + 
+  stat_summary(fun = "mean", geom = "point", color = "red") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.5)
 ```
 
 Summary:
-  *Summary here*
+  There appears to be a slight positive correlation between price and cut mostly for diamonds with the good, very good, and premium cut types, as their mean points trend upward.
 
 16. Take your visualization from question 14 and add on jittered points to show the whole distribution of data on top of the violins. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = carat, x = clarity)) + 
+  geom_jitter(alpha = 0.1) +
+  geom_violin(aes(color = clarity)) + 
+  stat_summary(fun = "mean", geom = "point", color = "red") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.5)
 ```
 
 17. Use `geom_jitter()` to create a strip chart for `z` and `clarity`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = z, x = clarity)) + 
+  geom_jitter(height = 25,
+              color = "darkmagenta",
+              alpha = .5) + 
+  stat_summary(fun = "mean", 
+               geom = "crossbar", 
+               width = 0.8)
 ```
 
 18. Use `geom_jitter()` to create a jitter plot for `price` and `color`. Include a point for the mean and error lines around the mean. Map the color of the points to `cut`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price, x = color)) + 
+  geom_jitter(aes(color = cut)) + 
+  stat_summary(fun = "mean", geom = "point", color = "red") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.6)
 ```
 
 19. Use `geom_jitter()` to create a jitter plot for `price` and `color`. Include a point for the mean and error lines around the mean. Facet this graph by `cut`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price, x = color)) + 
+  geom_jitter(aes(color = cut)) + 
+  facet_grid(cols = vars(cut)) + 
+  stat_summary(fun = "mean", geom = "point", color = "red") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.6)
 ```
 
 20. Do you think that the graph created in 18 or 19 is more effective? Explain why.
 
-
-*Answer here*
+Graph 19 is more effective in my opinion because it is categorized by cut, which adds more information to the graph and makes the data much more legible.
 
 21. Use `stat_summary_2d()` to make a raster plot for `clarity` (y), `cut` (x), and `price` (z). Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
-Question:
-  *Question here*
-
-Prediction:
-  *Prediction here*
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(x = cut,
+             y = clarity,
+             z = price)) +
+  stat_summary_2d(fun = "mean", geom = "tile")
 ```
-Summary:
-  *Summary here*
+
 
 
 22. Create a scatter plot for `price` and `carat`. Add a line of best fit. Facet by `cut`. Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(y = price, x = carat)) + 
+  geom_point(aes(color = cut)) +
+  facet_grid(cols = vars(cut)) + 
+  geom_smooth()
 ```
 
 
 
 23. Use `stat_summary_hex()` or `stat_summary_2d()` to create a raster plot for `carat` (y), `table` (x), and `price` (z). Make any other aesthetic modifications that you think help improve the legibility or effectiveness of the graph.
 
-Question:
-  *Question here*
-
-Prediction:
-  *Prediction here*
 
 ```{r}
-
+diamonds %>%
+  ggplot(aes(x = table,
+             y = carat,
+             z = price)) +
+  stat_summary_2d(fun = "mean", geom = "tile", color = "white")
 ```
 
-Summary:
-  *Summary here*
 
-
-# Free Reign
-
-Pick any graph you created above and try to make the worst, most illegible, visualization you can. Use whatever aesthetic modifications you want, but do so within reason (e.g., don't just set `size = 100` or something). Write the question number from the original visualization you picked (e.g., "question 3").
-
-```{r}
-
-```
 
 
 # Feedback

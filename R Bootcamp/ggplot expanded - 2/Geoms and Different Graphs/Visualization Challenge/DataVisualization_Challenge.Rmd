@@ -6,10 +6,10 @@ output: html_document
 ---
 
 ```{r}
-library(patchwork)
+install.packages(patchwork)
 library(RColorBrewer)
-library(colorspace)
-library(viridis)
+install.packages(colorspace)
+install.packages(viridis)
 library(tidyverse)
 # Modify the file path in the code below to properly load the files
 load("pokemon.RData")
@@ -61,15 +61,17 @@ Make sure that in your visualizations below the pokemon primary Types have intui
 ### 1. To help make your decision, maybe it makes sense to first investigate how the Total stats varies across the different starter primary types.
 
 *Prediction:*
-  Prediction here
+I predict stats will be roughly the same among the starter primary types.
 
 
 ```{r}
-
+pokemon_starters %>%
+  ggplot(aes(y = Total, x = Type1)) + 
+  geom_bin_2d(color = "white")
 ```
 
 *Summary:*
-  Summary here
+  The data seems spread out roughly equally, so it appears that the starter primary types do indeed have roughly equal stats. I recommend starting with any type you like for this reason.
 
 
 If you feel like this answers your question, explain what your recommendation is and how you came to that conclusion based on your investigation. If not, go on:
