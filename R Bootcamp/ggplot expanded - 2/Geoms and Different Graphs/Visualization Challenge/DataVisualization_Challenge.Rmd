@@ -6,14 +6,14 @@ output: html_document
 ---
 
 ```{r}
-install.packages(patchwork)
+library(patchwork)
 library(RColorBrewer)
-install.packages(colorspace)
-install.packages(viridis)
+library(colorspace)
+library(viridis)
 library(tidyverse)
-# Modify the file path in the code below to properly load the files
-load("pokemon.RData")
-load("pokemon_starters.RData")
+
+load("/Users/miramateo/Desktop/GitHub/R Bootcamp/ggplot expanded - 2/Geoms and Different Graphs/Visualization Challenge/data")
+load("/Users/miramateo/Desktop/GitHub/R Bootcamp/ggplot expanded - 2/Geoms and Different Graphs/Visualization Challenge/data")
 ```
 
 # Instructions
@@ -66,12 +66,12 @@ I predict stats will be roughly the same among the starter primary types.
 
 ```{r}
 pokemon_starters %>%
-  ggplot(aes(y = Total, x = Type1)) + 
-  geom_bin_2d(color = "white")
+  ggplot(aes(x = Total, fill = Type1)) +
+  geom_histogram(aes(y = (..count..)/sum(..count..)), bins = 60)
 ```
 
 *Summary:*
-  The data seems spread out roughly equally, so it appears that the starter primary types do indeed have roughly equal stats. I recommend starting with any type you like for this reason.
+This graph appears to suggest that fire types make up the most percentage of the 500+ stat point section, as the red bars are the largest color in that region of the graph. This would mean that starter fire types score the highest in stats and are therefore the strongest starter type.
 
 
 If you feel like this answers your question, explain what your recommendation is and how you came to that conclusion based on your investigation. If not, go on:
@@ -82,16 +82,26 @@ If you feel like this answers your question, explain what your recommendation is
   - Write summary statements for each of them
   
 ```{r}
-
+pokemon_starters %>%
+  ggplot(aes(y = Total, x = Type1, fill = Type1)) +
+  geom_hex(color = "black")
 ```
+Summary: 
+This graph suggests that *both* fire and water types score high in terms of their stats because both types have two hexagons (more hexagons = more data points) in the 500+ stat point region of the graph.
   
-  
-  
-  
+```{r}
+pokemon_starters %>%
+  ggplot(aes(x = Total, fill = Type1)) +
+  geom_bar(width = 30)
+``` 
+Summary: 
+This graph suggests that fire type starters are the strongest option because there is a larger red bar than any other color bar at the 550 stat point region, suggesting there are more high stat starter fire types than there are water or grass types that score that high.
+
+
 When you feel like you can make an informed recommendation, write that below and explain your rationale behind that decision.
 
 *Answer:*
-  Answer here
+I conclude that fire type starters are the strongest to start with according to the visualizations I've created. The data tends to display the fire type red bars in the 500+ stat point regions of all my graphs, suggesting that fire type starter pokemon are the strongest and therefore the best to choose as your starter pokemon.
 
 
 
@@ -102,15 +112,18 @@ Shoot, they may be right....
 Explore whether your recommendation, based on whatever rationale you used, holds true across generations. You may use more than one visualization while investigating (separately OR creating graphs for different subsets in the same visualization). If so, write summaries for each below (identifying which visualization the summary corresponds to). When you have come to a conclusion about whether or not it does, write that and explain your rationale.
 
 ```{r}
-
+pokemon_starters %>%
+  ggplot(aes(x = Total, fill = Type1)) + 
+  geom_bar(aes(color = Generation), width = 10, alpha = 0.4) + 
+  facet_grid(rows = vars(Generation))
 ```
 
 *Summary:*
-  Summary here
+The red bar is the farthest right, scoring the highest for generations 1, 2, 4, and 6. For generation 3, the blue bar is the farthest right, and for generation 5, all three bars are at the same position, suggesting that in generation 3 the strongest sterter type is water, and in generation 5, all three starter types are equally strong.
 
 
 *Answer:*
-  Answer here
+Fire type starter pokemon are not the strongest across *all* generations, but they are the strongest across *most* of the generations, and therefore are still the strongest option overall.
 
 
 # Part 2:
@@ -124,68 +137,78 @@ Below will hopefully be a mix. Going forward, use the `pokemon` df, *NOT* the `p
 
   A. What are some reasons why this might be true?
     
-    *replace this with your answer*
+    Pokemon defense and speed might be related because, logically speaking, if a pokemon has high speed, it means it has high success when dodging attacks, which would be a form of successful defense from hits.
   
   B. What are some reasons this might not be true?
     
-    *replace this with your answer*
+    Just because a pokemon has high speed doesn't mean that when it is actually hit that it will not take damage, which would mean it has poor defense.
 
   C. What is your prediction?
     
-    *replace this with your answer*
+    I predict that there is a positive correlation between pokemon defense and speed.
     
   D. Investigate
   
 ```{r}
-
+pokemon %>%
+  ggplot(aes(y = Speed, x = Defense, color = Type1)) + 
+  geom_point(alpha = 0.3) + 
+  geom_smooth(method = 'lm', se = FALSE)
 ```
   
   E. Summarize
     
-    *replace this with your answer*
+For some pokemon types, there is a positive correlation between speed and defense, such as for the Normal and Flying type pokemon. For others, like the Bug type and Rock type, there is a negative correlation between speed and defense. Thus the relationship between these two variables depends on the type of pokemon.
     
   F. Now, use an alternative type of visualization to investigate the same question
   
 ```{r}
-
+pokemon %>%
+  ggplot(aes(y = Speed, x = Defense, fill = Type1)) + 
+  geom_bin2d(alpha = 0.4) + 
+  geom_smooth(method = 'lm', se = FALSE, 
+              aes(color = Type1))
 ```
 
   G. Is the pattern/relationship the same as above? If not, in what way is it different?
     
-    *replace this with your answer*
+    Yes, the pattern/relationship is pretty much the same as above.
     
   H. Overall conclusion and rationale
     
-    *replace this with your answer*
+    Overall, the relationship between pokemon speed and defense depends on the type of pokemon, as the data shows that the lines of best fit for each pokemon type as they score on these two variables go in different directions.
     
 
 ### 2. "I have a hypothesis that a pokemon's Special Attack and Speed are related. Could you look into that for me?"
 
   A. What are some reasons why this might be true?
     
-    *replace this with your answer*
+    If a pokemon has a high scoring special attack, it might be due to the high speed of the attack.
   
   B. What are some reasons this might not be true?
     
-    *replace this with your answer*
+    Just because a pokemon has a high scoring special attack, it might not be because the attack is speedy.
 
   C. What is your prediction?
     
-    *replace this with your answer*
+    I predict that there is no relation between speed and special attack score.
     
   D. Investigate
   
 ```{r}
-
+pokemon %>%
+  ggplot(aes(y = SpAtk, x = Speed, color = Type1)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
   
   E. Summarize
     
-    *replace this with your answer*
+    All of the trendlines for each pokemon type point up and to the right, demonstrating a positive correlation.
     
   F. Conclusion and rationale
     
-    *replace this with your answer*
+    There is a positive correlation between Special Attack score and Speed for pokemon of all types!
 
 
 ### 3. "Hey thanks for the recommendation for which starter to choose. Mine is already really strong! I'm curious about what other types of pokemon I should target for my team. I want my team to have the highest *Attack* possible. No one will stand a chance!"
@@ -193,70 +216,88 @@ Below will hopefully be a mix. Going forward, use the `pokemon` df, *NOT* the `p
   A. Could you look into how strong in *Attack* the different primary *Type* are on average (with a **point**), including how variable those scores might be (with a **range**)?
 
 ```{r}
-
+pokemon %>%
+  ggplot(aes(y = Attack, x = Type1, fill = Type1)) + 
+  geom_bin2d(color = "white") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", 
+               width = 0.5, color = "white", size = 1) + 
+  stat_summary(fun = "mean", geom = "point", color = "black")
 ```
 
   Summary:
     
-    *replace this with your answer*
+    According to the graph, the strongest attack pokemon type on average is the Dragon type, as its mean and errorbar are the highest on the graph. The second strongest attack type on average appears to be the Fighting type, as its mean and errorbar are the second highest on the graph. The third strongest attack type on average appears to be the Ground type, with the third highest mean and errorbar.
 
   Conclusion and rationale:
     
-    *replace this with your answer*
+    Target the Dragon, Fighting, and Ground types for your next teammates!
 
 > "Holy cow.... uh, wow okay that's interesting. Oh, maybe there just aren't that many of some pokemon types. Do you think that could explain this?"
 
   B. Now I'm curious about the distribution of pokemon types. How many of each different pokemon type there are? What primary type is there most and least of? Does this change across generations?
 
 ```{r}
+pokemon %>%
+  ggplot(aes(x = Type1, fill = Type1)) + 
+  geom_bar()
 
+pokemon %>%
+  ggplot(aes(x = Type1, fill = Type1)) + 
+  geom_bar() + 
+  facet_grid(cols = vars(Generation))
 ```
 
   Summary:
     
-    *replace this with your answer*
+    Across generations, the most numerous primary pokemon type is Water, as seen in the first graph's tallest bar being the Water type bar. Across generations the least numerous primary pokemon type is Flying type, as seen in the first graph's shortest bar being the Flying type bar. 
 
   Conclusion and rationale:
     
-    *replace this with your answer*
+    It seems that the strongest pokemon types are actually relatively hard to come by. The most numerous pokemon type is Water, and the least numerous is Flying, across all generations.
 
 ### 4. "I have this dumb idea that pokemon might get taller across generations. I know, just humor me." 
 
   A. What are some reasons why this might be true?
     
-    *replace this with your answer*
+    The pokemon could be getting taller across generations because they are stronger and bigger.
   
   B. What are some reasons this might not be true?
     
-    *replace this with your answer*
+    Height of a pokemon could vary based on design, and not in any particular pattern.
 
   C. What is your prediction?
     
-    *replace this with your answer*
+    I predict that pokemon do not get taller across generations.
     
   D. Investigate
   
 ```{r}
-
+pokemon %>%
+  ggplot(aes(x = height_m)) + 
+  geom_histogram() + 
+  facet_grid(cols = vars(Generation))
 ```
   
   E. Summarize
     
-    *replace this with your answer*
+    The graphs demonstrate that most pokemon are in the 0.1 - 3 meter height range, which stays relatively consistent across generations. If there was an increase in height with each generation, the graphs would skew left more and more as the generation increased.
     
   F. Now, use an alternative type of visualization to investigate the same question
   
 ```{r}
-
+pokemon %>%
+  ggplot(aes(x = height_m)) + 
+  geom_density() + 
+  facet_grid(cols = vars(Generation))
 ```
 
   G. Is the pattern/relationship the same as above? If not, in what way is it different?
     
-    *replace this with your answer*
+    Yes, the pattern is the same as above and actually may imply that pokemon height averages the same across generations.
     
   H. Overall conclusion and rationale
     
-    *replace this with your answer*
+    Pokemon are not increasing in height with each generation.
 
 # Part 3:
 
@@ -273,61 +314,69 @@ If you have no ideas at all, here are a couple to either get you thinking or tha
 
 1. *Write your question here.*
 
+Are pokemon Health points and Defense related?
 
   A. What is your prediction?
     
-    *replace this with your answer*
+    I think they are positively correlated.
 
   B. What are some reasons why this might be true?
     
-    *replace this with your answer*
+    High health points could be because the pokemon is a strong defender.
   
   C. What are some reasons this might not be true?
     
-    *replace this with your answer*
+    High health points could be randomly decided, an inherent feature.
     
   D. Investigate
   
 ```{r}
-
+pokemon %>%
+  ggplot(aes(y = HealthPoints, x = Defense, color = Type1)) +
+  geom_point(alpha = 0.3) + 
+  geom_smooth(method = "lm", se = FALSE,
+              size = 0.8)
 ```
   
   E. Summarize
     
-    *replace this with your answer*
+    The lines of best fit mostly point up and to the right. The points also mostly cluster in a pattern that overall points up and to the right. This suggests that health points and defense are generally positively correlated.
     
   F. Conclusion and rationale
     
-    *replace this with your answer*
+    Health points and defense appear to be positively correlated for most all pokemon minus Rock type, which demonstrates a slightly negatively correlated line of best fit.
 
 
-2. *Write your question here.*
+2. Is it harder to capture pokemon with high special defense scores?
 
   A. What is your prediction?
     
-    *replace this with your answer*
+    Yes, it will be harder to capture a pokemon that has a high special defense score.
 
   B. What are some reasons why this might be true?
     
-    *replace this with your answer*
+    A pokemon that is good at defending itself is hard to capture.
   
   C. What are some reasons this might not be true?
     
-    *replace this with your answer*
+    A pokemon that is good at defending itself may only use this skill when battling, not in capture.
     
   D. Investigate
   
 ```{r}
-
+pokemon %>%
+  ggplot(aes(y = capture_rate, x = SpDef, color = Type1)) + 
+  geom_point(alpha = 0.3) + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
   
   E. Summarize
     
-    *replace this with your answer*
+    The data points and trendlines demonstrate a negative correlation, suggesting that as special defense score increases, capture rate decreases.
     
   F. Conclusion and rationale
     
-    *replace this with your answer*
+    Indeed, a high special defense score is negatively correlated to capture rate, so it is harder to capture pokemon with high special defense scores.
 
 
 
@@ -338,25 +387,48 @@ Recreate the following visualizations:
 https://drive.google.com/uc?export=view&id=1A5KszqsxRXpI2KbJHAEoFvMTXjYFp1ym
 
 ```{r}
-
+pokemon %>% 
+  ggplot(aes(y = Type1, x = Type2)) + 
+  geom_bin2d(color = "black") + 
+  scale_fill_gradient(low = "white", high = "#542b98")
 ```
 
 https://drive.google.com/uc?export=view&id=1NmG7S1ujgC7xfZ5PV4CT-Z8qwcEc9vsn
 
 ```{r}
-
+pokemon %>% 
+  ggplot(aes(y = capture_rate, x = Speed, 
+             color = Legendary)) + 
+  geom_point(aes(shape = Legendary)) + 
+  geom_smooth(method = 'lm', se = FALSE, 
+              color = "blue")
 ```
 
 https://drive.google.com/uc?export=view&id=1UvlUJ_fsYUKsKdPv8A2y0txg9_mR7ZTO
 
 ```{r}
-
+pokemon %>% 
+  ggplot(aes(y = HealthPoints, x = Generation, color = Generation)) + 
+  geom_violin(alpha = 0,
+              size = 1) + 
+  geom_jitter(color = "black", alpha = 0.3, 
+              width = 0.12,
+              height = 3) + 
+  stat_summary(fun = "mean", geom = "point", 
+               aes(color = Generation),
+               shape = "diamond",
+               size = 5)
 ```
 
 https://drive.google.com/uc?export=view&id=1s1hdjhqGdulVDVUDF89LhnoIGtneOeH4
 
 ```{r}
-
+pokemon %>% 
+  ggplot(aes(x = Generation), fill = capture_rate) + 
+  geom_bar() + 
+  scale_fill_gradient(low = "lightyellow", high = "#06402b") + 
+  facet_grid(cols = vars(Legendary))
+#??? been trying this one for a while and i still dont know how to recreate it T-T
 ```
 
 https://drive.google.com/uc?export=view&id=1g9lLPN0X0go2NLRFAPxURhMM2byYLsm2
@@ -379,7 +451,7 @@ Please save the appropriate number to the variables below:
 1. Approximately how long (in minutes) do you think it took you to complete this assignment?
 
 ```{r}
-timeEstimate = 
+timeEstimate = 120
 ```
 
 2. How difficult or challenging did you find this assignment?

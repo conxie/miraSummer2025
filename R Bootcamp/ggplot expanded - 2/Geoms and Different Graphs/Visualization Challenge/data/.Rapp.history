@@ -1,0 +1,2 @@
+load("/Users/miramateo/Desktop/GitHub/R Bootcamp/ggplot expanded - 2/Geoms and Different Graphs/Visualization Challenge/data/pokemon.RData")
+load("/Users/miramateo/Desktop/GitHub/R Bootcamp/ggplot expanded - 2/Geoms and Different Graphs/Visualization Challenge/data/pokemon_starters.RData")
