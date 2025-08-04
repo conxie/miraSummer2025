@@ -32,19 +32,37 @@ You are going to continue working with the `diamonds_sample` dataset.
 > As a quick aside, when you use a base 10 log transformation, the value corresponds to the exponent you need to raise 10 to to get that number. For example, the log base 10 of 100 is 2, because 10^2 = 100. log10(1000) = 3, because 10^3 = 1000, etc. 
 
 ```{r}
+base_graph <- diamonds %>%
+  ggplot(aes(y = price, 
+             x = cut)) + 
+  geom_jitter(height = 0, 
+              width = 0.2, 
+              size = 2,
+              aes(color = cut)) + 
+  stat_summary(fun = "mean",
+               geom = "point",
+               color = "red") + 
+  stat_summary(fun.data = "mean_se", 
+               geom = "errorbar", 
+               width = 0.5) + 
+  scale_y_log10("price")
 
+base_graph
 ```
 
   A. Change the interval of the Y-axis so it has breaks by 0.25 ranging from 0 to 5.25
   
 ```{r}
-
+base_graph + 
+  scale_y_log10(breaks = seq(from = 0, to = 5.25, by = 0.25))
 ```
   
   B. Change the limit of the Y-axis so it ranges from 0 to 5.25
   
 ```{r}
-
+base_graph + 
+  scale_y_log(breaks = seq(from = 0, to = 5.25, by = 0.25)) + 
+  coord_cartesian(ylim = c(0, 5.25))
 ```
 
   C. Remove the padding at the bottom

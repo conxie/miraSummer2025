@@ -1,8 +1,8 @@
 # Customization
 
 ```{r}
-library(tidyverse) # Load tidyverse
-library(palmerpenguins) # Load penguins data
+library(tidyverse)
+library(palmerpenguins) 
 ```
 
 The following will serve as a base plot to customize:
@@ -35,8 +35,8 @@ The axes can be changed using a `scale_*_*` function.
 
 ```{r}
 base_plot +
-  scale_y_continuous(breaks = seq(from = X, to = X, by = X),
-                     labels = seq(from = X, to = X, by = X))
+  scale_y_continuous(breaks = seq(from = 0, to = 7000, by = 500),
+                     labels = seq(from = 0, to = 7000, by = 500))
 ```
 
 Graphs are plotted with (x,y) *cartesian* *coord*inates. Modify the limits of that coordinate system with `coord_cartesian()`
@@ -45,7 +45,9 @@ Graphs are plotted with (x,y) *cartesian* *coord*inates. Modify the limits of th
 
 ```{r}
 base_plot +
-  coord_cartesian(_lim = c(_,_))
+  coord_cartesian(ylim = c(0,7000)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 7000, by = 500),
+                     labels = seq(from = 0, to = 7000, by = 500))
 ```
 
 
@@ -70,13 +72,17 @@ Uses `labs()`
 > Add your code from above and replace the X's below with appropriate titles and captions
 
 ```{r}
-`Your Code Here` +
-  labs(title = "X",
-       subtitle = "X",
-       y = "X",
-       x = "X",
-       tag = "X",
-       caption = "X")
+base_plot +
+  coord_cartesian(ylim = c(0,7000)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 7000, by = 500),
+                     labels = seq(from = 0, to = 7000, by = 500),
+                     expand = c(0,0)) +
+  labs(title = "How Does Penguin Weight Vary Across Islands?",
+       subtitle = "Islands Contain Different Penguin Species",
+       y = "Body Mass (grams)",
+       x = "Island",
+       tag = "Figure 1",
+       caption = "Note: Error bars represent +/- 1 SEM")
 ```
 
 ## Themes
@@ -84,7 +90,17 @@ Uses `labs()`
 First, save all updates made so far to a new variable.
 
 ```{r}
-modified_plot <- `Your Code Here`
+modified_plot <- base_plot +
+  coord_cartesian(ylim = c(0,7000)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 7000, by = 500),
+                     labels = seq(from = 0, to = 7000, by = 500),
+                     expand = c(0,0)) +
+  labs(title = "How Does Penguin Weight Vary Across Islands?",
+       subtitle = "Islands Contain Different Penguin Species",
+       y = "Body Mass (grams)",
+       x = "Island",
+       tag = "Figure 1",
+       caption = "Note: Error bars represent +/- 1 SEM")
 ```
 
 Most common preset themes: `theme_minimal()`, `theme_bw()`, and `theme_classic()`.
@@ -92,13 +108,13 @@ Most common preset themes: `theme_minimal()`, `theme_bw()`, and `theme_classic()
 > Add each of the 3 themes listed above to `modified_plot` and observe the differences:
 
 ```{r}
-modified_plot
+modified_plot + theme_minimal()
 
 
-modified_plot
+modified_plot + theme_bw()
 
 
-modified_plot
+modified_plot + theme_classic()
 ```
 
 
@@ -117,13 +133,15 @@ For example:
 > Replace the X's in the code below increase font size and make text more legible for the titles and tag, specifically making the subtitle less prominent.
 
 ```{r}
-modified_plot +
+modified_plot = modified_plot +
   theme_classic() +
-  theme(plot.title = element_text(size = X,
-                                  X = "bold"),
-        X.subtitle = element_text(X = 10, 
-                                     color = "grey50"),
-        plot.tag = X(face = X))
+  theme(plot.title = element_text(size = 18),
+        plot.subtitle = element_text(size = 10, 
+                                     color = "grey50",
+                                     face = "bold"),
+        plot.tag = element_text(face = "bold"))
+
+modified_plot
 ```
 
 To change the location of the text, ad*just* its *v*ertical or *h*orizontal location using `vjust` or `hjust`. 
@@ -136,7 +154,18 @@ When adjusting:
 > Copy/paste your code from above and add adjustments to center the title and subtitle. When your code looks good, update `modified_plot` by saving over it.
 
 ```{r}
+modified_plot = modified_plot +
+  theme_classic() +
+  theme(plot.title = element_text(size = 18, 
+                                  hjust = 0.5, 
+                                  face = "bold"),
+        plot.subtitle = element_text(size = 10, 
+                                     color = "grey50",
+                                     hjust = 0.5,
+                                     face = "bold"),
+        plot.tag = element_text(face = "bold"))
 
+modified_plot
 
 ```
 
@@ -146,7 +175,8 @@ When adjusting:
 
 ```{r}
 modified_plot +
-  theme(plot.caption = X)
+  theme(plot.caption = element_text(hjust = 0,
+                                    face = 'italic'))
 ```
 
 
@@ -157,7 +187,11 @@ Change simultaneously (e.g., using `axis.title`) or individually (e.g., using `a
 > Increase the axis titles size and make them bold.
 
 ```{r}
-
+modified_plot +
+  theme(axis.title.x = element_text(size = 14,
+                                    face = "bold"),
+        axis.title.y = element_text(size = 14,
+                                    face = "bold"))
 ```
 
 Lack of space causes TRouBLe. Modify the text's margins -- the area to the *t*op, *r*ight, *b*ottom, and *l*eft of it.
@@ -165,21 +199,22 @@ Lack of space causes TRouBLe. Modify the text's margins -- the area to the *t*op
 > Replace the X's in the code below to increase the appropriate margins to improve legibility. Once it looks good, update `modified_plot`
 
 ```{r}
-modified_plot +
+modified_plot = modified_plot +
   theme(plot.subtitle = element_text(size = 10, 
                                      color = "grey50",
                                      hjust = 0.5,
-                                     margin = margin(X = X, 
+                                     margin = margin(b = 0.2, 
                                                      unit = "inch")),
         axis.title.x = element_text(size = 16,
                                     face = "bold",
-                                    margin = margin(X = X, 
+                                    margin = margin(t = 0.2, 
                                                     unit = "inch")),
         axis.title.y = element_text(size = 16,
                                     face = "bold",
-                                    margin = margin(X = X, 
+                                    margin = margin(r = 0.2, 
                                                     unit = "inch")))
 
+modified_plot
 ```
 
 
@@ -188,12 +223,14 @@ modified_plot +
 > Replace the X's in the code below, try different values. Once it looks good, update `modified_plot`
 
 ```{r}
-modified_plot +
-  theme(axis.line.x = element_line(color = "X", size = X),
-        axis.ticks = element_line(color = "X", size = X),
-        axis.text = element_text(X = "bold",
-                                 color = "X",
-                                 size = X))
+modified_plot = modified_plot +
+  theme(axis.line.x = element_line(color = "gray40", size = 0.5),
+        axis.ticks = element_line(color = "gray40", size = 0.5),
+        axis.text = element_text(face = "bold",
+                                 color = "black",
+                                 size = 12))
+
+modified_plot
 ```
 
 ### Setting a Default
@@ -262,7 +299,15 @@ theme_set(theme_classic() +
 > Try making a new visualization to see the results:
 
 ```{r}
-
+penguins %>%
+  ggplot(aes(y = body_mass_g, x = island)) +
+  geom_violin(aes(fill = island),
+              alpha = 0.2) +
+  geom_jitter(alpha = 0.4, width = 0.05) +
+  stat_summary(fun.data = "mean_se",
+               geom = "pointrange",
+               aes(color = island),
+               size = 0.5)
 ```
 
 ### Legends
@@ -289,7 +334,40 @@ theme(legend.box.background = element_rect(color = "black", # Add a defined box 
 > Modify the legend from `modified_plot` using the code examples above
 
 ```{r}
-
+penguins %>%
+  drop_na() %>%
+    ggplot(aes(y = body_mass_g, x = island)) +
+    geom_point(size = 2, alpha = 0.3,
+               shape = 21,
+                aes(fill = sex),
+                position = position_jitterdodge()) +
+    stat_summary(fun.data = "mean_se",
+                 geom = "pointrange",
+                 color = "black",
+                 aes(fill = sex),
+                 shape = 21,
+                 size = 0.5,
+                 position = position_dodge(width = 0.75)) +  
+  coord_cartesian(ylim = c(0,7000)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 7000, by = 500),
+                     labels = seq(from = 0, to = 7000, by = 500),
+                     expand = c(0,0)) +
+  labs(title = "How Does Penguin Weight Vary Across Islands?",
+       subtitle = "Islands Contain Different Penguin Species",
+       y = "Body Mass (grams)",
+       x = "Island",
+       tag = "Figure 1",
+       caption = "Note: Error bars represent +/- 1 SEM",
+        # New code starts here:
+       fill = "Sex" # Change Legend label with the name of the mapped aesthetic.
+       ) +
+  theme(legend.box.background = element_rect(color = "black", # Add a defined box around legend
+                                             size = 2),
+        legend.title = element_text(face = "bold"), # Modify the title
+        legend.text = element_text(face = "bold"), # Modify text
+        legend.title.align = 0.5, # Change alignment of legend title. Think of this like an hjust.
+        legend.key = element_rect(fill = "white", colour = "black") # Add defined boxes around legend key graphic
+        ) 
 ```
 
 
@@ -351,7 +429,7 @@ Patchwork combines graphs by using the `+`, `/`, and `|` operators.
 > Use `+` to combine plots `a` and `b`.
 
 ```{r}
-
+a + b
 ```
 
 `/` will stack graphs on top of each other
@@ -359,7 +437,7 @@ Patchwork combines graphs by using the `+`, `/`, and `|` operators.
 > Use `/` to arrange plot `b` on top of plot `c`
 
 ```{r}
-
+b / c
 ```
 
 `|` places graphs next to each other and can nest arrangements created with the other operators.
@@ -367,7 +445,7 @@ Patchwork combines graphs by using the `+`, `/`, and `|` operators.
 > Use `|` to arrange plot `c` on the left, and plot `a` over plot `b` to the right (hint: you may need to use parentheses to control the order of operations!)
 
 ```{r}
-
+c | (a / b)
 ```
 
 
@@ -385,7 +463,7 @@ In `ggsave()`, you must specify:
 
 ```{r}
 ggsave(plot = a, 
-       filename = "",
+       filename = "visualizations/test_plot.pdf",
        width = 12,
        height = 8)
 ```
