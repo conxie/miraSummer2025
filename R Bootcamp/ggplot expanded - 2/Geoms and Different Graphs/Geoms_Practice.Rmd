@@ -316,6 +316,7 @@ diamonds %>%
   ggplot(aes(x = table,
              y = carat,
              z = price)) +
+  geom_raster()
   stat_summary_2d(fun = "mean", geom = "tile", color = "white")
 ```
 
