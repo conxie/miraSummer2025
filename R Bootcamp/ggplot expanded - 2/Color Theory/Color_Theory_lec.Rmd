@@ -2,12 +2,12 @@
 
 Load Packages:
 ```{r}
-library(patchwork) # Load package to combine graphs
-library(RColorBrewer) # Load package with color palettes
-library(colorspace) # Load package with color palettes
-library(viridis) # Load package with color palettes
-library(tidyverse) # Load tidyverse
-library(palmerpenguins) # Load penguins data
+library(patchwork)
+library(RColorBrewer)
+library(colorspace) 
+library(viridis) 
+library(tidyverse)
+library(palmerpenguins) 
 ```
 
 Set Theme:
@@ -143,10 +143,10 @@ For example, to manually set the HCL parameters of a color space, you would use 
 
 ```{r}
 plot_bar +
-  scale_fill_manual(values = c("cyan", "lightgreen", "X"))
+  scale_fill_manual(values = c("cyan", "lightgreen", "coral"))
 
 plot_jitter +
-  scale_color_manual(values = c("magenta", "X", 
+  scale_color_manual(values = c("magenta", "yellow", 
                                 "lightskyblue"))
 ```
 
@@ -156,13 +156,13 @@ You can also specify which level of the mapped variable is associated with each 
 
 ```{r}
 plot_bar +
-  scale_fill_manual(values = c("Torgersen" = "X",
-                               "Biscoe" = "X",
-                               "Dream" = "X"))
+  scale_fill_manual(values = c("Torgersen" = "30",
+                               "Biscoe" = "60",
+                               "Dream" = "90"))
 plot_jitter +
-  scale_color_manual(values = c("Torgersen" = "X",
-                               "Biscoe" = "X",
-                               "Dream" = "X"))
+  scale_color_manual(values = c("Torgersen" = "25",
+                               "Biscoe" = "50",
+                               "Dream" = "75"))
 ```
 
 Choose colors that will be intrinsically informative and intuitive.
@@ -190,7 +190,7 @@ plot_line +
   scale_color_gradient()
 
 plot_hex +
-  scale_fill_gradient(low = "X", high = "X")
+  scale_fill_gradient(low = "lightgreen", high = "darkgreen")
 ```
 
 or multiple hues:
@@ -199,10 +199,10 @@ or multiple hues:
 
 ```{r}
 plot_line +
-  scale_color_gradient(low = "X", high = "X")
+  scale_color_gradient(low = "tan", high = "chocolate")
 
 plot_hex +
-  scale_fill_gradient(low = "X", high = "X")
+  scale_fill_gradient(low = "pink", high = "red")
 ```
 
 A sequential color gradient should create the perception that values have a meaningful sequential order.
@@ -229,7 +229,8 @@ If you have data with a neutral point or true zero, you would use a *divergent* 
 
 ```{r}
 plot_hex +
-  scale_fill_gradient2(low = "X", mid = "X", high = "X")
+  scale_fill_gradient2(low = "red", mid = "grey90", high = "yellow",
+                       midpoint = mean(penguins$flipper_length_mm, na.rm = TRUE))
 ```
 
 ## Pre-defined Color Scales
@@ -245,20 +246,20 @@ Each color scale can be used as a function that takes an argument `n` for the nu
 > Uncomment one row at a time and replace n with different numbers.
 
 ```{r}
-# rainbow(n)
-# heat.colors(n)
-# terrain.colors(n)
-# topo.colors(n)
-# cm.colors(n)
+rainbow(10)
+heat.colors(4)
+terrain.colors(9)
+topo.colors(6)
+cm.colors(1)
 ```
 
 > Pass some base R color samples in as the value for the arguments below:
 
 ```{r}
 plot_hex +
-    scale_fill_gradientn(colors = X)
+    scale_fill_gradientn(colors = rainbow(3))
 plot_jitter +
-  scale_color_manual(values = X)
+  scale_color_manual(values = cm.colors(4))
 ```
 
 ### Brewer
@@ -294,8 +295,8 @@ You can see the exact colors used for a given palette and number of colors using
 > Replace the X's below to examine a palette that has 3 "Blues", and then 6 "Blues"
 
 ```{r}
-display.brewer.pal(n = X, name = 'X')
-display.brewer.pal(n = X, name = 'X')
+display.brewer.pal(n = 3, name = 'Blues')
+display.brewer.pal(n = 6, name = 'Blues')
 ```
 
 The specific values of those colors can be identified with `brewer.pal()`.
@@ -303,7 +304,8 @@ The specific values of those colors can be identified with `brewer.pal()`.
 > Take your code from above and use `brewer.pal()` instead of `display.brewer.pal()`
 
 ```{r}
-
+brewer.pal(n = 3, name = 'Blues')
+brewer.pal(n = 6, name = 'Blues')
 ```
 
 `scale_*_brewer()` for categorical data and `scale_*_distiller()` for continuous. Just pass in the name of the specific `palette`.
@@ -330,9 +332,9 @@ Since `brewer.pal()` gives a vector of color values from a specific palette, tha
 
 ```{r}
 plot_hex +
-    scale_fill_gradientn(colors = brewer.pal(n = X, name = 'X'))
+    scale_fill_gradientn(colors = brewer.pal(n = 3, name = 'YlOrRd'))
 plot_jitter +
-  scale_color_manual(values = brewer.pal(n = X, name = 'X'))
+  scale_color_manual(values = brewer.pal(n = 4, name = 'PuBu'))
 ```
 
 ### Grey scale
@@ -353,10 +355,10 @@ plot_bar +
 
 ```{r}
 plot_bar + 
-  scale_fill_grey(start = X, end = X)
+  scale_fill_grey(start = 0, end = 1)
 
 plot_bar + 
-  scale_fill_grey(start = X, end = X)
+  scale_fill_grey(start = 0.4, end = 0.7)
 ```
 
 ### Viridis
@@ -369,10 +371,10 @@ plot_bar +
 
 ```{r}
 plot_bar + 
-  scale_fill_viridis()
+  scale_fill_viridis(discrete = TRUE)
 
 plot_jitter + 
-  scale_color_viridis(option = "plasma")
+  scale_color_viridis(discrete = TRUE, option = "plasma")
 
 plot_line + 
   scale_color_viridis(option = "inferno")
@@ -384,10 +386,10 @@ plot_hex +
 You can also generate specific color codes from these palettes
 
 ```{r}
-# viridis(n)
-# magma(n)
-# inferno(n)
-# plasma(n)
+viridis(4)
+magma(9)
+inferno(2)
+plasma(7)
 ```
 
 ### colorspace
@@ -417,8 +419,8 @@ sequential_hcl(n = 3, palette = "SunsetDark")
 diverging_hcl(n = 3, palette = "Lisbon")
 
 plot_hex +
-    scale_fill_gradientn(colors = sequential_hcl(n = X, 
-                                                 palette = "X"))
+    scale_fill_gradientn(colors = sequential_hcl(n = 5, 
+                                                 palette = "Hawaii"))
 ```
 
 Many colorspace palettes attempt to be identical to RColorBrewer or viridis ones.
@@ -446,9 +448,9 @@ Whenever there is a similar palette available from another package, probably go 
 > Replace the X's below to test different palettes with different numbers of colors
 
 ```{r}
-demoplot(sequential_hcl(n = X, palette = "X"), "bar")
-demoplot(sequential_hcl(n = X, palette = "X"), "scatter")
-demoplot(sequential_hcl(n = X, palette = "X"), "lines")
+demoplot(sequential_hcl(n = 3, palette = "Emrld"), "bar")
+demoplot(sequential_hcl(n = 6, palette = "Mint"), "scatter")
+demoplot(sequential_hcl(n = 9, palette = "Lajolla"), "lines")
 ```
 
 Since it just needs a vector of colors, you can use `demoplot()` with colors generated from other packages (e.g., `viridis(n)`, `brewer.pal()`, etc.)
@@ -456,7 +458,9 @@ Since it just needs a vector of colors, you can use `demoplot()` with colors gen
 > Use functions covered earlier to create color values that can by used by demoplot. Use at least one from Base R, viridis, and brewer.
 
 ```{r}
-
+demoplot(terrain.colors(6), "lines")
+demoplot(viridis(5), "bar")
+demoplot(brewer.pal(6, "Dark2"), "scatter")
 ```
 
 
