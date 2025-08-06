@@ -17,36 +17,46 @@ For these questions, you will use template graphs *similar* to those used in the
 
 ```{r}
 plot_bar = penguins %>%
-  ggplot(aes(y = , x = ,
-             fill = )) +
+  ggplot(aes(y = bill_depth_mm, x = body_mass_g,
+             fill = island)) +
   stat_summary(fun = "mean", geom = "bar") +
   scale_y_continuous(expand = c(0,0))
+plot_bar
 
 plot_jitter = penguins %>%
-  ggplot(aes(y = , x = )) +
+  ggplot(aes(y = flipper_length_mm, x = bill_length_mm)) +
   geom_jitter(height = 0, width = 0.2, 
               size = 2, alpha = 0.5,
-              aes(color = )) +
+              aes(color = island)) +
     stat_summary(fun.data = "mean_se",
                geom = "pointrange",
-               size = 0.5)
+               size = 0.3)
+plot_jitter
 
 plot_line = penguins %>%
-  ggplot(aes(y = , x = , color = )) +
+  ggplot(aes(y = bill_depth_mm, 
+             x = flipper_length_mm,
+             color = flipper_length_mm)) +
   stat_summary(fun = "mean", geom = "point", size = 2) +
   stat_summary(fun = "mean", geom = "line", size = 1)
+plot_line
 
-plot_hex = penguins %>%
-  ggplot(aes(y = ,
-             x = ,
-             z = )) +
+plot_hex2 = penguins %>%
+  ggplot(aes(y = flipper_length_mm,
+             x = bill_length_mm,
+             z = bill_depth_mm)) +
   stat_summary_hex()
+plot_hex2
 ```
 
 1. Change the colors in `plot_bar` and `plot_jitter` to manually set values. Find a combination of colors you think work well together and are perceptually uniform.
 
 ```{r}
+plot_bar + 
+  scale_fill_manual(values = c("#FA003F", "#FFFF81", "skyblue"))
 
+plot_jitter + 
+  scale_color_manual(values = c("pink", "coral", "lightgreen"))
 ```
 
 2. Using `plot_line` and/or `plot_hex`...
@@ -56,13 +66,15 @@ A. Create 2 *single hue* gradients that you think seem perceptually uniform usin
 A light and dark purple:
 
 ```{r}
-
+plot_hex2 + 
+  scale_fill_gradient(low = "lavender", high = "purple")
 ```
 
 A light and dark green:
 
 ```{r}
-
+plot_line + 
+  scale_color_gradient(low = "lightgreen", high = "darkgreen")
 ```
 
 
@@ -71,13 +83,15 @@ B. Create 2 *multiple hue* gradients (using either function to do so) that you t
 purple and yellow:
 
 ```{r}
-
+plot_hex2 + 
+  scale_fill_gradientn(colors = c("purple", "yellow"))
 ```
 
 pink and green:
 
 ```{r}
-
+plot_line + 
+  scale_color_gradientn(colors = c("pink", "green"))
 ```
 
 
@@ -86,13 +100,17 @@ pink and green:
 red and blue:
 
 ```{r}
-
+plot_line + 
+  scale_color_gradient2(low = "red", mid = "green", high = "lightblue",
+                       midpoint = mean(penguins$flipper_length_mm, na.rm = TRUE))
 ```
 
 orange and yellow:
 
 ```{r}
-
+plot_hex2 + 
+  scale_fill_gradient2(low = "orange", mid = "grey90", high = "yellow",
+                       midpoint = mean(penguins$flipper_length_mm, na.rm = TRUE))
 ```
 
 4. Modify each of your template visualizations to use a different palette from RColorBrewer (hint: make sure you use the appropriate type of color scale given the type of data!).
@@ -100,25 +118,29 @@ orange and yellow:
 `plot_bar` using "Set3"
 
 ```{r}
-
+plot_bar + 
+  scale_fill_brewer(palette = "Set3")
 ```
 
 `plot_jitter` using "Pastel2"
 
 ```{r}
-
+plot_jitter + 
+  scale_color_brewer(palette = "Pastel2")
 ```
 
 `plot_line` using "YlGn"
 
 ```{r}
-
+plot_line + 
+  scale_color_distiller(palette = "YlGn")
 ```
 
 `plot_hex` using "GnBu"
 
 ```{r}
-
+plot_hex + 
+  scale_fill_distiller(palette = "GnBu")
 ```
 
 
@@ -127,25 +149,29 @@ orange and yellow:
 `plot_bar` using "cividis"
 
 ```{r}
-
+plot_bar + 
+  scale_fill_viridis(discrete = TRUE, option = "cividis")
 ```
 
 `plot_jitter` using "plasma"
 
 ```{r}
-
+plot_jitter + 
+  scale_color_viridis(discrete = TRUE, option = "plasma")
 ```
 
 `plot_line` using "inferno"
 
 ```{r}
-
+plot_line + 
+  scale_color_viridis(option = "inferno")
 ```
 
 `plot_hex` using "viridis"
 
 ```{r}
-
+plot_hex + 
+  scale_fill_viridis(option = "viridis")
 ```
 
 

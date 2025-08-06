@@ -130,8 +130,13 @@ Prediction:
 
 ```{r}
 diamonds %>%
-  ggplot(aes(y = depth, x = color)) + 
-  stat_summary(fun = "mean", geom = "bar")
+  ggplot(aes(y = depth, x = color)) +  
+  stat_summary(fun = mean, 
+               geom = "bar") + 
+  stat_summary(fun.data = mean_se,
+               geom = "errorbar",
+               width = 0.2,
+               color = "black")
 ```
 
 Summary:
@@ -316,8 +321,7 @@ diamonds %>%
   ggplot(aes(x = table,
              y = carat,
              z = price)) +
-  geom_raster()
-  stat_summary_2d(fun = "mean", geom = "tile", color = "white")
+  stat_summary_2d(fun = "mean", geom = "tile")
 ```
 
 
