@@ -34,10 +34,10 @@ df %>%
 
 ```{r}
 mtcars2 %>%
-  rename("X" = "wt", 
-         "horse_power" = "X",
-         "X" = "cyl", 
-         "displacement" = "X") %>%
+  rename("weight" = "wt", 
+         "horse_power" = "hp",
+         "cylinder" = "cyl", 
+         "displacement" = "disp") %>%
   head()
 ```
 
@@ -67,7 +67,7 @@ If you need to use the object in its current state again or make significant cha
 
 ```{r}
 mtcars2 %>%
-  relocate(X, .after = X)
+  relocate("wt", .after = "model")
 ```
 
 
@@ -77,7 +77,7 @@ Can move multiple columns
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  relocate(c(X, X), .X = X)
+  relocate(c("disp", "wt"), .after = "model")
 ```
 
 
@@ -93,7 +93,7 @@ mtcars2 %>%
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  select(c(X, X))
+  select(c("cyl", "gear"))
 ```
 
 
@@ -103,7 +103,7 @@ You can use `:` to return all the values in a range of *columns*
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  select(c())
+  select(c("cyl" : "hp"))
 ```
 
 
@@ -113,7 +113,7 @@ mtcars2 %>%
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  select(c())
+  select(!c("cyl", "gear"))
 ```
 
 
@@ -133,7 +133,7 @@ mtcars2 %>%
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  filter(X == X)
+  filter(gear == 4)
 ```
 
 
@@ -143,7 +143,7 @@ Any evaluative operator can be used in the conditions:
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  filter()
+  filter(disp > 300)
 ```
 
 
@@ -153,7 +153,7 @@ Tests can be text strings as well
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  filter()
+  filter(model == "Lotus Europa")
 ```
 
 
@@ -163,7 +163,8 @@ Multiple conditions can be strung together using logical operators:
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  filter()
+  filter((cyl != 4) | (hp < 100))
+
 ```
 
 
@@ -185,7 +186,7 @@ The `%in%` operator checks to see if the value of one variable is in a vector of
 
 ```{r eval=FALSE}
 mtcars2 %>%
-  filter()
+  filter(_ %in% _)
 ```
 
 
@@ -199,7 +200,7 @@ To filter based on whether a value *contains* a certain string, use `grepl()`:
 
 ```{r}
 mtcars2 %>%
-  filter(grepl("X", X))
+  filter(grepl("Porsche", model))
 ```
 
 ## Indexing
@@ -213,7 +214,8 @@ Two functions to help index within a pipe chain
 > Use `pull()` to index the `cyl` variable from `mtcars`
 
 ```{r}
-
+mtcars %>%
+  pull(cyl)
 ```
 
 The result is a vector, which allows it to be piped to other functions.
@@ -221,9 +223,13 @@ The result is a vector, which allows it to be piped to other functions.
 > First, use select to select the `cyl` column and then pipe that to `mean()`. Below that, use `pull()` to index `cyl` and then pipe that to `mean()`
 
 ```{r}
-mtcars2
+mtcars2 %>%
+  select(c(cyl)) %>%
+  mean()
 
-mtcars2
+mtcars2 %>%
+  pull(cyl) %>%
+  mean()
 ```
 
 ### pluck()
@@ -246,7 +252,7 @@ mtcars2 %>%
 
 ```{r}
 mtcars2 %>%
-  X(X)
+  distinct(cyl)
 ```
 
 `n_distinct()` -- gives the *number* of unique values, takes a vector as input
@@ -254,7 +260,9 @@ mtcars2 %>%
 > below, first `pull()` to isolate the `cyl` variable, and then pipe that to `n_distinct()` to find the *number* of unique values
 
 ```{r}
-
+mtcars2 %>%
+  pull(cyl) %>%
+  n_distinct()
 ```
 
 
@@ -282,8 +290,8 @@ Multiple new columns can be created simultaneously
 price_of_gas = 6.25
 
 mtcars2 %>%
-  mutate(X = X / X,
-         X = X * X)
+  mutate(cost_per_mile = price_of_gas / mpg,
+         wt_lbs = wt * 1000)
 ```
 
 ### Conditional Values
@@ -294,11 +302,9 @@ You may want a variable to have a value based on some different conditions. `cas
 
 ```{r}
 mtcars2 %>%
-  mutate(fuel_efficiency = case_when(
-    mpg <= X ~ "Poor",
-    X >= 20 & mpg <= X ~ "X",
-    TRUE ~ "Great"
-  ))
+  mutate(fuel_efficiency = case_when(mpg <= 19 ~ "Poor",
+                                     mpg >= 20 & mpg <= 25 ~ "Average",
+                                     TRUE ~ "Great"))
 ```
 
 `ifelse()` can be used in simple instances
@@ -307,7 +313,7 @@ mtcars2 %>%
 
 ```{r}
 mtcars2 %>%
-  mutate(power = ifelse(X >= X, "High", "X"))
+  mutate(power = ifelse(hp >= 200, "High", "Low"))
 ```
 
 ### Position
@@ -320,7 +326,7 @@ You can specify what existing column you want the new column to appear `.before`
 price_of_gas = 6.25
 
 mtcars2 %>%
-  mutate(cost_per_mile = price_of_gas / mpg, X = "X")
+  mutate(cost_per_mile = price_of_gas / mpg, .after = "mpg")
 ```
 
 ### NAs
@@ -383,8 +389,8 @@ You can change data type by using the `as.*` function. The one exception is that
 
 ```{r}
 mtcars2 %>%
-  mutate(X = as.X(mpg),
-         cyl = X(X)) %>%
+  mutate(mpg = as.character(mpg),
+         cyl = factor(cyl)) %>%
   glimpse()
 ```
 
