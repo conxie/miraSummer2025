@@ -8,7 +8,7 @@ output: html_document
 ```{r}
 library(tidyverse)
 # Modify the file path in the code below to properly load the "NFLScores2011.rda" file
-load("NFLScores2011.rda")
+load("~/Desktop/GitHub/R Bootcamp/Basic Data Wrangling - 3/Wrangling/NFLScores2011.rda")
 ```
 
 Do not save over the object unless you are told to *update*
@@ -16,42 +16,65 @@ Do not save over the object unless you are told to *update*
 Examine the `NFLScores2011` dataset
 
 ```{r}
-
+view(NFLScores2011)
 ```
 
 1. Use `arrange()` to check `HomeScore` and `AwayScore` to find out what was the highest number of points scored by a team in a single game during this season
 
 ```{r}
+NFLScores2011 %>%
+  arrange(desc(HomeScore)) %>%
+  pull(HomeScore) %>%
+  pluck(1)
 
+NFLScores2011 %>%
+  arrange(desc(AwayScore)) %>%
+  pull(AwayScore) %>%
+  pluck(1)
 ```
 
 What was the team and how many points did they score?
-  - 
+  	
+New Orleans Saints scored 62 points.
   
 2. Use `arrange()` to check `HomeYards` and `AwayYards` to find out what was the fewest yards a team got in a single game during this season
 
 ```{r}
+NFLScores2011 %>%
+  arrange(HomeYards) %>%
+  pull(HomeYards) %>%
+  pluck(1)
 
+NFLScores2011 %>%
+  arrange(AwayYards) %>%
+  pull(AwayYards) %>%
+  pluck(1)
 ```
 
 What was the team and how many yeards did they get?
-  - 
+  Seattle Seahawks, 137 yards.
 
 3. Use `rename()` to change all the variables using camelCase to use snake_case
 
 ```{r}
-
+#install.packages("janitor")
+#library(janitor)
+NFLScores2011 %>%
+  clean_names()
 ```
 
 4. Use `relocate()` to move the `Day` column after `Week`
 
 ```{r}
-
+NFLScores2011 %>%
+  relocate("Day", .after = "Week")
 ```
 
 5. Move `HomeYards` and `AwayYards` before `HomeScore`
 
 ```{r}
+NFLScores2011 %>%
+  relocate("HomeYards", "AwayYards", .before = "HomeScore")
 
 ```
 
@@ -60,25 +83,29 @@ Use `select()` too....
 6. Return the `HomeScore` variable
 
 ```{r}
-
+NFLScores2011 %>%
+  select(c(HomeScore))
 ```
 
 7. Keep only the variables relating to the Home Team
 
 ```{r}
-
+NFLScores2011 %>%
+  select(!c(AwayTeam, AwayScore, AwayYards, AwayTO))
 ```
 
 8. Keep only the variables related to the game's statistics (how many points and yards there were)
 
 ```{r}
-
+NFLScores2011 %>%
+  select(c(HomeScore, AwayScore, HomeYards, AwayYards))
 ```
 
 9. Keep all variables except `Date`, `DateStr`, and `YDM`
 
 ```{r}
-
+NFLScores2011 %>%
+  select(!c(Date, DateStr, YDM))
 ```
 
 Use `filter()` too...
@@ -86,37 +113,43 @@ Use `filter()` too...
 10. Find only games played on a Monday
 
 ```{r}
-
+NFLScores2011 %>%
+  filter(Day == "Mon")
 ```
 
 11. Find only games played after Week 10
 
 ```{r}
-
+NFLScores2011 %>%
+  filter(Week > 10)
 ```
 
 12. Find the games where the home team was not "Green Bay Packers"
 
 ```{r}
-
+NFLScores2011 %>%
+  filter(HomeTeam != "Green Bay Packers")
 ```
 
 13. Find the games played on Monday's and Thursday's (hint: consider what logical operator you need)
 
 ```{r}
-
+NFLScores2011 %>%
+  filter((Day == "Mon") | (Day == "Thu"))
 ```
 
 14. Find games played on Sunday in week 7
 
 ```{r}
-
+NFLScores2011 %>%
+  filter((Week == 7) & (Day == "Sun"))
 ```
 
 15. Find games that are either on Sunday OR have a Home Score greater than 40
 
 ```{r}
-
+NFLScores2011 %>%
+  filter((Day == "Sun") | (HomeScore > 40))
 ```
 
 16. Find games played by teams in the AFC North division ("Baltimore Ravens", "Pittsburgh Steelers", "Cleveland Browns", "Cincinnati Bengals"). 
@@ -124,25 +157,47 @@ Use `filter()` too...
 *Hint: Make sure to check for both the `HomeTeam` and the `AwayTeam` to see if either of them has a team in the list of AFCN teams*
 
 ```{r}
-
+NFLScores2011 %>%
+  filter((HomeTeam == "Baltimore Ravens") |
+           (HomeTeam == "Pittsburgh Steelers") | 
+           (HomeTeam == "Cleveland Browns") | 
+           (HomeTeam == "Cincinnati Bengals") | 
+           (AwayTeam == "Baltimore Ravens") | 
+           (AwayTeam == "Pittsburgh Steelers") | 
+           (AwayTeam == "Cleveland Browns") | 
+           (AwayTeam == "Cincinnati Bengals"))
 ```
 
 17. Find games played in week 6 and only keep columns for the teams and scores
 
 ```{r}
-
+NFLScores2011 %>%
+  filter(Week == 6) %>%
+  select(c(HomeTeam, AwayTeam, HomeScore, AwayScore))
 ```
 
 18. Use `pull()` to index the scores by the "Baltimore Ravens". There will be scores from when they are the `HomeTeam` and when they are the `AwayTeam`. Save each to a vector called `Ravens_score_home` and `Ravens_score_away`, respectively.
 
 ```{r}
-
+Ravens_score_home <- NFLScores2011 %>%
+  filter(HomeTeam == "Baltimore Ravens")
+  pull(HomeScore)
+  
+Ravens_score_away <- NFLScores2011 %>%
+  filter(AwayTeam == "Baltimore Ravens")
+  pull(AwayScore)
 ```
 
 19. Print out the two vectors from above. What was their highest point total at home? away? Use `pluck()` to pull out these values.
 
 ```{r}
+print(Ravens_score_home)
 
+print(Ravens_score_away)
+
+Ravens_score_home %>%
+  pull(HomeScore) %>%
+  pluck(1)
 ```
 
 Using `distinct()` and `n_distinct()`...
@@ -150,64 +205,84 @@ Using `distinct()` and `n_distinct()`...
 20. List the names of all the teams in the NFL
 
 ```{r}
-
+NFLScores2011 %>%
+  distinct(HomeTeam, AwayTeam)
 ```
 
 
-21. How many teams are there total?
+21. How many teams are there total? 32!
 
 ```{r}
+NFLScores2011 %>%
+  pull(HomeTeam) %>%
+  n_distinct()
 
+NFLScores2011 %>%
+  pull(AwayTeam) %>%
+  n_distinct()
 ```
 
 22. How many teams scored 40 or more points as the `AwayTeam`?
 
 ```{r}
-
+NFLScores2011 %>%
+  filter(AwayScore >= 40)
+#7 teams scored 40+ points as the AwayTeam.
 ```
 
 23. Who were those teams?
 
-```{r}
-
-```
+The Buffalo Bills, Houston Texans, Detroit Lions, Green Bay Packers, New England Patriots, and the New Orleans Saints.
 
 Using `mutate()`...
 
 24. Add a new column that computes the total score of a game
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate("TotalGameScore" = HomeScore + AwayScore)
 ```
 
 25. Organize the dataframe by total score from greatest to least
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate("TotalGameScore" = HomeScore + AwayScore) %>%
+  arrange(desc(TotalGameScore))
 ```
 
 26. Add a new column after AwayYards that computes the total yards for a game
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate("TotalGameYards" = HomeYards + AwayYards) %>%
+  relocate("TotalGameYards", .after = "AwayYards")
 ```
 
 27. Add a new column with the ratio of home team's score to away team's score
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate("ScoreRatio" = HomeScore / AwayScore)
 ```
 
 28. Add a new column that is `TRUE` if the ratio is 3 or greater
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate("ScoreRatio" = HomeScore / AwayScore) %>%
+  mutate("ScoreRatioTrue" = case_when(ScoreRatio >= 3 ~ TRUE,
+                                      ScoreRatio < 3 ~ FALSE))
 ```
 
 29. Keep only games before week 8 where this ratio is 3 or greater
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate("ScoreRatio" = HomeScore / AwayScore) %>%
+  mutate("ScoreRatioTrue" = case_when(ScoreRatio >= 3 ~ TRUE,
+                                      ScoreRatio < 3 ~ FALSE)) %>%
+  filter((Week < 8) & (ScoreRatioTrue == TRUE))
 ```
 
 30. Only keep the Away columns, find stats only for the Houston Texans, and add a new column called "yards_rank" that contains:
@@ -219,13 +294,19 @@ Using `mutate()`...
 "Decent" if `AwayScore` is anything else
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate("yards_rank" = case_when(AwayScore < 20 ~ "Meh",
+                                  AwayScore >= 30 ~ "Great",
+                                  TRUE ~ "Decent"))
 ```
 
 31. Convert the `HomeTO` and `AwayTO` variables to be factors
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate(HomeTO = factor(HomeTO),
+         AwayTO = factor(AwayTO)) %>%
+  glimpse()
 ```
 
 # Feedback
@@ -235,7 +316,7 @@ Please save the appropriate number to the variables below:
 1. Approximately how long (in minutes) do you think it took you to complete this assignment?
 
 ```{r}
-timeEstimate = 
+timeEstimate = 90
 ```
 
 2. How difficult or challenging did you find this assignment?
