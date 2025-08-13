@@ -8,7 +8,7 @@ output: html_document
 ```{r}
 library(tidyverse)
 # Modify the file path in the code below to properly load the "NFLScores2021.RData" file
-load("NFLScores2021.RData")
+load("~/Desktop/GitHub/R Bootcamp/Basic Data Wrangling - 3/Wrangling and Summarizing Challenge/NFLScores2021.RData")
 ```
 
 You realized after playing around a bit with your football analytics hat that maybe being a pokemon researcher was not the most lucrative opportunity for you to be implementing your R skills... After impressing with all your work so far, you were able to land a job doing some real NFL analytics! You have been given the data from the entire 2021 NFL season in the `NFL` df. 
@@ -40,108 +40,172 @@ Your job is to use this data to try and learn all you can to give your new team 
 
   A. What are some reasons why this might be true?
 
-    - 
+    - Away team has a different home playing surface
+    - Away team is not used to the rival home team's playing surface
+    - Home team does better on their home's playing surface
   
   B. What are some reasons this might not be true?
 
-    - 
+    - Both teams could have the same playing surface in their own respective arenas
+    - Individual skills of players might be independent of the surface they play on
 
   C. What is your prediction?
 
-    -
+    - I think there could be some effect on away team's point score depending on the playing surface.
     
   D. Investigate
 
   
 ```{r}
-
+NFL %>%
+  mutate(surface = factor(surface) %>%
+           fct_infreq()) %>%
+  ggplot(aes(y = away_score, x = surface)) +
+  geom_bin2d() + 
+  scale_fill_distiller(palette = "GnBu")
 
 ```
   
   E. Summarize
 
-    - 
+    From the graph, it appears that the grass surface type is the surface that most away teams play on, and it is also the surface type where they score highly, as shown by the higher concentration of green bars in that section. In contrast, surfaces like matrixturf and sportturf have a lower number of away teams playing on them and also have a lower overall score for those teams as seen by the higher concentration of dark blue bars in that section.
     
   F. Overall conclusion and rationale
 
-    -     
+    It cannot fully be concluded that one surface type is better than another for away team scoring from this graph, as there is a clear imbalance in the number of teams playing on each type of surface. If each bar on the graph was the same color, that would indicate there was an even sample size for each surface type, which may display a possible association between surface type and away score. Since the bars are all different colors and heights, that indicates that score is changing per surface type, but that could be because there are differing numbers of teams playing on each surface, or some other reason besides the type of surface.
 
 
 2. Is there a home field advantage?
 
   A. What are some reasons why there might be?
 
-    - 
+    Home teams are more confident playing in their own stadiums and on their own turf (e.g. more fans, familiarity with layout, etc.).
   
   B. What are some reasons why there might not be?
 
-    - 
+    Individual players' skill levels could be their advantage, not where they are playing.
 
   C. What is your prediction?
 
-    -
+    I predict that there is no home team advantage.
     
   D. Investigate
 
   
 ```{r}
+H1 <- NFL %>%
+   mutate(surface = factor(surface) %>%
+           fct_infreq()) %>%
+  ggplot(aes(y = home_score, x = surface)) +
+  geom_bin2d() + 
+  scale_fill_distiller(palette = "GnBu") + 
+  labs(title = "Is there a Home Team Advantage?", 
+       y = "Home Score",
+       x = "Surface Type", 
+       tag = "H1")
+
+A1 <- NFL %>%
+   mutate(surface = factor(surface) %>%
+           fct_infreq()) %>%
+  ggplot(aes(y = away_score, x = surface)) +
+  geom_bin2d() + 
+  scale_fill_distiller(palette = "GnBu") + 
+  labs(title = "Is there a Home Team Advantage?", 
+       y = "Home Score",
+       x = "Surface Type", 
+       tag = "A1")
 
 
+H2 <- NFL %>%
+   mutate(roof = factor(roof) %>%
+           fct_infreq()) %>%
+  ggplot(aes(y = home_score, x = roof)) +
+  geom_bin2d() + 
+  scale_fill_distiller(palette = "GnBu") + 
+  labs(title = "Is there a Home Team Advantage?", 
+       y = "Home Score",
+       x = "Roof Type", 
+       tag = "H2")
+
+A2 <- NFL %>%
+   mutate(roof = factor(roof) %>%
+           fct_infreq()) %>%
+  ggplot(aes(y = away_score, x = roof)) +
+  geom_bin2d() + 
+  scale_fill_distiller(palette = "GnBu") + 
+  labs(title = "Is there a Home Team Advantage?", 
+       y = "Home Score",
+       x = "Roof Type", 
+       tag = "A2")
+
+(H1 | A1) / (H2 | A2)
 ```
   
   E. Summarize
 
-    - 
+    Both team types' score graphs show most teams played on grass outdoors, with about the same scores for this setting, as shown by the high concentration of green bars in the grass and outdoors sections of all four graphs. The same goes for the other surface and roof types; the distribution of scores and number of teams playing on them seems roughly the same.
     
   F. Overall conclusion and rationale
 
-    - 
+    There does not appear to be a substantial home score advantage as demonstrated by this sample of data, as the scores for both the home teams and away teams look roughly the same across surface types and roof types in all four graphs. If there was a home team advantage, we would most likely see higher concentrations of green (more home teams) in the upper scores of the home team graphs as compared to the away team graphs.
 
 3. How does the number of points scored per game compare from the first half of the **REGULAR SEASON** to the second half of the **REGULAR SEASON**?
 
   A. What is your prediction?
 
-    - 
+    I think the first half of the regular season shows higher points scored per game compared to the second half of the regular season.
   
   B. What are some reasons why this might be true?
 
-    - 
+    The season's first half might be where teams have the most energy, and therefore score more points.
 
   C. What are some reasons this might not be true?
 
-    -
+    The teams could get more serious about winning as they proceed in the season and the scores might not change, or they may even go up.
     
   D. Investigate
 
   
 ```{r}
-
+NFL %>%
+  mutate("total_points" = home_score + away_score) %>%
+  relocate("total_points", .after = "away_score") %>%
+  select(c(total_points, season_type)) %>%
+  filter(season_type == "REG") %>%
+  print(n = 272)
 
 ```
   
   E. Summarize
 
-    - 
+    The data demonstrates a consistent fluctuation in total points scored across the entire regular season, with no strong positive or negative trendline.
 
   F. Conclusion
-
-    - 
+  
+    The number of points scored per game across both halves of the regular season is roughly the same throughout.
     
   G. Now, instead of comparing the first half of the **REGULAR SEASON** to the second half, compare across the entire **REGULAR SEASON** week by week.
 
   
 ```{r}
-
+NFL %>%
+  mutate("total_points" = home_score + away_score) %>%
+  relocate("total_points", .after = "away_score") %>%
+  select(c(total_points, season_type, week)) %>%
+  filter(season_type == "REG") %>%
+  arrange(week) %>%
+  ggplot(aes(y = total_points, x = week)) + 
+  geom_jitter()
 
 ```
 
   H. Is the pattern/relationship consistent with the one above? If not, in what way is it different?
 
-    - 
+    The pattern displayed by this arrangement of data is pretty similar to the one above. The total points scored per week vary, but generally exhibit a consistent variation across the weeks with the occasional outlying score.
     
   I. Overall conclusion and rationale
 
-    - 
+    There is a consistent fluctuation in scores across the regular season. If there was an increase in scores across the season, the total points scored would increase per week, and if there was a decrease, the opposite.
 
 
 4. Does the average difference between the winning score and the losing score (the score differential) increase or decrease as you get farther into the season? 
@@ -149,48 +213,56 @@ Your job is to use this data to try and learn all you can to give your new team 
 
   A. What are some reasons why this might be true?
 
-    - 
+    This could be true if teams start performing dramatically better or worse as they progress through the season (e.g. energy levels, practice time, skill levels).
   
   B. What are some reasons this might not be true?
 
-    - 
+    Teams could perform consistently across the season with no big increase or decrease in the score differentials.
 
   C. What is your prediction?
 
-    -
+    I think there could be a significant increase/decrease in the score differentials across the season.
     
   D. Investigate
 
   
 ```{r}
-
+NFL %>%
+  mutate("score_differential" = home_score - away_score) %>%
+  select(c(week, season_type, score_differential)) %>%
+  print(n = 285)
 
 ```
   
   E. Summarize
 
-    - 
+    The score differential doesn't seem to increase or decrease dramatically over the course of the season. There are both wide gaps between the winning and losing scores and small gaps between the winning and losing scores across the season.
     
   F. Now, use an alternative type of visualization to investigate
 
   
 ```{r}
-
+NFL %>%
+  mutate("score_differential" = home_score - away_score) %>%
+  select(c(week, season_type, score_differential)) %>%
+  ggplot(aes(y = score_differential, x = week)) + 
+  geom_bin2d() + 
+  scale_fill_viridis(option = "plasma")
 ```
 
   G. Is the pattern/relationship the same as above? If not, in what way is it different?
 
-    - 
+    The pattern displayed by this graph appears to be similar across the weeks of the season as seen above. There are a few large differentials, but across the season, the differentials are relatively constant as a whole.
     
   H. Overall conclusion and rationale
 
-    - 
+    There is not a large increase or decrease in the scores of the winning vs. losing teams across the season.
 
 5. Come up with your own question you are interested in exploring with this data.
 
   A. What is the question?
 
-    - 
+    
 
   B. What is your prediction?
 
