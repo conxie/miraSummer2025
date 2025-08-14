@@ -262,67 +262,94 @@ NFL %>%
 
   A. What is the question?
 
-    
+    Does an earlier start time result in a home team win?
 
   B. What is your prediction?
 
-    - 
+    No, the time of a game does not result in a home team win.
   
   C. What are some reasons why this might be true?
 
-    - 
+    Home teams are more comfortable on their turf and can start practicing earlier than away teams.
 
   D. What are some reasons this might not be true?
 
-    -
+    The time of a game doesn't influence the skill levels of either team, so the time of a game shouldn't make a difference on who wins.
     
   E. Investigate
 
   
 ```{r}
+HOME <- NFL %>%
+  select(c(home_score, away_score, start_time)) %>%
+  arrange(desc(start_time)) %>%
+  ggplot(aes(y = home_score, x = start_time)) + 
+  geom_bin_2d() + 
+  scale_fill_distiller(palette = "RdBu")
 
+AWAY <- NFL %>%
+  select(c(home_score, away_score, start_time)) %>%
+  arrange(desc(start_time)) %>%
+  ggplot(aes(y = away_score, x = start_time)) + 
+  geom_bin_2d() + 
+  scale_fill_distiller(palette = "RdBu")
+
+HOME | AWAY
+  
 ```
   
   F. Summarize
 
-    - 
+    From these visualizations, the scores for both teams at each start time are relatively similar, with a few outliers. This pattern may not be due to start time since the pattern and spread of the data is similar in both graphs. If an earlier start time did result in a home team win, there would be significantly more red bars in the higher parts of the home team graph at earlier start times compared to the away team graph at those times.
     
   G. Overall conclusion and rationale
 
-    - 
+    An earlier start time does not guarantee a home team win.
 
 6. Come up with another question you are interested in exploring with this data.
 
   A. What is the question?
 
-    - 
+    Is the average total score of games played in the regular season higher than the average total score of games played in the playoff season?
 
   B. What is your prediction?
 
-    - 
+    I predict that the average total score of games played in the playoff season is higher than the average total score of games played in the regular season.
   
   C. What are some reasons why this might be true?
 
-    - 
+    Playoff season is more crucial to players, as it determines who is the best of the best.
 
   D. What are some reasons this might not be true?
 
-    -
+    Regular season could be a time to win dramatically with more teams to play against, some of whom may be much worse and therefore easier to beat than others.
     
   E. Investigate
 
   
 ```{r}
+NFL %>%
+  mutate("total_points" = home_score + away_score) %>%
+  relocate("total_points", .after = "away_score") %>%
+  filter(season_type == "REG") %>%
+  pull(total_points) %>%
+  mean()
 
+NFL %>%
+  mutate("total_points" = home_score + away_score) %>%
+  relocate("total_points", .after = "away_score") %>%
+  filter(season_type == "POST") %>%
+  pull(total_points) %>%
+  mean()
 ```
   
   F. Summarize
 
-    - 
+    The average total points scored in the playoff season is higher than the average total points scored in the regular season.
     
   G. Overall conclusion and rationale
 
-    - 
+    The average total points scored in the playoff season is higher than the average total points scored in the regular season, which could be due to many factors such as higher stakes, more energy, increased morale, more practice during the regular season, etc.
     
 ### Part 2:
 
@@ -331,40 +358,79 @@ Answer the following without using visualizations:
 1. How many games did each team win?
 
 ```{r}
-
+team_wins <- NFL %>%
+    mutate(winner = ifelse(home_score > away_score, home_team, away_team)) %>%
+    group_by(winner) %>%
+    summarise(wins = n())
+print(team_wins)
 ```
 
 2. Did home or away teams win more?
 
 ```{r}
 
+NFL$Winner <- ifelse(NFL$home_score > NFL$away_score, "Home",
+                     ifelse(NFL$away_score > NFL$home_score, "Away", "Draw"))
+
+win_counts <- table(NFL$Winner)
+print(win_counts)
+
+win_summary <- NFL %>%
+  group_by(Winner) %>%
+  summarize(Count = n())
+
+print(win_summary)
+
+if (win_counts["Home"] > win_counts["Away"]) {print("Home teams won more games.")} else if (win_counts["Away"] > win_counts["Home"]) {print("Away teams won more games.")} else {print("Home and away teams won the same number of games (or there are more draws).")}
+
 ```
 
-    - Answer here
+    - Home teams won more games.
 
 3. Which team scored the most points on average at home? Away?
 
 ```{r}
+NFL %>%
+  select(c(home_team, home_score)) %>%
+  group_by(home_team) %>%
+  summarise(average_home_points = mean(home_score)) %>%
+  arrange(desc(average_home_points))
 
+NFL %>%
+  select(c(away_team, away_score)) %>%
+  group_by(away_team) %>%
+  summarise(average_away_points = mean(away_score)) %>%
+  arrange(desc(average_away_points))
 ```
 
-    - Answer here
+    - The DAL scored the most points on average at home, and the BUF scored the most points on average away.
 
 4. Which team had the highest average *winning* point differential (the difference between the winning score and the losing score)?
 
 ```{r}
-
+NFL %>%
+  mutate("win_diff" = home_score - away_score) %>%
+  relocate("win_diff", .after = "away_score") %>%
+  group_by(home_team) %>%
+  summarize(avg_winning_point_differential = mean(win_diff)) %>%
+  arrange(desc(avg_winning_point_differential))
 ```
 
-    - Answer here
+    - TB had the highest average winning point differential.
 
 5. Did the day the game was played impact the total points scored?
 
 ```{r}
-
+NFL %>%
+  mutate("total_points" = home_score + away_score) %>%
+  relocate("total_points", .after = "away_score") %>%
+  select(c(day, total_points)) %>%
+  group_by(day) %>%
+  summarize(avg_points_per_day = mean(total_points)) %>%
+  arrange(day)
 ```
 
-    - Answer here
+    - The day the game was played could have impacted the total points scored, since the avg. points per day throughout the season shows fluctuations in score. But day may not be the only variable contributing to this fluctuation, since there are many variables that factor into the total points scored in any game.
 
 
 
@@ -375,7 +441,7 @@ Please save the appropriate number to the variables below:
 1. Approximately how long (in minutes) do you think it took you to complete this assignment?
 
 ```{r}
-timeEstimate = 
+timeEstimate = 60
 ```
 
 2. How difficult or challenging did you find this assignment?
