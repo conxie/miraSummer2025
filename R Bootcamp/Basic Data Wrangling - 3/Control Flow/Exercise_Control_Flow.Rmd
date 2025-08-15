@@ -14,28 +14,47 @@ library(tidyverse)
   A. define a variable `z` that will randomly sample a single value from `1:100`. Copy/paste this code to the top of the code chunks for #1B:1D.
 
 ```{r}
-
+z <- sample(c(1:100), 1)
+z
 ```
 
 
   B. Write an `if` statement that will `print()` "My first R if" if `z` is less than 20. Run all the code in the cell.
 
 ```{r}
-
+z <- sample(c(1:100), 1)
+z
+if(z < 20) {
+  print("My first R if")
+}
 ```
 
 
 C. Add an `else` condition to your `if` statement that will print, "Still my first R if, but z is not less than 20." Run all the code in the cell.
 
 ```{r}
-
+z <- sample(c(1:100), 1)
+z
+if(z < 20) {
+  print("My first R if")
+} else {
+  print("Still my first R if, but z is not less than 20.")
+}
 ```
 
 
 D. Between your `if` and `else` conditions, add an `else if` that will print "The else if evaluated TRUE!" when z is greater than 40 but less than 80. Run all the code in the cell.
 
 ```{r}
-
+z <- sample(c(1:100), 1)
+z
+if(z < 20) {
+  print("My first R if")
+} else if (40 < z & z < 80) {
+  print("The else if evaluated TRUE!")
+} else {
+  print("Still my first R if, but z is not less than 20.")
+}
 ```
 
 
@@ -45,37 +64,61 @@ E. Try running all the code in the cell for #1D multiple times and see how often
 2. Reformat your code from #1D to use the `ifelse()`
 
 ```{r}
-
+z <- sample(c(1:100), 1)
+z
+ifelse(z < 20,
+       "My first R if",
+       ifelse(40 < z & z < 80,
+              "The else if evaluated TRUE!",
+              "Still my first R if, but z is not less than 20."))
 ```
 
 3. Reformat your code from #1D to use the `case_when()`
 
 ```{r}
-
+z <- sample(c(1:100), 1)
+z
+case_when(z < 20 ~ "My first R if",
+          40 < z & z < 80 ~ "The else if evaluated TRUE!",
+          TRUE ~ "Still my first R if, but z is not less than 20.")
 ```
 
 4. Use a `for` loop to to subtract 2 from all values in vector `v`.
 
 ```{r}
 v = c(19, 22, 30, 23, 15, 22, 24, 19, 30, 23)
+
+for (i in 1:length(v)) {
+  v[i]= v[i] - 2}
+
+v
 ```
 
 5.
 A. Use a `for` loop to give a 1.5x bonus only to the employees in dataframe `work_df` who worked overtime.
 
 ```{r}
-work_df = data.frame("Name" = c("Jim", "Jo", "Jack", "Jana"),
+work_df <- data.frame("Name" = c("Jim", "Jo", "Jack", "Jana"),
                      "Pay" = c(80, 120, 100, 150),
                      "Overtime" = c(0,1,0,1))
 
 
+for (i in 1:nrow(work_df)) { 
+  if(work_df$Overtime[i] == 1){ 
+    work_df$Pay[i] = work_df$Pay[i]*1.5 
+  }
+}
 ```
 
 
 B. Rewrite your code using `ifelse()` syntax to accomplish the same goal.
 
 ```{r}
-
+for (i in 1:nrow(work_df)) {
+  work_df$Pay[i] = ifelse(work_df$Overtime[i] == 1,
+                      work_df$Pay[i]*1.5,
+                      work_df$Pay[i])
+}
 ```
 
 # Feedback 

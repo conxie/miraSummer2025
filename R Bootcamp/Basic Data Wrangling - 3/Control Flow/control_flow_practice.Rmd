@@ -88,7 +88,7 @@ case_when(confidence >= 8 ~ "You are in great shape!",
 Create a vector called `hobbies` that stores all the names (in parentheses) for each of these. 
 
 ```{r}
-hobbies <- c("Coffee", "sourdough", "Bread", "TK", "AC", "QG", "Puzzles", "Anxiety")
+hobbies <- c("Dalgona coffee (Coffee)", "Making (sourdough) bread (Bread)", "Tiger King (TK)", "Animal Crossing (AC)", "Queen's Gambit (QG)", "Doing puzzles (Puzzles)", "Having anxiety/panic attacks (Anxiety)")
 
 ```
 
@@ -96,8 +96,8 @@ hobbies <- c("Coffee", "sourdough", "Bread", "TK", "AC", "QG", "Puzzles", "Anxie
 Next, use a for loop to iterate over each element of `hobbies` and print out each.
 
 ```{r}
-for(hobby in hobbies) {
-  print(hobby)
+for(i in 1:length(hobbies)) {
+  print(hobbies[i])
 }
 
 ```
@@ -107,7 +107,7 @@ for(hobby in hobbies) {
   A. Create a vector called `rating` that contains your ratings from 1-10 on each of the  hobbies in `hobbies`. 
 
 ```{r}
-rating <- c(7, 8, 8, 0, 8, 0, 2, 1)
+rating <- c(7, 8, 1, 8, 1, 2, 1)
 ```
 
   B. Use a for loop to change those ratings to be out of 100 instead of 10 (hint: each item needs to multiplied by 10).
@@ -123,20 +123,29 @@ for(i in 1:length(rating)) {
   A. Create a new vector called `participated` that has either a `TRUE` or `FALSE` rating for whether or not you participated in each of the hobbies in `hobbies`.
   
 ```{r}
-participated <- c(TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE)
+participated <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE)
 ```
   
   B. Combine `hobbies`, `ratings`, and `participated` to create a dataframe called `pandemic_hobbies`. It should have three columns, titled "hobby", "rating", and "participated".
   
 ```{r}
-pandemic_hobbies <- data.frame(Hobbies = hobbies, Rating = rating, Participated = participated)
+pandemic_hobbies <- data.frame(hobbies, rating, participated)
 
-print(pandemic_hobbies)
+pandemic_hobbies
 ```
   
   C. Use a for loop with control flow to print the name and rating of the hobbies that you participated in.
   
 ```{r}
+pandemic_hobbies
+
+for (i in 1:nrow(pandemic_hobbies)) {
+  if(pandemic_hobbies$participated[i] == TRUE) {
+    g <- pandemic_hobbies$hobbies[i]
+    f <- pandemic_hobbies$rating[i]
+    print(paste(g, f))
+  }
+}
 
 ```
   
@@ -147,7 +156,19 @@ print(pandemic_hobbies)
 **NOTE: it is fine to use `print()` more than once. The output does not have to be a singular string!**
     
 ```{r}
-
+for (i in 1:nrow(pandemic_hobbies)) {
+  h <- pandemic_hobbies$hobbies[i]
+j <- pandemic_hobbies$rating[i]
+  if(pandemic_hobbies$participated[i] == TRUE) {
+    g <- "I participated in"
+    i <- "I gave it a rating of"
+    print(paste(g, h, i, j))
+  }
+  else {
+    g <- "I did not participate in"
+    print(paste(g, h))
+  } 
+}
 ```
 
 # Feedback

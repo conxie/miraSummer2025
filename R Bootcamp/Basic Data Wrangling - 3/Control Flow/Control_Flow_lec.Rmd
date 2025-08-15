@@ -178,6 +178,7 @@ for (i in 1:nrow(y)) {
           # equal to what is currently there + 5.
   }
 }
+i
 ```
 
 The same task can be accomplished using `ifelse()`, since the goal here is to return values:
