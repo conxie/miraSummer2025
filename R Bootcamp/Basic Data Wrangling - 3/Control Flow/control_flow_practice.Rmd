@@ -13,50 +13,65 @@ library(tidyverse)
 1. Define a variable called `confidence` that has *your* rating from 1-10 about how good you feel about control flow.
 
 ```{r}
-
+confidence <- 4
 ```
 
 2. Write an if statement that will print out the phrase "You are in good shape!" if `confidence` is greater than or equal to 6.
 
 ```{r}
-
+if(confidence >= 6) {
+  print("You are in good shape!")
+}
 ```
 
 3. Add an else condition to your code from above that will print "Better practice some more!" if `confidence` is less than 6.
 
 ```{r}
-
+if(confidence >= 6) {
+  print("You are in good shape!")
+} else if (confidence< 6) {print("Better practice some more!")}
 ```
 
 
 4. Okay, hang on. We know that when learning something new, people tend to under-weight their confidence. Let's make sure this gets accounted for. Write a new if statement that will print out the phrase "You are in great shape!" if `confidence` is greater than or equal to 8, "Good, keep at it!" if `confidence` is a value between 4 and 7, and "Better practice some more!" if `confidence` is less than 4.
 
 ```{r}
-
+if(confidence >= 8) {print("You are in great shape!")} else
+  if(4 <= confidence & confidence <= 7) {print("Good, keep at it!")} else
+    {print ("Better practice some more!")}
 ```
 
 5. Rewrite your code for 3 using `ifelse()`.
 
 ```{r}
-
+ifelse(confidence >= 6,
+       "You are in good shape!",
+       "Better practice some more!")
 ```
 
 6. Rewrite your code for 4 using nested `ifelse()` commands.
 
 ```{r}
-
+ifelse(confidence >= 8,
+       "You are in great shape!",
+       ifelse(4 <= confidence & confidence <= 7,
+              "Good, keep at it!",
+              "Better practice some more!"))
 ```
 
 7. Rewrite your code for 3 using `case_when()`.
 
 ```{r}
-
+case_when(confidence >= 6 ~ "You are in good shape!",
+          confidence < 6 ~ "Better practice some more!")
 ```
 
 8. Rewrite your code for 4 using `case_when()`.
 
 ```{r}
-
+case_when(confidence >= 8 ~ "You are in great shape!",
+          4 <= confidence & confidence <= 7 ~ "Good, keep at it!",
+          TRUE ~ "Better practice some more!")
 ```
 
 
@@ -73,6 +88,7 @@ library(tidyverse)
 Create a vector called `hobbies` that stores all the names (in parentheses) for each of these. 
 
 ```{r}
+hobbies <- c("Coffee", "sourdough", "Bread", "TK", "AC", "QG", "Puzzles", "Anxiety")
 
 ```
 
@@ -80,6 +96,9 @@ Create a vector called `hobbies` that stores all the names (in parentheses) for 
 Next, use a for loop to iterate over each element of `hobbies` and print out each.
 
 ```{r}
+for(hobby in hobbies) {
+  print(hobby)
+}
 
 ```
 
@@ -88,13 +107,14 @@ Next, use a for loop to iterate over each element of `hobbies` and print out eac
   A. Create a vector called `rating` that contains your ratings from 1-10 on each of the  hobbies in `hobbies`. 
 
 ```{r}
-
+rating <- c(7, 8, 8, 0, 8, 0, 2, 1)
 ```
 
   B. Use a for loop to change those ratings to be out of 100 instead of 10 (hint: each item needs to multiplied by 10).
   
 ```{r}
-
+for(i in 1:length(rating)) {
+  rating[i] <- rating[i] * 10}
 ```
   
 
@@ -103,13 +123,15 @@ Next, use a for loop to iterate over each element of `hobbies` and print out eac
   A. Create a new vector called `participated` that has either a `TRUE` or `FALSE` rating for whether or not you participated in each of the hobbies in `hobbies`.
   
 ```{r}
-
+participated <- c(TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE)
 ```
   
   B. Combine `hobbies`, `ratings`, and `participated` to create a dataframe called `pandemic_hobbies`. It should have three columns, titled "hobby", "rating", and "participated".
   
 ```{r}
+pandemic_hobbies <- data.frame(Hobbies = hobbies, Rating = rating, Participated = participated)
 
+print(pandemic_hobbies)
 ```
   
   C. Use a for loop with control flow to print the name and rating of the hobbies that you participated in.

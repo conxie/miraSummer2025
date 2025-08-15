@@ -34,8 +34,8 @@ if(3 < x) {
 > Fill in the blanks below to create an `if` statement that prints "hello world" if x is greater than 1
 
 ```{r}
-if() {
-  print("")
+if(x > 1) {
+  print("hello world")
 }
 ```
 
