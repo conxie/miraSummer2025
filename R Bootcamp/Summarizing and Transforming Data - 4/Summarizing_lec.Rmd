@@ -14,11 +14,11 @@ To get the *number of instances* of each unique value, use `table()` (for a tabl
 
 ```{r}
 penguins %>%
-  pull(X) %>%
-  X()
+  pull(species) %>%
+  table()
 
-X %>%
-  count(X)
+penguins %>%
+  count(species)
 ```
 
 ### Proportions
@@ -28,7 +28,10 @@ For tables, you add `prop.table()`
 > Take your code for `table()` above and then pipe it to `prop.table()`
 
 ```{r}
-
+penguins %>%
+  pull(species) %>%
+  table() %>%
+  prop.table()
 
 ```
 
@@ -45,7 +48,17 @@ Always check that your proportions sum to 1
 > Take your code from above and use `sum()` to make sure they both sum to 1.
 
 ```{r}
+penguins %>%
+  pull(species) %>%
+  table() %>%
+  prop.table() %>%
+  sum()
 
+penguins %>%
+  count(species) %>%
+  mutate(proportion = n / length(penguins$species)) %>%
+  pull(proportion) %>%
+  sum()
 
 ```
 
@@ -56,7 +69,8 @@ Always check that your proportions sum to 1
 > Use `summary()` on `penguins`
 
 ```{r}
-
+penguins %>%
+  summary()
 ```
 
 ## Summarize
@@ -73,9 +87,9 @@ penguins_example
 
 ```{r}
 penguins_example %>%
-  summarize(X = mean(X),
-            mass_m = X,
-            ratio = mean(X))
+  summarize(flipper_m = mean(flp_mm),
+            mass_m = mean(mass),
+            ratio = mean(mass / flp_mm))
 ```
 
 summary is designed to work with summary functions -- those that output a single value.
@@ -117,11 +131,7 @@ penguins %>%
 ```
 
 > Note the differences you observe:
-
-
-
-
-
+"First, these two are slightly different classes. Applying group_by() converts your object to a grouped df/tibble, which basically just denotes that the data is organized into subgroups. Second, the additional line in the second output: Groups: species [3], denotes what that grouping is. There are 3 unique species in this dataset, so this line says each species value is separated into its own group and there are 3 of those groups. A df can be grouped by a single or multiple variables."
 
 
 ## Grouped Summaries
@@ -145,8 +155,8 @@ Some functions designed for `summarize()`
 
 ```{r}
 penguins %>%
-  group_by(X, X) %>%
-  summarize(n = X)
+  group_by(island, species) %>%
+  summarize(n = n())
 ```
 
 ### Using `across()` with `summarize()`
@@ -157,7 +167,9 @@ penguins %>%
 ```{r}
 penguins %>%
   drop_na() %>%
-
+  group_by(species) %>%
+  summarize(bill_length_mean = mean(bill_length_mm),
+            bill_depth_mean = mean(bill_depth_mm))
 ```
 
 Use `across()` within a `summarize()` call to make use of helper functions.
@@ -165,11 +177,11 @@ Use `across()` within a `summarize()` call to make use of helper functions.
 > Instead of specifying each variable, as done above, use `across()` and a helper function to get the relevant variables.
 
 ```{r}
-X
-  X
-  X
-  summarize(X(X,
-                   mean))
+penguins %>%
+  group_by(species) %>%
+  summarize(across(starts_with("bill"),
+                   mean, na.rm = TRUE))
+
 ```
 
 
@@ -178,7 +190,10 @@ You can perform multiple summary functions at the same time by passing them as a
 > Take your code from above and replace `mean` with `list(mean = mean, sd = sd)`
 
 ```{r}
-
+penguins %>%
+  group_by(island) %>%
+  summarize(across(starts_with("bill"), 
+                   list(mean = mean, sd = sd), na.rm = TRUE))
 ```
 
 As another example, say you wanted to find the number of unique levels for the different factors in your data. This could be done on the entire dataset:
@@ -188,7 +203,7 @@ As another example, say you wanted to find the number of unique levels for the d
 ```{r}
 penguins %>%
   drop_na() %>%
-  
+  summarize(across(where(is.factor), n_distinct))
 ```
 
 > Do the same as above but this time find the levels of those variables *for each* `species`
@@ -196,7 +211,8 @@ penguins %>%
 ```{r}
 penguins %>% 
   drop_na() %>%
-
+  group_by(species) %>% 
+  summarize(across(where(is.factor), n_distinct))
 ```
 
 ## Extra Resources
