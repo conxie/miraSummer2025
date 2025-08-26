@@ -16,50 +16,75 @@ msleep2 = msleep %>%
 1. Write some code to find the number of instances of each unique value of `vore`.
 
 ```{r}
-
+msleep2 %>%
+  pull(vore) %>%
+  table()
 ```
 
 2. 
    A. Modify your code from exercise 1 to show the proportions
 
 ```{r}
-
+msleep2 %>%
+  pull(vore) %>%
+  table() %>%
+  prop.table()
 ```
 
    B. verify that they sum to 1.
 
 ```{r}
-
+msleep2 %>%
+  pull(vore) %>%
+  table() %>%
+  prop.table() %>%
+  sum()
 ```
 
 3. Use `summarize()` to find the average number of hours each animal spends awake and the average brain weight. If there are any issues with missing values, modify your code to account for this.
 
 ```{r}
-
+msleep2 %>%
+  drop_na() %>%
+  summarize(awake_avg = mean(awake),
+            brainwt_avg = mean(brainwt))
 ```
 
 4. Modify your code from exercise 3 to show averages for each level of `vore`.
 
 ```{r}
-
+msleep2 %>%
+  drop_na() %>%
+  group_by(vore) %>%
+  summarise(awake_avg = mean(awake),
+            brainwt_avg = mean(brainwt))
 ```
 
 5. 
    A. Find the average of all variables that start with "sleep" for every level of `vore`.
    
 ```{r}
-
+msleep2 %>%
+  group_by(vore) %>%
+  summarize(across(starts_with("sleep"),
+                   mean, na.rm = TRUE))
 ```
    
    B. Find the average and sd for all variables that end in "wt" for every level of `vore`.
    
 ```{r}
-
+msleep2 %>%
+  group_by(vore) %>%
+  summarize(across(ends_with("wt"),
+                   list(mean = mean, sd = sd), na.rm = TRUE))
 ```
    
    C. Find the number of unique values for each variable that is a *character*.
 
 ```{r}
+msleep2 %>%
+  drop_na() %>%
+  summarize(across(where(is.character), n_distinct))
 
 ```
 

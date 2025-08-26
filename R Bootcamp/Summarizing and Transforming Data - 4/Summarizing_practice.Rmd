@@ -8,7 +8,7 @@ output: html_document
 ```{r}
 library(tidyverse)
 # Modify the file path in the code below to properly load the "NFLScores2011.rda" file
-load("NFLScores2011.rda")
+load("~/Desktop/GitHub/R Bootcamp/Summarizing and Transforming Data - 4/NFLScores2011 (1).rda")
 ```
 
 Okay, so putting back on your football analytics hat. You realized that while you did a lot of cool things with the data last time... you were mostly just subsetting and reorganizing it, barely scratching the surface of the type of questions you are able to answer!
@@ -18,19 +18,33 @@ Okay, so putting back on your football analytics hat. You realized that while yo
 1. It is usually considered a treat to get to play a Monday night game at home. Use *two different ways* to find the *number of times* each team had a home game on Monday.
 
 ```{r}
+NFLScores2011 %>%
+  filter(Day == "Mon") %>%
+  group_by(HomeTeam) %>%
+  summarise(monday_home_games = n())
 
+NFLScores2011 %>%
+  count(Day)
 ```
 
 2. What about on Thursday?
 
 ```{r}
-
+NFLScores2011 %>%
+  filter(Day == "Thu") %>%
+  group_by(HomeTeam) %>%
+  summarise(thurs_home_games = n())
 ```
 
 3. Create a graph to visualize the pattern from question 1
 
 ```{r}
-
+NFLScores2011 %>%
+  filter(Day == "Mon") %>%
+  group_by(HomeTeam) %>%
+  summarize(monday_home_games = n()) %>%
+  ggplot(aes(y = monday_home_games, x = HomeTeam)) + 
+  geom_point()
 ```
 
 Use `summarize()` to find...
@@ -38,49 +52,76 @@ Use `summarize()` to find...
 4. The average points scored by the home and away team
 
 ```{r}
-
+NFLScores2011 %>%
+  summarize(home_avg = mean(HomeScore),
+            away_avg = mean(AwayScore))
 ```
 
 5. The average and standard deviation of the yards home teams had
 
 ```{r}
-
+NFLScores2011 %>%
+  summarize(across(ends_with("Score"),
+                   list(mean = mean, sd = sd), na.rm = TRUE))
 ```
 
 6. The average of the ratio of points scored by the home team to the away team
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate(score_ratio = HomeScore / AwayScore) %>%
+  summarize(score_ratio_avg = mean(score_ratio))
 ```
 
 7. The average *total* points scored on Thursday night games as well as a count of how many Thursday night games there were
 
 ```{r}
+NFLScores2011 %>%
+  count(Day)
 
+NFLScores2011 %>%
+  mutate(totals = HomeScore + AwayScore) %>%
+  summarize(total_avg = mean(totals))
 ```
 
 8. The average points scored *by* each team when they were playing at home
 
 ```{r}
-
+NFLScores2011 %>%
+  group_by(HomeTeam) %>%
+  summarize(across(ends_with("Score"),
+                   mean, na.rm = TRUE))
 ```
 
 9. Create a graph to visualize the data from #8
 
 ```{r}
-
+NFLScores2011 %>%
+  group_by(HomeTeam) %>%
+  summarize(across(ends_with("Score"),
+                   mean, na.rm = TRUE)) %>%
+  ggplot(aes(y = HomeScore, x = HomeTeam)) + 
+  geom_point()
 ```
 
 10. The average and standard deviation of the yards earned *by* each team when they were playing away from home
 
 ```{r}
-
+NFLScores2011 %>%
+  group_by(AwayTeam) %>%
+  summarize(across(ends_with("AwayYards"),
+                   list(mean = mean, sd = sd), na.rm = TRUE))
 ```
 
 11. Create a graph to visualize the data from #10
 
 ```{r}
-
+NFLScores2011 %>%
+  group_by(AwayTeam) %>%
+  summarize(across(ends_with("AwayYards"),
+                   list(mean = mean, sd = sd), na.rm = TRUE)) %>%
+  ggplot(aes(y = AwayYards_mean, x = AwayTeam)) +
+  geom_point()
 ```
 
 12. The average and standard deviation of points scored, yards earned, and time outs taken, *by* each team when playing at home.
