@@ -127,13 +127,20 @@ NFLScores2011 %>%
 12. The average and standard deviation of points scored, yards earned, and time outs taken, *by* each team when playing at home.
 
 ```{r}
-
+NFLScores2011 %>%
+  group_by(HomeTeam) %>%
+  summarize(across(starts_with("Home"),
+                   list(mean = mean, sd = sd), na.rm = TRUE))
 ```
 
 13. First convert `Week` and `Year` to factors, then find the average for all values containing numeric data (this should be completed in a single pipe chain).
 
 ```{r}
-
+NFLScores2011 %>%
+  mutate(Week = factor(Week),
+         Year = factor(Year)) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+  
 ```
 
 

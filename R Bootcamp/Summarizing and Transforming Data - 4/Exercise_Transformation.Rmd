@@ -8,9 +8,9 @@ output: html_document
 ```{r}
 library(tidyverse)
 # Modify the file path in the code below to properly load the file
-load("penguins_sep.RData")
+load("~/Desktop/GitHub/R Bootcamp/Summarizing and Transforming Data - 4/Transformations_data/penguins_sep.RData")
 # Modify the file path in the code below to properly load the file
-load("join_practice.RData")
+load("~/Desktop/GitHub/R Bootcamp/Summarizing and Transforming Data - 4/Transformations_data/join_practice.RData")
 
 penguins_set1 = slice_sample(penguins1, n = 20)
 penguins_set2 = slice_sample(penguins1, n = 20)
@@ -19,12 +19,18 @@ penguins_set2 = slice_sample(penguins1, n = 20)
 1. Use `pivot_longer()` to transform the data found in `table4a`. The code should result in a df that has 3 total columns (country, year, and population count) and 6 total rows.
 
 ```{r}
-
+table4a %>%
+  pivot_longer(cols = c(`1999`, `2000`),
+               names_to = "year",
+               values_to = "population_count")
 ```
 
 2. Use `pivot_wider()` to transform the data found in `table2` (specifically, the `type` column). The code should result in a df that has 4 total columns (country, year, cases, population) and 6 total rows.
 
 ```{r}
+table2 %>%
+  pivot_wider(names_from = type, 
+              values_from = count)
 
 ```
 
@@ -32,55 +38,56 @@ penguins_set2 = slice_sample(penguins1, n = 20)
   A. Look at the dfs `penguins1`, `penguins2`, and `penguins3` individually. Then, use `bind_rows()` to combine the `penguins1` and `penguins2` dfs.
 
 ```{r}
-
+bind_rows(penguins1, penguins2)
 ```
 
   B. Pipe your result from 3A to combine with `penguins3`.
 
 ```{r}
-
+bind_rows(penguins1, penguins2) %>%
+  bind_rows(penguins3)
 ```
 
 4. Using dfs `x` and `y`, write some code that will return a new df that contains only the observations common in both.
 
 ```{r}
-
+inner_join(x, y)
 ```
 
 5. Using dfs `x` and `y`, write some code that will return a new df that contains all variables across both dfs, but only from observations in `x`.
 
 ```{r}
-
+left_join(x, y)
 ```
 
 6. Using dfs `x` and `y`, write some code that will return a new df that contains all variables across both dfs, but only from observations in `y`.
 
 ```{r}
-
+right_join(x, y)
 ```
 
 7. Using dfs `x` and `y`, write some code that will return a new df that contains all variables and observations from both dfs.
   
 ```{r}
-
+full_join(x, y)
 ```
 
 8. Using dfs `penguins_set1` and `penguins_set2`, write some code that will return a new df that contains all unique observations from both samples.
 
 ```{r}
-
+union(penguins_set1, penguins_set2)
 ```
 
 9. Using dfs `penguins_set1` and `penguins_set2`, write some code that will return a new df that contains only the observations that appeared in both samples.
 
 ```{r}
-
+intersect(penguins_set1, penguins_set2)
 ```
 
 10. Using dfs `penguins_set1` and `penguins_set2`, write some code that will return a new df that contains only the unique observations in `penguins_set1`.
 
 ```{r}
-
+setdiff(penguins_set1, penguins_set2)
 ```
 
 
