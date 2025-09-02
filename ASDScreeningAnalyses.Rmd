@@ -70,6 +70,7 @@ summary(my_model)
 ```
 
 *Interpret Model Summary:*
+For every 1 unit change in age, the log odds of an ASD diagnosis decrease by 0.02848, with a standard error of 0.06753. However, the p-value for age is 0.67318, which is higher than the general alpha value of 0.05. At the 5% significance level, there is insufficient evidence to reject the null hypothesis. If the null hypothesis is true, my observed sample, or results more extreme than it, occurred by chance 67.318% of the time. In summary, there is not sufficient evidence of a correlation between age and ASD diagnosis.
 
 
 #Make Graph for Q1
@@ -146,6 +147,7 @@ print(chi_square_test)
 ```
 
 *Interpret Model Summary:*
+The chi-square test statistic is 4.7117, which measures how far the observed counts are from the expected counts, relative to the expected counts. Because the chi-square value is on the smaller side, it suggests stronger evidence for the null hypothesis. Additionally, the p-value of 0.6951 is less than the general alpha value of 0.05. In conclusion, at the 5% significance level, there is insufficient evidence to reject the null hypothesis. There is not enough evidence to suggest that there is a correlation between a jaundice diagnosis and an ASD diagnosis for children screened in this sample.
 
 
 #Make Graph for Q2
