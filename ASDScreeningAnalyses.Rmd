@@ -101,7 +101,13 @@ countASD %>%
 
 ASDScreeningData %>%
   ggplot(aes(y = Class.ASD, x = age)) +
-  geom_jitter()
+  geom_jitter() +
+  labs(
+    title = "Count of Autism Diagnoses by Age",
+    x = "Age",
+    y = "Autism Count"
+  ) +
+  theme_minimal()
 
 #use ...count... to show proportion (found in 193L textbook)
 ```
@@ -164,7 +170,13 @@ countASD %>%
 
 ASDScreeningData %>%
   ggplot(aes(y = Class.ASD, x = jundice)) +
-  geom_jitter()
+  geom_jitter() +
+  labs(
+    title = "Count of Autism Diagnoses by Jaundice Diagnoses",
+    x = "Jaundice",
+    y = "Autism Count"
+  ) +
+  theme_minimal()
 
 
 ```
