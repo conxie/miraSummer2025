@@ -87,28 +87,49 @@ countASD = ASDScreeningData %>%
   filter(Class.ASD == 1)
 
 countASD %>%
-  ggplot(aes(x = age , y = n)) +
-  geom_bar(stat = "identity", fill = "blue") +
+  ggplot(aes(x = age, y = n)) +
+  stat_summary(geom = "bar", 
+               fun = mean, 
+               fill = "#4169E1", 
+               color = "black") +
+  stat_summary(geom = "errorbar", 
+               fun.data = mean_se, 
+               width = 0.2, 
+               color = "black") + 
   labs(
     title = "Count of Autism Diagnoses by Age",
     x = "Age",
     y = "Autism Count"
   ) +
-  theme_minimal()
-
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 12, 
+                                  hjust = 0.5, 
+                                  face = "bold"),
+        axis.title = element_text(size = 10,
+                                  face = "bold",
+                                  color = "darkgray")) 
 
 #see if any other graphs would be a good fit to represent the data
 #Jitter Plot
 
 ASDScreeningData %>%
   ggplot(aes(y = Class.ASD, x = age)) +
-  geom_jitter() +
+  geom_jitter(color = "#023EBA") +
   labs(
     title = "Count of Autism Diagnoses by Age",
     x = "Age",
     y = "Autism Count"
   ) +
-  theme_minimal()
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 12, 
+                                  hjust = 0.5, 
+                                  face = "bold"),
+        axis.title = element_text(size = 10,
+                                  face = "bold",
+                                  color = "darkgray")) + 
+  geom_smooth(method = lm, 
+              se = FALSE,
+              color = "black")
 
 #use ...count... to show proportion (found in 193L textbook)
 ```
@@ -147,7 +168,7 @@ print(chi_square_test)
 ```
 
 *Interpret Model Summary:*
-The chi-square test statistic is 4.7117, which measures how far the observed counts are from the expected counts, relative to the expected counts. Because the chi-square value is on the smaller side, it suggests stronger evidence for the null hypothesis. Additionally, the p-value of 0.6951 is less than the general alpha value of 0.05. In conclusion, at the 5% significance level, there is insufficient evidence to reject the null hypothesis. There is not enough evidence to suggest that there is a correlation between a jaundice diagnosis and an ASD diagnosis for children screened in this sample.
+The chi-square test statistic is 4.7117, which measures how far the observed counts are from the expected counts, relative to the expected counts. Because the chi-square value is on the smaller side, it suggests stronger evidence for the null hypothesis. Additionally, the p-value of 0.6951 is less than the general alpha value of 0.05. In conclusion, at the 5% significance level, there is insufficient evidence to reject the null hypothesis. There is not enough evidence to suggest that there is a correlation between a jaundice diagnosis and an ASD diagnosis for children screened in this sample. 
 
 
 #Make Graph for Q2
@@ -162,23 +183,43 @@ countASD = ASDScreeningData %>%
 
 countASD %>%
   ggplot(aes(x = jundice , y = n)) +
-  geom_bar(stat = "identity", fill = "blue") +
+  stat_summary(geom = "bar", 
+               fun = mean, 
+               fill = "#F4BC1C", 
+               color = "black") +
+  stat_summary(geom = "errorbar", 
+               fun.data = mean_se, 
+               width = 0.2, 
+               color = "black") +
   labs(
     title = "Count of Autism Diagnoses by Jaundice Diagnoses",
     x = "Jaundice",
     y = "Autism Count"
   ) +
-  theme_minimal()
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 12, 
+                                  hjust = 0.5, 
+                                  face = "bold"),
+        axis.title = element_text(size = 10,
+                                  face = "bold",
+                                  color = "darkgray"))
+  
 
 ASDScreeningData %>%
   ggplot(aes(y = Class.ASD, x = jundice)) +
-  geom_jitter() +
+  geom_jitter(color = "#F4BC1C") +
   labs(
     title = "Count of Autism Diagnoses by Jaundice Diagnoses",
     x = "Jaundice",
     y = "Autism Count"
   ) +
-  theme_minimal()
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 12, 
+                                  hjust = 0.5, 
+                                  face = "bold"),
+        axis.title = element_text(size = 10,
+                                  face = "bold",
+                                  color = "darkgray")) 
 
 
 ```
