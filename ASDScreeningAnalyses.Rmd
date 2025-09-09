@@ -30,7 +30,7 @@ library(openxlsx)
 
 #additional hint: customfilename = read.csv('filepath')
 
-ASDScreeningData = read.csv('ASDScreeningDataChildren.csv')
+ASDScreeningData = read.csv("~/GitHub/miraSummer2025/ASDScreeningDataChildren.csv")
 ```
 
 
@@ -87,7 +87,6 @@ countASD = ASDScreeningData %>%
   filter(Class.ASD == 1)
 
 countASD %>%
-<<<<<<< HEAD
   ggplot(aes(x = age, y = n)) +
   stat_summary(geom = "bar", 
                fun = mean, 
@@ -96,11 +95,7 @@ countASD %>%
   stat_summary(geom = "errorbar", 
                fun.data = mean_se, 
                width = 0.2, 
-               color = "black") + 
-=======
-  ggplot(aes(x = age, y = n, fill = age)) +
-  geom_bar(stat = "identity", color = "black") +
->>>>>>> 2d8c5e1c71bd49eb49e0a1fa17660581eafce282
+               color = "black") +
   labs(
     title = "Count of Autism Diagnoses by Age",
     x = "Age",
@@ -118,38 +113,22 @@ countASD %>%
 #Jitter Plot
 
 ASDScreeningData %>%
-<<<<<<< HEAD
-  ggplot(aes(y = Class.ASD, x = age)) +
-  geom_jitter(color = "#023EBA") +
-=======
   ggplot(aes(x = age, y = Class.ASD, color = factor(Class.ASD))) +
   geom_jitter(width = 0.4, height = 0.5, size = 2, alpha = 0.7) +
   scale_color_manual(values = c("0" = "#FFA07A", "1" = "#20B2AA"), 
                      labels = c("No ASD", "ASD")) +
   scale_y_continuous(breaks = c(0, 1), labels = c("No ASD", "ASD")) +
->>>>>>> 2d8c5e1c71bd49eb49e0a1fa17660581eafce282
   labs(
     title = "Distribution of Autism Diagnoses by Age",
     x = "Age",
     y = "Autism Diagnosis",
     color = "Diagnosis"
-  ) +
-<<<<<<< HEAD
-  theme_minimal() + 
-  theme(plot.title = element_text(size = 12, 
-                                  hjust = 0.5, 
-                                  face = "bold"),
-        axis.title = element_text(size = 10,
-                                  face = "bold",
-                                  color = "darkgray"))
-
-=======
+  ) 
   theme_minimal(base_size = 14) +
   theme(
     plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
-    legend.position = "top"
-  )
->>>>>>> 2d8c5e1c71bd49eb49e0a1fa17660581eafce282
+    legend.position = "top")
+
 #use ...count... to show proportion (found in 193L textbook)
 ```
 
@@ -201,7 +180,6 @@ countASD = ASDScreeningData %>%
   filter(Class.ASD == 1)
 
 countASD %>%
-<<<<<<< HEAD
   ggplot(aes(x = jundice , y = n,
              fill = jundice)) +
   stat_summary(geom = "bar", 
@@ -212,13 +190,7 @@ countASD %>%
                width = 0.2, 
                color = "black") + 
   scale_fill_manual(values = c("no" = "#FA003F",
-                                "yes" = "#00A86B")) +
-=======
-  ggplot(aes(x = jundice , y = n, fill = jundice)) +
-  geom_bar(stat = "identity", color = "black") +
-  stat_summary(fun = "mean", geom = "point") +
-  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) + 
->>>>>>> 2d8c5e1c71bd49eb49e0a1fa17660581eafce282
+                                "yes" = "#00A86B")) + 
   labs(
     title = "Count of Autism Diagnoses by Jaundice Diagnoses",
     x = "Jaundice",
@@ -235,19 +207,13 @@ countASD %>%
   
 
 ASDScreeningData %>%
-<<<<<<< HEAD
   ggplot(aes(y = Class.ASD, x = jundice,
              color = jundice)) +
   geom_jitter() +
   scale_color_manual(values = c("no" = "#FA003F",
                                 "yes" = "#00A86B")) +
-=======
-  ggplot(aes(y = Class.ASD, x = jundice,  color = jundice)) +
-  geom_jitter(shape = 16,
-              alpha = 0.5) +
-  stat_summary(fun = "mean", geom = "point") +
-  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) + 
->>>>>>> 2d8c5e1c71bd49eb49e0a1fa17660581eafce282
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) +
+   stat_summary(fun = "mean", geom = "point", color = "black") +
   labs(
     title = "Count of Autism Diagnoses by Jaundice Diagnoses",
     x = "Jaundice",
