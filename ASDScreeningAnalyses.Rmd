@@ -30,7 +30,7 @@ library(openxlsx)
 
 #additional hint: customfilename = read.csv('filepath')
 
-ASDScreeningData = read.csv('/Users/miramateo/Desktop/GitHub/ASDScreeningDataChildren.csv')
+ASDScreeningData = read.csv('ASDScreeningDataChildren.csv')
 ```
 
 
@@ -41,7 +41,7 @@ view(ASDScreeningData)
 
 ```
 
-
+CX comment: try to combine the two mutates into one single pipe chain. Aka combine lines 55 and 58
 #Q1: Correlation between age and ASD diagnosis. 4-11 year olds
 ```{r}
 #Data manipulation
@@ -87,8 +87,8 @@ countASD = ASDScreeningData %>%
   filter(Class.ASD == 1)
 
 countASD %>%
-  ggplot(aes(x = age , y = n)) +
-  geom_bar(stat = "identity", fill = "blue") +
+  ggplot(aes(x = age, y = n, fill = age)) +
+  geom_bar(stat = "identity", color = "black") +
   labs(
     title = "Count of Autism Diagnoses by Age",
     x = "Age",
@@ -101,15 +101,22 @@ countASD %>%
 #Jitter Plot
 
 ASDScreeningData %>%
-  ggplot(aes(y = Class.ASD, x = age)) +
-  geom_jitter() +
+  ggplot(aes(x = age, y = Class.ASD, color = factor(Class.ASD))) +
+  geom_jitter(width = 0.4, height = 0.5, size = 2, alpha = 0.7) +
+  scale_color_manual(values = c("0" = "#FFA07A", "1" = "#20B2AA"), 
+                     labels = c("No ASD", "ASD")) +
+  scale_y_continuous(breaks = c(0, 1), labels = c("No ASD", "ASD")) +
   labs(
-    title = "Count of Autism Diagnoses by Age",
+    title = "Distribution of Autism Diagnoses by Age",
     x = "Age",
-    y = "Autism Count"
+    y = "Autism Diagnosis",
+    color = "Diagnosis"
   ) +
-  theme_minimal()
-
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    legend.position = "top"
+  )
 #use ...count... to show proportion (found in 193L textbook)
 ```
 
@@ -161,8 +168,10 @@ countASD = ASDScreeningData %>%
   filter(Class.ASD == 1)
 
 countASD %>%
-  ggplot(aes(x = jundice , y = n)) +
-  geom_bar(stat = "identity", fill = "blue") +
+  ggplot(aes(x = jundice , y = n, fill = jundice)) +
+  geom_bar(stat = "identity", color = "black") +
+  stat_summary(fun = "mean", geom = "point") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) + 
   labs(
     title = "Count of Autism Diagnoses by Jaundice Diagnoses",
     x = "Jaundice",
@@ -171,8 +180,11 @@ countASD %>%
   theme_minimal()
 
 ASDScreeningData %>%
-  ggplot(aes(y = Class.ASD, x = jundice)) +
-  geom_jitter() +
+  ggplot(aes(y = Class.ASD, x = jundice,  color = jundice)) +
+  geom_jitter(shape = 16,
+              alpha = 0.5) +
+  stat_summary(fun = "mean", geom = "point") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) + 
   labs(
     title = "Count of Autism Diagnoses by Jaundice Diagnoses",
     x = "Jaundice",
@@ -183,5 +195,3 @@ ASDScreeningData %>%
 
 ```
 
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
